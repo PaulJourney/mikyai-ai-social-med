@@ -68,7 +68,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
           referralCode: 'ABC12345',
           referralsCount: 3,
           creditsEarned: 150,
-          cashEarned: 3.50,
+          cashEarned: 12.00,
           language: 'en'
         }
         

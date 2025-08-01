@@ -32,42 +32,42 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
       id: 'lawyer',
       name: 'Lawyer',
       icon: Scales,
-      description: 'Legal advice and contract analysis',
+      description: 'Legal advice and contract help',
       requiresPaid: false
     },
     {
       id: 'engineer',
       name: 'Engineer', 
       icon: Wrench,
-      description: 'Technical solutions and code review',
+      description: 'Technical help and code review',
       requiresPaid: false
     },
     {
       id: 'marketer',
       name: 'Marketer',
       icon: TrendUp,
-      description: 'Brand strategy and growth tactics',
+      description: 'Brand growth and marketing plans',
       requiresPaid: false
     },
     {
       id: 'coach',
       name: 'Coach',
       icon: ChatCircle,
-      description: 'Personal development and goal setting',
+      description: 'Personal goals and life coaching',
       requiresPaid: false
     },
     {
       id: 'medical',
       name: 'Medical Advisor',
       icon: FirstAidKit,
-      description: 'Health information and wellness guidance',
+      description: 'Health tips and wellness support',
       requiresPaid: true
     },
     {
       id: 'god-mode',
       name: 'God Mode',
       icon: Lightning,
-      description: 'Advanced AI for complex philosophical questions',
+      description: 'Uncover the purpose of existence',
       requiresPaid: true
     }
   ]
