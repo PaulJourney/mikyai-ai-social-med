@@ -6,6 +6,7 @@ import { PersonaSelector } from './components/PersonaSelector'
 import { ChatInterface } from './components/ChatInterface'
 import { ConversationHistory } from './components/ConversationHistory'
 import { AdminDashboard } from './components/AdminDashboard'
+import { Pricing } from './components/Pricing'
 import { Footer } from './components/Footer'
 import { ThemeProvider } from './components/ThemeProvider'
 import { Toaster } from 'sonner'
@@ -39,7 +40,7 @@ export interface User {
 }
 
 function App() {
-  const [currentView, setCurrentView] = useState<'chat' | 'history' | 'admin'>('chat')
+  const [currentView, setCurrentView] = useState<'chat' | 'history' | 'admin' | 'pricing'>('chat')
   const [selectedPersona, setSelectedPersona] = useState<Persona | null>(null)
   const [currentConversation, setCurrentConversation] = useState<Conversation | null>(null)
   const [showAdminLogin, setShowAdminLogin] = useState(false)
@@ -70,6 +71,20 @@ function App() {
     setUser(prev => ({
       ...prev,
       credits: Math.max(0, prev.credits - amount)
+    }))
+  }
+
+  const handlePlanSelect = (plan: 'free' | 'plus' | 'business') => {
+    const creditsByPlan = {
+      free: 100,
+      plus: 1000,
+      business: 5000
+    }
+    
+    setUser(prev => ({
+      ...prev,
+      plan,
+      credits: creditsByPlan[plan]
     }))
   }
 
@@ -275,6 +290,13 @@ function App() {
                   prev.map(c => c.id === id ? { ...c, title: newTitle } : c)
                 )
               }}
+            />
+          )}
+
+          {currentView === 'pricing' && (
+            <Pricing 
+              user={user}
+              onPlanSelect={handlePlanSelect}
             />
           )}
         </main>

@@ -1,21 +1,17 @@
 import { Button } from '@/components/ui/button'
-import { Switch } from '@/components/ui/switch'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Badge } from '@/components/ui/badge'
-import { useTheme } from './ThemeProvider'
-import { User, Globe, Share, History, Sun, Moon } from '@phosphor-icons/react'
+import { User, Globe, ShareNetwork, ClockCounterClockwise, CreditCard } from '@phosphor-icons/react'
 import type { User as UserType } from '../App'
 import { toast } from 'sonner'
 
 interface HeaderProps {
   user: UserType
-  onViewChange: (view: 'chat' | 'history' | 'admin') => void
-  currentView: 'chat' | 'history' | 'admin'
+  onViewChange: (view: 'chat' | 'history' | 'admin' | 'pricing') => void
+  currentView: 'chat' | 'history' | 'admin' | 'pricing'
 }
 
 export function Header({ user, onViewChange, currentView }: HeaderProps) {
-  const { theme, toggleTheme } = useTheme()
-
   const handleReferralClick = () => {
     const referralLink = `https://miky.ai/ref/${user.referralCode}`
     navigator.clipboard.writeText(referralLink)
@@ -47,8 +43,17 @@ export function Header({ user, onViewChange, currentView }: HeaderProps) {
               onClick={() => onViewChange('history')}
               className="text-xs"
             >
-              <History className="w-4 h-4 mr-1" />
+              <ClockCounterClockwise className="w-4 h-4 mr-1" />
               History
+            </Button>
+            <Button
+              variant={currentView === 'pricing' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => onViewChange('pricing')}
+              className="text-xs"
+            >
+              <CreditCard className="w-4 h-4 mr-1" />
+              Pricing
             </Button>
           </div>
 
@@ -65,7 +70,7 @@ export function Header({ user, onViewChange, currentView }: HeaderProps) {
               onClick={handleReferralClick}
               className="text-xs hover:glow-effect"
             >
-              <Share className="w-4 h-4 mr-1" />
+              <ShareNetwork className="w-4 h-4 mr-1" />
               Refer
             </Button>
 
@@ -92,16 +97,6 @@ export function Header({ user, onViewChange, currentView }: HeaderProps) {
               </PopoverContent>
             </Popover>
 
-            {/* Theme Toggle */}
-            <div className="flex items-center gap-2">
-              <Sun className="w-4 h-4" />
-              <Switch
-                checked={theme === 'dark'}
-                onCheckedChange={toggleTheme}
-              />
-              <Moon className="w-4 h-4" />
-            </div>
-
             {/* User Menu */}
             <Popover>
               <PopoverTrigger asChild>
@@ -119,7 +114,12 @@ export function Header({ user, onViewChange, currentView }: HeaderProps) {
                     <div>Credits Earned: <span className="text-foreground font-medium">{user.creditsEarned}</span></div>
                   </div>
                   <div className="pt-2 border-t">
-                    <Button variant="outline" size="sm" className="w-full text-xs">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full text-xs"
+                      onClick={() => onViewChange('pricing')}
+                    >
                       Upgrade Plan
                     </Button>
                   </div>
