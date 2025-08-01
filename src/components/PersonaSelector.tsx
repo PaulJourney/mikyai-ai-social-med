@@ -1,5 +1,13 @@
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { 
+  Scales, 
+  Wrench, 
+  TrendUp, 
+  ChatCircle, 
+  FirstAidKit, 
+  Lightning 
+} from '@phosphor-icons/react'
 import type { Persona } from '../App'
 
 interface PersonaSelectorProps {
@@ -12,49 +20,49 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan }: 
   const personas: Array<{
     id: Persona
     name: string
-    icon: string
+    icon: React.ElementType
     description: string
     requiresPaid: boolean
   }> = [
     {
       id: 'lawyer',
       name: 'Lawyer',
-      icon: '⚖️',
+      icon: Scales,
       description: 'Legal advice and contract analysis',
       requiresPaid: false
     },
     {
       id: 'engineer',
       name: 'Engineer', 
-      icon: '🛠️',
+      icon: Wrench,
       description: 'Technical solutions and code review',
       requiresPaid: false
     },
     {
       id: 'marketer',
       name: 'Marketer',
-      icon: '📈',
+      icon: TrendUp,
       description: 'Brand strategy and growth tactics',
       requiresPaid: false
     },
     {
       id: 'coach',
       name: 'Coach',
-      icon: '💬',
+      icon: ChatCircle,
       description: 'Personal development and goal setting',
       requiresPaid: false
     },
     {
       id: 'medical',
       name: 'Medical Advisor',
-      icon: '🏥',
+      icon: FirstAidKit,
       description: 'Health information and wellness guidance',
       requiresPaid: true
     },
     {
       id: 'god-mode',
       name: 'God Mode',
-      icon: '🌌',
+      icon: Lightning,
       description: 'Advanced AI for complex philosophical questions',
       requiresPaid: true
     }
@@ -76,13 +84,14 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan }: 
         {personas.map((persona) => {
           const isSelected = selectedPersona === persona.id
           const canUse = canUsePersona(persona)
+          const IconComponent = persona.icon
           
           return (
             <Button
               key={persona.id}
               variant={isSelected ? 'default' : 'outline'}
               className={`
-                h-auto p-4 flex flex-col items-center gap-2 text-left transition-all duration-200
+                h-auto p-4 flex flex-col items-center gap-2 text-left transition-all duration-200 group
                 ${isSelected ? 'glow-effect ring-2 ring-primary/50' : ''}
                 ${!canUse ? 'opacity-50' : 'hover:glow-effect'}
               `}
@@ -90,10 +99,10 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan }: 
               disabled={!canUse}
             >
               <div className="flex items-center gap-2 w-full">
-                <span className="text-lg">{persona.icon}</span>
+                <IconComponent size={20} className="text-foreground" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="font-medium text-sm">{persona.name}</span>
+                    <span className="font-medium text-sm group-hover:text-primary transition-colors duration-200">{persona.name}</span>
                     {persona.requiresPaid && (
                       <Badge variant="secondary" className="text-xs px-1 py-0">
                         Pro
