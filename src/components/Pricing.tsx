@@ -143,7 +143,27 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
         {plans.map((plan) => {
           const Icon = plan.icon
           const isCurrentPlan = user.plan === plan.id
-          const isUpgrade = plan.id !== 'free' && user.plan === 'free'
+          
+          // Determine button text based on current plan and target plan
+          const getButtonText = () => {
+            if (isCurrentPlan) return 'Current Plan'
+            
+            // Check for upgrades
+            if (user.plan === 'free' && (plan.id === 'plus' || plan.id === 'business')) {
+              return `Upgrade to ${plan.name}`
+            }
+            if (user.plan === 'plus' && plan.id === 'business') {
+              return `Upgrade to ${plan.name}`
+            }
+            
+            // Check for downgrades
+            if (plan.id === 'free') {
+              return 'Downgrade to Free'
+            }
+            
+            // Default fallback
+            return `Select ${plan.name}`
+          }
           
           return (
             <Card 
@@ -189,26 +209,14 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
                 </div>
               </CardContent>
 
-              <CardFooter className="space-y-2">
-                {isCurrentPlan && (
-                  <div className="w-full text-center">
-                    <Badge variant="secondary" className="mb-2">Current Plan</Badge>
-                  </div>
-                )}
+              <CardFooter className="pt-6">
                 <Button
                   className="w-full"
                   variant={plan.popular ? 'default' : isCurrentPlan ? 'secondary' : 'outline'}
                   onClick={() => handleSelectPlan(plan.id)}
                   disabled={isCurrentPlan}
                 >
-                  {isCurrentPlan 
-                    ? 'Current Plan' 
-                    : isUpgrade 
-                      ? `Upgrade to ${plan.name}` 
-                      : plan.id === 'free' 
-                        ? 'Downgrade to Free'
-                        : `Select ${plan.name}`
-                  }
+                  {getButtonText()}
                 </Button>
               </CardFooter>
             </Card>
