@@ -22,6 +22,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
   const [creditsToBuy, setCreditsToBuy] = useState([500])
   const [purchasedCredits, setPurchasedCredits] = useState(0)
   const [upgradedPlan, setUpgradedPlan] = useState<string>('')
+  const [targetPlan, setTargetPlan] = useState<'free' | 'plus' | 'business'>('free')
   const plans = [
     {
       id: 'free' as const,
@@ -87,7 +88,9 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
     }
 
     // Check if it's a downgrade
-    if (planId === 'free' && user.plan !== 'free') {
+    if ((planId === 'free' && user.plan !== 'free') || 
+        (planId === 'plus' && user.plan === 'business')) {
+      setTargetPlan(planId)
       setShowDowngradeDialog(true)
       return
     }
@@ -110,8 +113,9 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
 
   const handleDowngradeConfirm = () => {
     setShowDowngradeDialog(false)
-    onPlanSelect('free')
-    toast.success('Downgraded to Free plan')
+    onPlanSelect(targetPlan)
+    const planName = plans.find(p => p.id === targetPlan)?.name || ''
+    toast.success(`Downgraded to ${planName} plan`)
   }
 
   const handleBuyCredits = () => {
@@ -159,6 +163,9 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
             // Check for downgrades
             if (plan.id === 'free') {
               return 'Downgrade to Free'
+            }
+            if (plan.id === 'plus' && user.plan === 'business') {
+              return 'Downgrade to Plus'
             }
             
             // Default fallback
@@ -259,13 +266,13 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
           </DialogHeader>
           <div className="space-y-4">
             <p className="text-muted-foreground">
-              Are you sure you want to downgrade to the Free plan? You'll lose access to premium features.
+              Are you sure you want to downgrade to the {plans.find(p => p.id === targetPlan)?.name} plan? You'll lose access to premium features.
             </p>
             <div className="bg-muted/50 p-4 rounded-lg space-y-2">
               <div className="font-medium">Billing Information:</div>
               <div className="text-sm text-muted-foreground">
                 Your current plan will remain active until {formatNextBillingDate()}.
-                After this date, you'll be charged $0/month for the Free plan.
+                After this date, you'll be charged {plans.find(p => p.id === targetPlan)?.price}/month for the {plans.find(p => p.id === targetPlan)?.name} plan.
               </div>
             </div>
           </div>
