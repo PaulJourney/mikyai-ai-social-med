@@ -12,7 +12,7 @@ interface HeaderProps {
   onViewChange: (view: 'chat' | 'history' | 'admin' | 'pricing') => void
   currentView: 'chat' | 'history' | 'admin' | 'pricing'
   onSignOut: () => void
-  onAuthRequest: () => void
+  onAuthRequest: (mode?: 'signin' | 'signup') => void
   onUpdateUser: (userData: Partial<UserType>) => void
 }
 
@@ -21,7 +21,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
 
   const handleReferralClick = () => {
     if (!user) {
-      onAuthRequest()
+      onAuthRequest('signup')
       return
     }
     const referralLink = `https://miky.ai/ref/${user.referralCode}`
@@ -235,9 +235,23 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                 </Popover>
               </>
             ) : (
-              <Button onClick={onAuthRequest} size="sm">
-                Sign In
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => onAuthRequest('signin')}
+                  className="text-xs text-primary hover:text-primary"
+                >
+                  Sign in
+                </Button>
+                <Button 
+                  onClick={() => onAuthRequest('signup')} 
+                  size="sm"
+                  className="text-xs"
+                >
+                  Sign up
+                </Button>
+              </div>
             )}
           </div>
         </div>

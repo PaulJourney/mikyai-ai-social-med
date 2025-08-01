@@ -10,6 +10,7 @@ import { Pricing } from './components/Pricing'
 import { Footer } from './components/Footer'
 import { LegalPages } from './components/LegalPages'
 import { AuthModal } from './components/AuthModal'
+import { WelcomeTutorial } from './components/WelcomeTutorial'
 import { ThemeProvider } from './components/ThemeProvider'
 import { Toaster } from 'sonner'
 
@@ -54,6 +55,7 @@ function App() {
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin')
   const [referralCode, setReferralCode] = useState<string | undefined>()
+  const [showWelcomeTutorial, setShowWelcomeTutorial] = useState(false)
   
   // Persistent user data - now nullable for unauthenticated users
   const [user, setUser] = useKV<User | null>('user', null)
@@ -110,9 +112,16 @@ function App() {
     }) : null)
   }
 
-  const handleAuthSuccess = (userData: User) => {
+  const handleAuthSuccess = (userData: User, isNewUser = false) => {
     setUser(userData)
     setShowAuthModal(false)
+    
+    // Show welcome tutorial for new users
+    if (isNewUser) {
+      setTimeout(() => {
+        setShowWelcomeTutorial(true)
+      }, 500)
+    }
   }
 
   const handleSignOut = () => {
@@ -123,7 +132,8 @@ function App() {
     setCurrentView('chat')
   }
 
-  const handleAuthRequest = () => {
+  const handleAuthRequest = (mode: 'signin' | 'signup' = 'signin') => {
+    setAuthMode(mode)
     setShowAuthModal(true)
   }
 
@@ -134,7 +144,7 @@ function App() {
 
   const handleSendMessage = (content: string) => {
     if (!user) {
-      handleAuthRequest()
+      handleAuthRequest('signup')
       return
     }
     
@@ -240,7 +250,7 @@ function App() {
 
   const handleVoiceInput = () => {
     if (!user) {
-      handleAuthRequest()
+      handleAuthRequest('signup')
       return
     }
 
@@ -395,6 +405,12 @@ function App() {
           onModeSwitch={() => setAuthMode(authMode === 'signin' ? 'signup' : 'signin')}
           onAuthSuccess={handleAuthSuccess}
           referralCode={referralCode}
+        />
+        
+        <WelcomeTutorial
+          isOpen={showWelcomeTutorial}
+          onClose={() => setShowWelcomeTutorial(false)}
+          userName={user?.firstName}
         />
         
         <Toaster />

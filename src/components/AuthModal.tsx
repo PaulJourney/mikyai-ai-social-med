@@ -11,7 +11,7 @@ interface AuthModalProps {
   onClose: () => void
   mode: 'signin' | 'signup'
   onModeSwitch: () => void
-  onAuthSuccess: (userData: any) => void
+  onAuthSuccess: (userData: any, isNewUser?: boolean) => void
   referralCode?: string
 }
 
@@ -72,7 +72,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
           language: 'en'
         }
         
-        onAuthSuccess(newUser)
+        onAuthSuccess(newUser, true) // Mark as new user
         toast.success(referralCode ? 'Account created! You received 300 bonus credits!' : 'Account created successfully!')
         setIsLoading(false)
         onClose()
@@ -96,7 +96,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
             language: 'en'
           }
           
-          onAuthSuccess(testUser)
+          onAuthSuccess(testUser, false)
           toast.success('Welcome back, Support Team!')
           setIsLoading(false)
           onClose()
@@ -118,7 +118,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
           language: 'en'
         }
         
-        onAuthSuccess(existingUser)
+        onAuthSuccess(existingUser, false)
         toast.success('Welcome back!')
         setIsLoading(false)
         onClose()

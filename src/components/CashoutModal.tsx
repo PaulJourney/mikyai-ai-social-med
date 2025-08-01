@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { toast } from 'sonner'
+import { CheckCircle } from '@phosphor-icons/react'
 
 interface CashoutModalProps {
   isOpen: boolean
@@ -15,12 +15,12 @@ interface CashoutModalProps {
 export function CashoutModal({ isOpen, onClose, availableCash, onCashoutSuccess }: CashoutModalProps) {
   const [paypalEmail, setPaypalEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
     if (availableCash < 10) {
-      toast.error('Minimum cashout amount is $10')
       return
     }
 
@@ -29,11 +29,36 @@ export function CashoutModal({ isOpen, onClose, availableCash, onCashoutSuccess 
     // Simulate payment processing
     setTimeout(() => {
       onCashoutSuccess()
-      toast.success(`$${availableCash.toFixed(2)} has been sent to your PayPal account!`)
       setIsLoading(false)
-      setPaypalEmail('')
-      onClose()
+      setShowSuccess(true)
     }, 2000)
+  }
+
+  const handleClose = () => {
+    setPaypalEmail('')
+    setShowSuccess(false)
+    onClose()
+  }
+
+  if (showSuccess) {
+    return (
+      <Dialog open={isOpen} onOpenChange={handleClose}>
+        <DialogContent className="sm:max-w-md">
+          <div className="flex flex-col items-center text-center space-y-4 py-6">
+            <CheckCircle className="w-16 h-16 text-primary" />
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Request Received Successfully!</h3>
+              <p className="text-sm text-muted-foreground">
+                We have received your cashout request and it will be processed as soon as possible.
+              </p>
+            </div>
+            <Button onClick={handleClose} className="w-full mt-4">
+              Close
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    )
   }
 
   return (
