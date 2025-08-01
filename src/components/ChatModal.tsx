@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Avatar } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { X, Microphone, Paperclip, Send, User, Robot } from '@phosphor-icons/react'
+import { X, Microphone, Paperclip, PaperPlaneTilt, User, Robot } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import type { Conversation, Persona } from '../App'
 
@@ -64,41 +64,9 @@ export function ChatModal({
       return
     }
 
-    const fullText = getStaticPlaceholder()
-    let currentIndex = 0
-    let isDeleting = false
-    let timeoutId: NodeJS.Timeout
-
-    const animate = () => {
-      if (isDeleting) {
-        if (currentIndex > 0) {
-          setAnimatedPlaceholder(fullText.substring(0, currentIndex - 1))
-          currentIndex--
-          timeoutId = setTimeout(animate, 50) // Faster deletion
-        } else {
-          isDeleting = false
-          timeoutId = setTimeout(animate, 1000) // Pause before typing again
-        }
-      } else {
-        if (currentIndex < fullText.length) {
-          setAnimatedPlaceholder(fullText.substring(0, currentIndex + 1))
-          currentIndex++
-          timeoutId = setTimeout(animate, 60) // Faster typing speed
-        } else {
-          timeoutId = setTimeout(() => {
-            isDeleting = true
-            animate()
-          }, 2000) // Pause at end before deleting
-        }
-      }
-    }
-
-    setIsAnimating(true)
-    animate()
-
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId)
-    }
+    // No animation in modal - just set static placeholder
+    setAnimatedPlaceholder(getStaticPlaceholder())
+    setIsAnimating(false)
   }, [isOpen, selectedPersona, inputValue])
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -164,27 +132,26 @@ export function ChatModal({
 
   const getPlaceholder = () => {
     if (inputValue) return '' // Hide placeholder when user is typing
-    if (isAnimating) return animatedPlaceholder
     return getStaticPlaceholder()
   }
 
   const getStaticPlaceholder = () => {
-    if (!selectedPersona) return 'Ask anything - or choose an ultra-skilled version of Miky...'
+    if (!selectedPersona) return 'Ask to Miky'
     
     const placeholders = {
-      lawyer: 'Ask to Lawyer Miky...',
-      engineer: 'Ask to Engineer Miky...',
-      marketer: 'Ask to Marketer Miky...',
-      coach: 'Ask to Coach Miky...',
-      medical: 'Ask to Doctor Miky...',
-      'god-mode': 'Ask to God Miky...'
+      lawyer: 'Ask to Lawyer Miky',
+      engineer: 'Ask to Engineer Miky',
+      marketer: 'Ask to Marketer Miky',
+      coach: 'Ask to Coach Miky',
+      medical: 'Ask to Doctor Miky',
+      'god-mode': 'Ask to God Miky'
     }
-    return placeholders[selectedPersona] || 'Ask to Miky...'
+    return placeholders[selectedPersona] || 'Ask to Miky'
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl w-[95vw] h-[90vh] p-0 bg-background border-border overflow-hidden [&>button]:hidden">
+      <DialogContent className="max-w-6xl w-[95vw] h-[90vh] p-0 bg-background border-border overflow-hidden [&>button]:hidden">
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-border bg-card">
@@ -298,7 +265,7 @@ export function ChatModal({
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder={getPlaceholder()}
                   disabled={disabled}
-                  className="pr-12 h-12 text-base"
+                  className="pr-12 h-12 text-base italic placeholder:italic"
                 />
                 <Button
                   type="button"
@@ -319,7 +286,7 @@ export function ChatModal({
                 disabled={!inputValue.trim() || disabled}
                 className="h-12 px-6"
               >
-                <Send className="w-4 h-4" />
+                <PaperPlaneTilt className="w-4 h-4" />
               </Button>
             </form>
             
