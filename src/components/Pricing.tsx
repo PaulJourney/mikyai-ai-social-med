@@ -33,9 +33,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
       features: [
         '100 credits/month',
         'Basic personas',
-        'Text input + voice',
-        'Community support',
-        'Conversation history'
+        'Text input + voice'
       ]
     },
     {
@@ -153,20 +151,12 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
               className={`relative transition-all duration-300 hover:shadow-lg ${
                 plan.popular 
                   ? 'border-primary shadow-lg scale-105' 
-                  : isCurrentPlan 
-                    ? 'border-accent' 
-                    : 'border-border hover:border-primary/50'
+                  : 'border-border hover:border-primary/50'
               }`}
             >
               {plan.popular && (
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                   <Badge className="bg-primary text-primary-foreground">Most Popular</Badge>
-                </div>
-              )}
-              
-              {isCurrentPlan && (
-                <div className="absolute -top-3 right-4">
-                  <Badge variant="secondary">Current Plan</Badge>
                 </div>
               )}
 
@@ -199,7 +189,12 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
                 </div>
               </CardContent>
 
-              <CardFooter>
+              <CardFooter className="space-y-2">
+                {isCurrentPlan && (
+                  <div className="w-full text-center">
+                    <Badge variant="secondary" className="mb-2">Current Plan</Badge>
+                  </div>
+                )}
                 <Button
                   className="w-full"
                   variant={plan.popular ? 'default' : isCurrentPlan ? 'secondary' : 'outline'}
@@ -229,7 +224,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
                 <Coins className="w-8 h-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold">Need More Credits?</h3>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground mb-6">
                 Buy additional credits anytime — they never expire.
               </p>
               <Button 
