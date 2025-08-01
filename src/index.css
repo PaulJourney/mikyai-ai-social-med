@@ -77,6 +77,44 @@
   animation: modalExit 0.3s ease-in;
 }
 
+.chat-resize-handle {
+  transition: opacity 0.2s ease;
+}
+
+.chat-resize-handle:hover {
+  opacity: 1 !important;
+}
+
+/* Custom scrollbar for chat modal */
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: oklch(0.4 0 0);
+  border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.5 0 0);
+}
+
+/* Responsive chat modal sizing */
+@media (max-width: 768px) {
+  .resizable-chat-modal {
+    width: 95vw !important;
+    height: 90vh !important;
+    max-width: 95vw !important;
+    max-height: 90vh !important;
+    min-width: 280px !important;
+    min-height: 200px !important;
+  }
+}
+
 @keyframes modalEnter {
   from {
     opacity: 0;
