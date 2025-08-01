@@ -33,14 +33,9 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
       features: [
         '100 credits/month',
         'Basic personas',
-        'Text input only',
+        'Text input + voice',
         'Community support',
         'Conversation history'
-      ],
-      limitations: [
-        'No voice input',
-        'No God Mode',
-        'Limited uploads'
       ]
     },
     {
@@ -55,10 +50,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
         '1,000 credits/month',
         'All personas + God Mode',
         'Voice recognition',
-        'Priority support',
-        'Advanced management',
-        'File uploads',
-        'Export conversations'
+        'File uploads'
       ]
     },
     {
@@ -71,12 +63,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
       features: [
         '5,000 credits/month',
         'All Plus features',
-        'Priority processing',
-        'Advanced analytics',
-        'Team collaboration',
-        'Custom personas',
-        'API access',
-        '24/7 support'
+        'Priority support'
       ]
     }
   ]
@@ -147,7 +134,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold text-foreground">
           Choose Your <span className="text-primary">Plan</span>
@@ -210,19 +197,6 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
                     </div>
                   ))}
                 </div>
-
-                {plan.limitations && (
-                  <div className="pt-4 border-t border-border/50">
-                    <div className="space-y-2">
-                      {plan.limitations.map((limitation, index) => (
-                        <div key={index} className="flex items-start gap-3">
-                          <div className="w-5 h-5 mt-0.5 flex-shrink-0 text-muted-foreground">×</div>
-                          <span className="text-sm text-muted-foreground">{limitation}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </CardContent>
 
               <CardFooter>
@@ -400,8 +374,8 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
               </div>
             </div>
           </div>
-          <DialogFooter>
-            <Button onClick={() => setShowPaymentSuccess(false)}>
+          <DialogFooter className="flex justify-center">
+            <Button onClick={() => setShowPaymentSuccess(false)} className="w-auto">
               Close
             </Button>
           </DialogFooter>
@@ -429,8 +403,8 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
               </div>
             </div>
           </div>
-          <DialogFooter>
-            <Button onClick={() => setShowUpgradeSuccess(false)}>
+          <DialogFooter className="flex justify-center">
+            <Button onClick={() => setShowUpgradeSuccess(false)} className="w-auto">
               Close
             </Button>
           </DialogFooter>
