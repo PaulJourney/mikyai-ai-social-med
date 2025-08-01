@@ -34,7 +34,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
       features: [
         '100 credits/month',
         'Basic personas',
-        'Text input + voice'
+        'Text input'
       ]
     },
     {

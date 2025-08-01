@@ -68,7 +68,7 @@ export function Header({ user, onViewChange, currentView }: HeaderProps) {
               variant="outline"
               size="sm"
               onClick={handleReferralClick}
-              className="text-xs hover:glow-effect"
+              className="text-xs hover:glow-effect hover:text-primary"
             >
               <ShareNetwork className="w-4 h-4 mr-1" />
               Refer
