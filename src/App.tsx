@@ -88,6 +88,13 @@ function App() {
     }))
   }
 
+  const handleCreditPurchase = (credits: number) => {
+    setUser(prev => ({
+      ...prev,
+      credits: prev.credits + credits
+    }))
+  }
+
   const handleSendMessage = (content: string) => {
     if (!selectedPersona) return
     if (user.credits <= 0) return
@@ -297,6 +304,7 @@ function App() {
             <Pricing 
               user={user}
               onPlanSelect={handlePlanSelect}
+              onCreditPurchase={handleCreditPurchase}
             />
           )}
         </main>

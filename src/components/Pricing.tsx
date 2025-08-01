@@ -1,16 +1,25 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { CheckCircle, Lightning, Crown, Infinity } from '@phosphor-icons/react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
+import { Slider } from '@/components/ui/slider'
+import { CheckCircle, Lightning, Crown, Coins, CreditCard } from '@phosphor-icons/react'
 import type { User } from '../App'
 import { toast } from 'sonner'
+import { useState } from 'react'
 
 interface PricingProps {
   user: User
   onPlanSelect: (plan: 'free' | 'plus' | 'business') => void
+  onCreditPurchase: (credits: number) => void
 }
 
-export function Pricing({ user, onPlanSelect }: PricingProps) {
+export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) {
+  const [showDowngradeDialog, setShowDowngradeDialog] = useState(false)
+  const [showBuyCreditsDialog, setShowBuyCreditsDialog] = useState(false)
+  const [showPaymentSuccess, setShowPaymentSuccess] = useState(false)
+  const [creditsToBuy, setCreditsToBuy] = useState([500])
+  const [purchasedCredits, setPurchasedCredits] = useState(0)
   const plans = [
     {
       id: 'free' as const,
@@ -20,16 +29,16 @@ export function Pricing({ user, onPlanSelect }: PricingProps) {
       credits: '100',
       icon: CheckCircle,
       features: [
-        '100 credits per month',
+        '100 credits/month',
         'Basic personas',
         'Text input only',
         'Community support',
-        'Basic conversation history'
+        'Conversation history'
       ],
       limitations: [
         'No voice input',
-        'No God Mode access',
-        'Limited file uploads'
+        'No God Mode',
+        'Limited uploads'
       ]
     },
     {
@@ -41,12 +50,12 @@ export function Pricing({ user, onPlanSelect }: PricingProps) {
       icon: Lightning,
       popular: true,
       features: [
-        '1,000 credits per month',
-        'All personas including God Mode',
-        'Voice input & recognition',
+        '1,000 credits/month',
+        'All personas + God Mode',
+        'Voice recognition',
         'Priority support',
-        'Advanced conversation management',
-        'File upload support',
+        'Advanced management',
+        'File uploads',
         'Export conversations'
       ]
     },
@@ -58,21 +67,41 @@ export function Pricing({ user, onPlanSelect }: PricingProps) {
       credits: '5,000',
       icon: Crown,
       features: [
-        '5,000 credits per month',
+        '5,000 credits/month',
         'All Plus features',
-        'Priority AI processing',
+        'Priority processing',
         'Advanced analytics',
         'Team collaboration',
         'Custom personas',
         'API access',
-        '24/7 dedicated support'
+        '24/7 support'
       ]
     }
   ]
 
+  const calculateCreditPrice = (credits: number): number => {
+    return Math.round(credits * 0.02) // $0.02 per credit
+  }
+
+  const formatNextBillingDate = (): string => {
+    const date = new Date()
+    date.setMonth(date.getMonth() + 1)
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    })
+  }
+
   const handleSelectPlan = (planId: 'free' | 'plus' | 'business') => {
     if (planId === user.plan) {
       toast.info('You are already on this plan')
+      return
+    }
+
+    // Check if it's a downgrade
+    if (planId === 'free' && user.plan !== 'free') {
+      setShowDowngradeDialog(true)
       return
     }
 
@@ -90,19 +119,38 @@ export function Pricing({ user, onPlanSelect }: PricingProps) {
     }
   }
 
+  const handleDowngradeConfirm = () => {
+    setShowDowngradeDialog(false)
+    onPlanSelect('free')
+    toast.success('Downgraded to Free plan')
+  }
+
+  const handleBuyCredits = () => {
+    const credits = creditsToBuy[0]
+    const price = calculateCreditPrice(credits)
+    
+    // Mock payment processing
+    toast.success('Processing payment...')
+    
+    setTimeout(() => {
+      setPurchasedCredits(credits)
+      setShowBuyCreditsDialog(false)
+      setShowPaymentSuccess(true)
+      
+      // Actually add credits to user account
+      onCreditPurchase(credits)
+    }, 2000)
+  }
+
   return (
     <div className="space-y-8">
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold text-foreground">
           Choose Your <span className="text-primary">Plan</span>
         </h1>
-        <p className="text-muted-foreground max-w-2xl mx-auto">
-          Unlock the full potential of Miky.ai with advanced features and increased credits. 
-          Start free and upgrade anytime.
-        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
         {plans.map((plan) => {
           const Icon = plan.icon
           const isCurrentPlan = user.plan === plan.id
@@ -200,31 +248,131 @@ export function Pricing({ user, onPlanSelect }: PricingProps) {
           <CardContent className="p-6">
             <div className="text-center space-y-4">
               <div className="flex justify-center">
-                <Infinity className="w-8 h-8 text-primary" />
+                <Coins className="w-8 h-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold">Need More Credits?</h3>
               <p className="text-muted-foreground">
-                All plans include monthly credit allowances that reset each billing cycle. 
-                Credits are consumed based on AI processing complexity and features used.
+                Buy additional credits anytime to extend your monthly allowance. 
+                Credits never expire and can be used with any plan.
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                <div className="space-y-1">
-                  <div className="font-medium">Basic Personas</div>
-                  <div className="text-muted-foreground">2-3 credits per message</div>
-                </div>
-                <div className="space-y-1">
-                  <div className="font-medium">Advanced Features</div>
-                  <div className="text-muted-foreground">Voice input, file analysis</div>
-                </div>
-                <div className="space-y-1">
-                  <div className="font-medium">God Mode</div>
-                  <div className="text-muted-foreground">5 credits per message</div>
-                </div>
-              </div>
+              <Button 
+                onClick={() => setShowBuyCreditsDialog(true)}
+                className="bg-primary hover:bg-primary/90"
+              >
+                <CreditCard className="w-4 h-4 mr-2" />
+                Buy Credits
+              </Button>
             </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* Downgrade Confirmation Dialog */}
+      <Dialog open={showDowngradeDialog} onOpenChange={setShowDowngradeDialog}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Confirm Downgrade</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-muted-foreground">
+              Are you sure you want to downgrade to the Free plan? You'll lose access to premium features.
+            </p>
+            <div className="bg-muted/50 p-4 rounded-lg space-y-2">
+              <div className="font-medium">Billing Information:</div>
+              <div className="text-sm text-muted-foreground">
+                Your current plan will remain active until {formatNextBillingDate()}.
+                After this date, you'll be charged $0/month for the Free plan.
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowDowngradeDialog(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDowngradeConfirm}>
+              Confirm Downgrade
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Buy Credits Dialog */}
+      <Dialog open={showBuyCreditsDialog} onOpenChange={setShowBuyCreditsDialog}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Buy Additional Credits</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-6">
+            <div className="space-y-4">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary">
+                  {creditsToBuy[0].toLocaleString()} Credits
+                </div>
+                <div className="text-2xl font-semibold">
+                  ${calculateCreditPrice(creditsToBuy[0])}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  ${(calculateCreditPrice(creditsToBuy[0]) / creditsToBuy[0]).toFixed(3)} per credit
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Select amount:</label>
+                <Slider
+                  value={creditsToBuy}
+                  onValueChange={setCreditsToBuy}
+                  min={100}
+                  max={10000}
+                  step={100}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>100</span>
+                  <span>10,000</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowBuyCreditsDialog(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleBuyCredits}>
+              <CreditCard className="w-4 h-4 mr-2" />
+              Buy Credits
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Payment Success Dialog */}
+      <Dialog open={showPaymentSuccess} onOpenChange={setShowPaymentSuccess}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-center">Payment Successful!</DialogTitle>
+          </DialogHeader>
+          <div className="text-center space-y-4">
+            <div className="flex justify-center">
+              <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center">
+                <CheckCircle className="w-8 h-8 text-primary" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-lg font-semibold">
+                {purchasedCredits.toLocaleString()} credits added!
+              </div>
+              <div className="text-muted-foreground">
+                Your credits have been successfully added to your account and are ready to use.
+              </div>
+            </div>
+          </div>
+          <DialogFooter className="justify-center">
+            <Button onClick={() => setShowPaymentSuccess(false)}>
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
