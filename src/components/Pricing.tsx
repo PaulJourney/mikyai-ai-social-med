@@ -211,7 +211,11 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
 
               <CardFooter className="pt-6">
                 <Button
-                  className="w-full"
+                  className={`w-full ${
+                    !plan.popular && !isCurrentPlan 
+                      ? 'border-border hover:border-primary/50 hover:bg-muted/50 hover:text-foreground' 
+                      : ''
+                  }`}
                   variant={plan.popular ? 'default' : isCurrentPlan ? 'secondary' : 'outline'}
                   onClick={() => handleSelectPlan(plan.id)}
                   disabled={isCurrentPlan}
