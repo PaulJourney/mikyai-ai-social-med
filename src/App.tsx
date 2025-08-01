@@ -424,6 +424,10 @@ function App() {
           disabled={!user || user.credits <= 0}
           user={user}
           isLoading={isLoading}
+          onViewHistory={() => {
+            setShowChatModal(false)
+            setCurrentView('history')
+          }}
         />
         
         <Toaster />

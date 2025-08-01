@@ -205,7 +205,7 @@ export function MainInput({
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 placeholder={getPlaceholder()}
-                className="min-h-[80px] pr-20 text-sm resize-none focus:ring-primary focus:ring-2 focus:ring-offset-0 border-input"
+                className="min-h-[80px] pr-20 text-sm resize-none focus:ring-primary focus:ring-2 focus:ring-offset-0 border-input placeholder:italic"
                 disabled={disabled}
               />
               <div className="absolute bottom-3 right-3 flex gap-2">

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Avatar } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { X, Microphone, Paperclip, PaperPlaneTilt, User, Robot } from '@phosphor-icons/react'
+import { X, Microphone, Paperclip, PaperPlaneTilt, User, Robot, ClockCounterClockwise } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import type { Conversation, Persona } from '../App'
 
@@ -19,6 +19,7 @@ interface ChatModalProps {
   disabled?: boolean
   user: any
   isLoading?: boolean
+  onViewHistory?: () => void
 }
 
 export function ChatModal({ 
@@ -31,7 +32,8 @@ export function ChatModal({
   isRecording, 
   disabled,
   user,
-  isLoading = false
+  isLoading = false,
+  onViewHistory
 }: ChatModalProps) {
   const [inputValue, setInputValue] = useState('')
   const [showTyping, setShowTyping] = useState(false)
@@ -151,10 +153,10 @@ export function ChatModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl w-[95vw] h-[90vh] p-0 bg-background border-border overflow-hidden [&>button]:hidden">
+      <DialogContent className="max-w-7xl w-[90vw] max-h-[90vh] h-[90vh] p-0 bg-background border-border overflow-hidden [&>button]:hidden">
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-border bg-card">
+          <div className="flex items-center justify-between p-4 border-b border-border bg-card shrink-0">
             <div className="flex items-center gap-3">
               <Avatar className="w-10 h-10">
                 <div className="w-full h-full bg-primary/10 rounded-full flex items-center justify-center">
@@ -172,9 +174,15 @@ export function ChatModal({
             </div>
             
             <div className="flex items-center gap-2">
-              <div className="text-sm text-muted-foreground">
-                {user?.credits} credits
-              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onViewHistory}
+                className="h-8 px-3 text-sm text-muted-foreground hover:text-primary"
+              >
+                <ClockCounterClockwise className="w-4 h-4 mr-2" />
+                History
+              </Button>
               <Button 
                 variant="ghost" 
                 size="sm" 
@@ -187,7 +195,7 @@ export function ChatModal({
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
             {conversation?.messages.map((message) => (
               <div
                 key={message.id}
@@ -245,7 +253,7 @@ export function ChatModal({
           </div>
 
           {/* Input */}
-          <div className="border-t border-border p-4 bg-card">
+          <div className="border-t border-border p-4 bg-card shrink-0">
             <form onSubmit={handleSubmit} className="flex items-center gap-2">
               <Button
                 type="button"
