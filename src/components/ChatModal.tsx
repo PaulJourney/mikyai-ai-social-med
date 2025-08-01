@@ -39,69 +39,12 @@ export function ChatModal({
   const [showTyping, setShowTyping] = useState(false)
   const [animatedPlaceholder, setAnimatedPlaceholder] = useState('')
   const [isAnimating, setIsAnimating] = useState(false)
-  const [isResizing, setIsResizing] = useState(false)
-  const [modalSize, setModalSize] = useState({ width: 90, height: 90 }) // percentages
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
-
-  const handleResizeStart = (e: React.MouseEvent, direction: string) => {
-    e.preventDefault()
-    setIsResizing(true)
-    
-    const startX = e.clientX
-    const startY = e.clientY
-    const startWidth = modalSize.width
-    const startHeight = modalSize.height
-    
-    const handleMouseMove = (e: MouseEvent) => {
-      const deltaX = ((e.clientX - startX) / window.innerWidth) * 100
-      const deltaY = ((e.clientY - startY) / window.innerHeight) * 100
-      
-      let newWidth = startWidth
-      let newHeight = startHeight
-      
-      switch (direction) {
-        case 'right':
-        case 'top-right':
-        case 'bottom-right':
-          newWidth = Math.min(95, Math.max(25, startWidth + deltaX))
-          break
-        case 'left':
-        case 'top-left':
-        case 'bottom-left':
-          newWidth = Math.min(95, Math.max(25, startWidth - deltaX))
-          break
-      }
-      
-      switch (direction) {
-        case 'bottom':
-        case 'bottom-left':
-        case 'bottom-right':
-          newHeight = Math.min(95, Math.max(35, startHeight + deltaY))
-          break
-        case 'top':
-        case 'top-left':
-        case 'top-right':
-          newHeight = Math.min(95, Math.max(35, startHeight - deltaY))
-          break
-      }
-      
-      setModalSize({ width: newWidth, height: newHeight })
-    }
-    
-    const handleMouseUp = () => {
-      setIsResizing(false)
-      document.removeEventListener('mousemove', handleMouseMove)
-      document.removeEventListener('mouseup', handleMouseUp)
-    }
-    
-    document.addEventListener('mousemove', handleMouseMove)
-    document.addEventListener('mouseup', handleMouseUp)
   }
 
   useEffect(() => {
@@ -116,35 +59,19 @@ export function ChatModal({
     scrollToBottom()
   }, [conversation?.messages])
 
-  // Prevent text selection during resize
-  useEffect(() => {
-    if (isResizing) {
-      document.body.style.userSelect = 'none'
-      document.body.style.cursor = 'grabbing'
-    } else {
-      document.body.style.userSelect = ''
-      document.body.style.cursor = ''
-    }
-    
-    return () => {
-      document.body.style.userSelect = ''
-      document.body.style.cursor = ''
-    }
-  }, [isResizing])
-
   // Handle keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isOpen) return
       
-      if (e.key === 'Escape' && !isResizing) {
+      if (e.key === 'Escape') {
         onClose()
       }
     }
     
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [isOpen, isResizing, onClose])
+  }, [isOpen, onClose])
 
   // Typing animation effect for placeholder
   useEffect(() => {
@@ -241,63 +168,9 @@ export function ChatModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
-        className="resizable-chat-modal p-0 bg-background border-border overflow-hidden [&>button]:hidden transition-all duration-150"
-        style={{
-          '--modal-width': `${modalSize.width}vw`,
-          '--modal-height': `${modalSize.height}vh`,
-          width: `${modalSize.width}vw`,
-          height: `${modalSize.height}vh`,
-          maxWidth: `${modalSize.width}vw`,
-          maxHeight: `${modalSize.height}vh`,
-          minWidth: '300px',
-          minHeight: '250px'
-        } as React.CSSProperties}
+        className="chat-modal p-0 bg-background border-border overflow-hidden [&>button]:hidden w-[90vw] max-w-4xl h-[85vh] max-h-[85vh]"
       >
-        <div className={`flex flex-col h-full relative ${isResizing ? 'select-none' : ''}`}>
-          {/* Resize handles - only show on desktop */}
-          <div className="absolute inset-0 pointer-events-none hidden md:block">
-            {isResizing && (
-              <div className="absolute inset-0 bg-primary/5 border-2 border-primary/20 rounded-lg pointer-events-none" />
-            )}
-            {/* Top resize handle */}
-            <div 
-              className="chat-resize-handle absolute top-0 left-4 right-4 h-2 cursor-n-resize pointer-events-auto opacity-0 bg-primary/20 rounded-b transition-opacity"
-              onMouseDown={(e) => handleResizeStart(e, 'top')}
-            />
-            {/* Bottom resize handle */}
-            <div 
-              className="chat-resize-handle absolute bottom-0 left-4 right-4 h-2 cursor-s-resize pointer-events-auto opacity-0 bg-primary/20 rounded-t transition-opacity"
-              onMouseDown={(e) => handleResizeStart(e, 'bottom')}
-            />
-            {/* Left resize handle */}
-            <div 
-              className="chat-resize-handle absolute left-0 top-4 bottom-4 w-2 cursor-w-resize pointer-events-auto opacity-0 bg-primary/20 rounded-r transition-opacity"
-              onMouseDown={(e) => handleResizeStart(e, 'left')}
-            />
-            {/* Right resize handle */}
-            <div 
-              className="chat-resize-handle absolute right-0 top-4 bottom-4 w-2 cursor-e-resize pointer-events-auto opacity-0 bg-primary/20 rounded-l transition-opacity"
-              onMouseDown={(e) => handleResizeStart(e, 'right')}
-            />
-            {/* Corner resize handles */}
-            <div 
-              className="chat-resize-handle absolute top-0 left-0 w-4 h-4 cursor-nw-resize pointer-events-auto opacity-0 bg-primary/20 rounded-br transition-opacity"
-              onMouseDown={(e) => handleResizeStart(e, 'top-left')}
-            />
-            <div 
-              className="chat-resize-handle absolute top-0 right-0 w-4 h-4 cursor-ne-resize pointer-events-auto opacity-0 bg-primary/20 rounded-bl transition-opacity"
-              onMouseDown={(e) => handleResizeStart(e, 'top-right')}
-            />
-            <div 
-              className="chat-resize-handle absolute bottom-0 left-0 w-4 h-4 cursor-sw-resize pointer-events-auto opacity-0 bg-primary/20 rounded-tr transition-opacity"
-              onMouseDown={(e) => handleResizeStart(e, 'bottom-left')}
-            />
-            <div 
-              className="chat-resize-handle absolute bottom-0 right-0 w-4 h-4 cursor-se-resize pointer-events-auto opacity-0 bg-primary/20 rounded-tl transition-opacity"
-              onMouseDown={(e) => handleResizeStart(e, 'bottom-right')}
-            />
-          </div>
-
+        <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-border bg-card shrink-0">
             <div className="flex items-center gap-3">
@@ -364,7 +237,7 @@ export function ChatModal({
                   <div className={`flex-1 space-y-1 ${message.sender === 'user' ? 'text-right' : 'text-left'}`}>
                     <div
                       className={`
-                        inline-block px-4 py-3 rounded-md text-sm max-w-[80%]
+                        inline-block px-4 py-3 rounded-lg text-sm max-w-[80%]
                         ${message.sender === 'user' 
                           ? 'bg-primary text-primary-foreground ml-auto' 
                           : 'bg-muted text-foreground'
@@ -388,7 +261,7 @@ export function ChatModal({
                     </div>
                   </Avatar>
                   <div className="flex-1">
-                    <div className="inline-block px-4 py-3 rounded-md text-sm bg-muted">
+                    <div className="inline-block px-4 py-3 rounded-lg text-sm bg-muted">
                       <div className="flex space-x-1">
                         <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
                         <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>

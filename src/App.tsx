@@ -370,6 +370,11 @@ function App() {
                 setSelectedPersona(conv.persona === 'general' ? null : conv.persona)
                 setCurrentView('chat')
               }}
+              onContinueConversation={(conv) => {
+                setCurrentConversation(conv)
+                setSelectedPersona(conv.persona === 'general' ? null : conv.persona)
+                setShowChatModal(true)
+              }}
               onDeleteConversation={(id) => {
                 setConversations(prev => prev.filter(c => c.id !== id))
                 if (currentConversation?.id === id) {

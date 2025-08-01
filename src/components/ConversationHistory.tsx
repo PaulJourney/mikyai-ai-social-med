@@ -12,13 +12,15 @@ interface ConversationHistoryProps {
   onSelectConversation: (conversation: Conversation) => void
   onDeleteConversation: (id: string) => void
   onRenameConversation: (id: string, newTitle: string) => void
+  onContinueConversation?: (conversation: Conversation) => void
 }
 
 export function ConversationHistory({ 
   conversations, 
   onSelectConversation, 
   onDeleteConversation, 
-  onRenameConversation 
+  onRenameConversation,
+  onContinueConversation
 }: ConversationHistoryProps) {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editTitle, setEditTitle] = useState('')
@@ -141,7 +143,7 @@ export function ConversationHistory({
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => onSelectConversation(conversation)}
+                  onClick={() => onContinueConversation ? onContinueConversation(conversation) : onSelectConversation(conversation)}
                   className="text-xs"
                 >
                   Continue
