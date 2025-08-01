@@ -93,7 +93,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="text-center mb-6">
-        <h2 className="text-lg font-medium text-foreground mb-2">Choose Your AI Assistant</h2>
+        <h2 className="text-lg font-medium text-foreground mb-2">Choose Your Ultra‑Skilled AI Persona</h2>
         <p className="text-sm text-muted-foreground">Select a specialized persona to get tailored responses</p>
       </div>
       
@@ -116,7 +116,10 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
               disabled={false}
             >
               <div className="flex items-center gap-2 w-full">
-                <IconComponent size={20} className="text-foreground" />
+                <IconComponent 
+                  size={20} 
+                  className={`${isSelected ? 'text-black' : 'text-foreground'} transition-colors duration-200`} 
+                />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-sm group-hover:text-primary transition-colors duration-200">{persona.name}</span>
@@ -139,7 +142,12 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
       {userPlan === 'free' && (
         <div className="mt-4 text-center">
           <p className="text-xs text-muted-foreground">
-            Upgrade to unlock Medical Advisor and God Mode personas
+            <button 
+              onClick={onUpgradeToPlusRequest}
+              className="text-primary hover:text-primary/80 underline transition-colors duration-200"
+            >
+              Upgrade
+            </button> to unlock Medical Advisor and God Mode personas
           </p>
         </div>
       )}
@@ -147,12 +155,9 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
       <Dialog open={showUpgradeModal} onOpenChange={setShowUpgradeModal}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-center">Upgrade to Plus</DialogTitle>
+            <DialogTitle className="text-center">Upgrade your Plan</DialogTitle>
           </DialogHeader>
           <div className="text-center space-y-4 p-4">
-            <p className="text-muted-foreground">
-              This persona is available starting from the Plus plan.
-            </p>
             <p className="text-sm text-muted-foreground">
               Upgrade now to unlock Medical Advisor, God Mode, and other advanced features.
             </p>

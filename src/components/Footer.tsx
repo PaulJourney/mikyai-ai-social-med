@@ -6,9 +6,10 @@ import { toast } from 'sonner'
 
 interface FooterProps {
   onAdminAccess: () => void
+  onLegalPageSelect?: (page: 'terms' | 'privacy' | 'cookies') => void
 }
 
-export function Footer({ onAdminAccess }: FooterProps) {
+export function Footer({ onAdminAccess, onLegalPageSelect }: FooterProps) {
   const [adminPassword, setAdminPassword] = useState('')
   const [showAdminDialog, setShowAdminDialog] = useState(false)
 
@@ -28,13 +29,25 @@ export function Footer({ onAdminAccess }: FooterProps) {
       <div className="container mx-auto px-4 py-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex flex-wrap justify-center md:justify-start gap-4 text-xs text-muted-foreground">
-            <Button variant="link" className="p-0 h-auto text-xs text-muted-foreground">
+            <Button 
+              variant="link" 
+              className="p-0 h-auto text-xs text-muted-foreground"
+              onClick={() => onLegalPageSelect?.('terms')}
+            >
               Terms and Conditions
             </Button>
-            <Button variant="link" className="p-0 h-auto text-xs text-muted-foreground">
+            <Button 
+              variant="link" 
+              className="p-0 h-auto text-xs text-muted-foreground"
+              onClick={() => onLegalPageSelect?.('privacy')}
+            >
               Privacy Policy
             </Button>
-            <Button variant="link" className="p-0 h-auto text-xs text-muted-foreground">
+            <Button 
+              variant="link" 
+              className="p-0 h-auto text-xs text-muted-foreground"
+              onClick={() => onLegalPageSelect?.('cookies')}
+            >
               Cookie Policy
             </Button>
             
@@ -76,7 +89,7 @@ export function Footer({ onAdminAccess }: FooterProps) {
           </div>
 
           <div className="text-xs text-muted-foreground">
-            © 2024 Miky.ai - AI Assistant Platform
+            © 2025 Miky.ai - Ultra‑Skilled AI Personas
           </div>
         </div>
       </div>

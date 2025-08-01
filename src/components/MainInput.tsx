@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Card } from '@/components/ui/card'
 import { Microphone, PaperPlaneRight, Paperclip } from '@phosphor-icons/react'
+import { toast } from 'sonner'
 import type { Persona } from '../App'
 
 interface MainInputProps {
@@ -21,6 +22,23 @@ export function MainInput({
   selectedPersona 
 }: MainInputProps) {
   const [message, setMessage] = useState('')
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleFileUpload = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || [])
+    if (files.length > 0) {
+      const fileNames = files.map(f => f.name).join(', ')
+      toast.success(`Files attached: ${fileNames}`)
+      // Reset the input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -71,6 +89,7 @@ export function MainInput({
                 type="button"
                 variant="ghost"
                 size="sm"
+                onClick={handleFileUpload}
                 className="p-2"
                 disabled={disabled}
               >
@@ -78,6 +97,15 @@ export function MainInput({
               </Button>
             </div>
           </div>
+          
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            className="hidden"
+            accept="image/*,video/*,.pdf,.doc,.docx,.txt"
+            onChange={handleFileChange}
+          />
           
           <div className="flex justify-between items-center">
             <div className="text-xs text-muted-foreground">

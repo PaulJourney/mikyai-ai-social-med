@@ -8,6 +8,7 @@ import { ConversationHistory } from './components/ConversationHistory'
 import { AdminDashboard } from './components/AdminDashboard'
 import { Pricing } from './components/Pricing'
 import { Footer } from './components/Footer'
+import { LegalPages } from './components/LegalPages'
 import { ThemeProvider } from './components/ThemeProvider'
 import { Toaster } from 'sonner'
 
@@ -40,7 +41,8 @@ export interface User {
 }
 
 function App() {
-  const [currentView, setCurrentView] = useState<'chat' | 'history' | 'admin' | 'pricing'>('chat')
+  const [currentView, setCurrentView] = useState<'chat' | 'history' | 'admin' | 'pricing' | 'legal'>('chat')
+  const [currentLegalPage, setCurrentLegalPage] = useState<'terms' | 'privacy' | 'cookies'>('terms')
   const [selectedPersona, setSelectedPersona] = useState<Persona | null>(null)
   const [currentConversation, setCurrentConversation] = useState<Conversation | null>(null)
   const [showAdminLogin, setShowAdminLogin] = useState(false)
@@ -225,6 +227,11 @@ function App() {
     recognition.start()
   }
 
+  const handleLegalPageSelect = (page: 'terms' | 'privacy' | 'cookies') => {
+    setCurrentLegalPage(page)
+    setCurrentView('legal')
+  }
+
   if (currentView === 'admin') {
     return (
       <ThemeProvider>
@@ -232,6 +239,18 @@ function App() {
           <AdminDashboard onClose={() => setCurrentView('chat')} />
           <Toaster />
         </div>
+      </ThemeProvider>
+    )
+  }
+
+  if (currentView === 'legal') {
+    return (
+      <ThemeProvider>
+        <LegalPages 
+          currentPage={currentLegalPage}
+          onBack={() => setCurrentView('chat')}
+        />
+        <Toaster />
       </ThemeProvider>
     )
   }
@@ -310,7 +329,10 @@ function App() {
           )}
         </main>
 
-        <Footer onAdminAccess={() => setCurrentView('admin')} />
+        <Footer 
+          onAdminAccess={() => setCurrentView('admin')} 
+          onLegalPageSelect={handleLegalPageSelect}
+        />
         <Toaster />
       </div>
     </ThemeProvider>
