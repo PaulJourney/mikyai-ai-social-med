@@ -172,6 +172,12 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
             return `Select ${plan.name}`
           }
           
+          // Determine if this is a downgrade action
+          const isDowngrade = () => {
+            return (plan.id === 'free' && user.plan !== 'free') || 
+                   (plan.id === 'plus' && user.plan === 'business')
+          }
+          
           return (
             <Card 
               key={plan.id} 
@@ -223,7 +229,15 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
                       ? 'border-border hover:border-primary/50 hover:bg-muted/50 hover:text-foreground' 
                       : ''
                   }`}
-                  variant={plan.popular ? 'default' : isCurrentPlan ? 'secondary' : 'outline'}
+                  variant={
+                    isCurrentPlan 
+                      ? 'secondary' 
+                      : isDowngrade() 
+                        ? 'outline' 
+                        : plan.popular 
+                          ? 'default' 
+                          : 'outline'
+                  }
                   onClick={() => handleSelectPlan(plan.id)}
                   disabled={isCurrentPlan}
                 >
