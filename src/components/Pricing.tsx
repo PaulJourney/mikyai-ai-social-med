@@ -18,8 +18,10 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
   const [showDowngradeDialog, setShowDowngradeDialog] = useState(false)
   const [showBuyCreditsDialog, setShowBuyCreditsDialog] = useState(false)
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false)
+  const [showUpgradeSuccess, setShowUpgradeSuccess] = useState(false)
   const [creditsToBuy, setCreditsToBuy] = useState([500])
   const [purchasedCredits, setPurchasedCredits] = useState(0)
+  const [upgradedPlan, setUpgradedPlan] = useState<string>('')
   const plans = [
     {
       id: 'free' as const,
@@ -107,11 +109,13 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
 
     // Mock payment flow - in real implementation, integrate Stripe
     if (planId !== 'free') {
-      toast.success(`Redirecting to payment for ${plans.find(p => p.id === planId)?.name} plan...`)
+      const planName = plans.find(p => p.id === planId)?.name || ''
+      toast.success(`Redirecting to payment for ${planName} plan...`)
       // Here you would integrate with Stripe
       setTimeout(() => {
         onPlanSelect(planId)
-        toast.success('Plan upgraded successfully!')
+        setUpgradedPlan(planName)
+        setShowUpgradeSuccess(true)
       }, 2000)
     } else {
       onPlanSelect(planId)
@@ -298,48 +302,94 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
 
       {/* Buy Credits Dialog */}
       <Dialog open={showBuyCreditsDialog} onOpenChange={setShowBuyCreditsDialog}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Buy Additional Credits</DialogTitle>
+            <DialogTitle className="text-2xl font-bold text-center">
+              Buy Additional Credits
+            </DialogTitle>
           </DialogHeader>
-          <div className="space-y-6">
-            <div className="space-y-4">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary">
-                  {creditsToBuy[0].toLocaleString()} Credits
+          <div className="space-y-8">
+            <div className="text-center space-y-4">
+              <div className="mx-auto w-24 h-24 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full flex items-center justify-center">
+                <Coins className="w-12 h-12 text-primary" />
+              </div>
+              <div className="space-y-2">
+                <div className="text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  {creditsToBuy[0].toLocaleString()}
                 </div>
-                <div className="text-2xl font-semibold">
-                  ${calculateCreditPrice(creditsToBuy[0])}
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  ${(calculateCreditPrice(creditsToBuy[0]) / creditsToBuy[0]).toFixed(3)} per credit
+                <div className="text-lg text-muted-foreground">Credits</div>
+              </div>
+            </div>
+            
+            <div className="bg-card/50 rounded-xl p-6 space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-lg font-medium">Total Cost</span>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-primary">
+                    ${calculateCreditPrice(creditsToBuy[0])}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    ${(calculateCreditPrice(creditsToBuy[0]) / creditsToBuy[0]).toFixed(3)} per credit
+                  </div>
                 </div>
               </div>
               
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Select amount:</label>
-                <Slider
-                  value={creditsToBuy}
-                  onValueChange={setCreditsToBuy}
-                  min={100}
-                  max={10000}
-                  step={100}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>100</span>
-                  <span>10,000</span>
+              <div className="space-y-4">
+                <div className="flex justify-between text-sm">
+                  <span className="font-medium">Select amount:</span>
+                  <span className="text-muted-foreground">{creditsToBuy[0].toLocaleString()} credits</span>
+                </div>
+                <div className="relative">
+                  <Slider
+                    value={creditsToBuy}
+                    onValueChange={setCreditsToBuy}
+                    min={100}
+                    max={10000}
+                    step={100}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground mt-2">
+                    <span>100</span>
+                    <span>5,000</span>
+                    <span>10,000</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-3 gap-2 mt-4">
+                {[500, 1000, 2000].map((amount) => (
+                  <Button
+                    key={amount}
+                    variant={creditsToBuy[0] === amount ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setCreditsToBuy([amount])}
+                    className="text-xs"
+                  >
+                    {amount.toLocaleString()}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="bg-muted/30 rounded-lg p-4">
+              <div className="flex items-start gap-3">
+                <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                <div className="space-y-1">
+                  <div className="font-medium text-sm">Credits never expire</div>
+                  <div className="text-xs text-muted-foreground">
+                    Use them anytime with any plan. Perfect for heavy usage periods.
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="gap-3">
             <Button variant="outline" onClick={() => setShowBuyCreditsDialog(false)}>
               Cancel
             </Button>
-            <Button onClick={handleBuyCredits}>
+            <Button onClick={handleBuyCredits} className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90">
               <CreditCard className="w-4 h-4 mr-2" />
-              Buy Credits
+              Purchase Credits
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -368,6 +418,35 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
           </div>
           <DialogFooter className="justify-center">
             <Button onClick={() => setShowPaymentSuccess(false)}>
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Upgrade Success Dialog */}
+      <Dialog open={showUpgradeSuccess} onOpenChange={setShowUpgradeSuccess}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-center">Upgrade Successful!</DialogTitle>
+          </DialogHeader>
+          <div className="text-center space-y-4">
+            <div className="flex justify-center">
+              <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center">
+                <CheckCircle className="w-8 h-8 text-primary" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-lg font-semibold">
+                Welcome to {upgradedPlan}!
+              </div>
+              <div className="text-muted-foreground">
+                Your plan has been upgraded successfully. All premium features are now available.
+              </div>
+            </div>
+          </div>
+          <DialogFooter className="justify-center">
+            <Button onClick={() => setShowUpgradeSuccess(false)}>
               Close
             </Button>
           </DialogFooter>
