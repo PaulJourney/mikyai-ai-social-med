@@ -181,7 +181,7 @@ export function LegalPages({ currentPage, onBack }: LegalPagesProps) {
       </section>
 
       <p className="text-xs text-muted-foreground mt-8 pt-4 border-t border-border">
-        Last updated: January 2025
+        Last updated: August 2, 2025
       </p>
     </div>
   )
@@ -332,7 +332,7 @@ export function LegalPages({ currentPage, onBack }: LegalPagesProps) {
       </section>
 
       <p className="text-xs text-muted-foreground mt-8 pt-4 border-t border-border">
-        Last updated: January 2025
+        Last updated: August 2, 2025
       </p>
     </div>
   )
@@ -485,7 +485,7 @@ export function LegalPages({ currentPage, onBack }: LegalPagesProps) {
       </section>
 
       <p className="text-xs text-muted-foreground mt-8 pt-4 border-t border-border">
-        Last updated: January 2025
+        Last updated: August 2, 2025
       </p>
     </div>
   )

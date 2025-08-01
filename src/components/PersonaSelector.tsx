@@ -93,7 +93,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="text-center mb-6">
-        <h2 className="text-lg font-medium text-foreground mb-2">Choose Your Ultra‑Skilled AI Persona:</h2>
+        <h2 className="text-base font-medium text-muted-foreground mb-2">Choose Your Ultra‑Skilled AI Persona:</h2>
       </div>
       
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -128,7 +128,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
                       </Badge>
                     )}
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                  <p className={`text-xs mt-1 line-clamp-2 transition-colors duration-200 ${isSelected ? 'text-black font-normal' : 'text-muted-foreground'}`}>
                     {persona.description}
                   </p>
                 </div>
