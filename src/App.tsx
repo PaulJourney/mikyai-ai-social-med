@@ -133,7 +133,12 @@ function App() {
   }
 
   const handleSendMessage = (content: string) => {
-    if (!selectedPersona || !user) return
+    if (!user) {
+      handleAuthRequest()
+      return
+    }
+    
+    if (!selectedPersona) return
     if (user.credits <= 0) return
 
     const messageId = crypto.randomUUID()
@@ -308,86 +313,73 @@ function App() {
         />
         
         <main className="flex-1 container mx-auto px-4 py-8 max-w-4xl">
-          {!user && currentView === 'chat' ? (
-            <div className="text-center space-y-6">
-              <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-8">
-                Ask to <span className="text-primary">Miky</span>
-              </h1>
-              <p className="text-muted-foreground mb-8">
-                Sign in to access your AI assistant with specialized personas
-              </p>
-              <button
-                onClick={handleAuthRequest}
-                className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
-              >
-                Get Started
-              </button>
+          {currentView === 'chat' && (
+            <div className="space-y-8">
+              <div className="text-center space-y-6">
+                <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-8">
+                  Ask to <span className="text-primary">Miky</span>
+                </h1>
+                
+                <MainInput 
+                  onSendMessage={handleSendMessage}
+                  onVoiceInput={handleVoiceInput}
+                  isRecording={isRecording}
+                  disabled={!selectedPersona || (user && user.credits <= 0)}
+                  selectedPersona={selectedPersona}
+                />
+                
+                <PersonaSelector 
+                  selectedPersona={selectedPersona}
+                  onPersonaSelect={handlePersonaSelect}
+                  userPlan={user?.plan || 'free'}
+                  onUpgradeToPlusRequest={() => setCurrentView('pricing')}
+                />
+                
+                {!user && (
+                  <p className="text-sm text-muted-foreground">
+                    Sign in to start chatting with AI personas
+                  </p>
+                )}
+              </div>
+
+              {currentConversation && user && (
+                <ChatInterface 
+                  conversation={currentConversation}
+                  onSendMessage={handleSendMessage}
+                  isLoading={false}
+                />
+              )}
             </div>
-          ) : (
-            <>
-              {currentView === 'chat' && user && (
-                <div className="space-y-8">
-                  <div className="text-center space-y-6">
-                    <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-8">
-                      Ask to <span className="text-primary">Miky</span>
-                    </h1>
-                    
-                    <MainInput 
-                      onSendMessage={handleSendMessage}
-                      onVoiceInput={handleVoiceInput}
-                      isRecording={isRecording}
-                      disabled={!selectedPersona || user.credits <= 0}
-                      selectedPersona={selectedPersona}
-                    />
-                    
-                    <PersonaSelector 
-                      selectedPersona={selectedPersona}
-                      onPersonaSelect={handlePersonaSelect}
-                      userPlan={user.plan}
-                      onUpgradeToPlusRequest={() => setCurrentView('pricing')}
-                    />
-                  </div>
+          )}
 
-                  {currentConversation && (
-                    <ChatInterface 
-                      conversation={currentConversation}
-                      onSendMessage={handleSendMessage}
-                      isLoading={false}
-                    />
-                  )}
-                </div>
-              )}
+          {currentView === 'history' && user && (
+            <ConversationHistory 
+              conversations={conversations}
+              onSelectConversation={(conv) => {
+                setCurrentConversation(conv)
+                setSelectedPersona(conv.persona)
+                setCurrentView('chat')
+              }}
+              onDeleteConversation={(id) => {
+                setConversations(prev => prev.filter(c => c.id !== id))
+                if (currentConversation?.id === id) {
+                  setCurrentConversation(null)
+                }
+              }}
+              onRenameConversation={(id, newTitle) => {
+                setConversations(prev => 
+                  prev.map(c => c.id === id ? { ...c, title: newTitle } : c)
+                )
+              }}
+            />
+          )}
 
-              {currentView === 'history' && user && (
-                <ConversationHistory 
-                  conversations={conversations}
-                  onSelectConversation={(conv) => {
-                    setCurrentConversation(conv)
-                    setSelectedPersona(conv.persona)
-                    setCurrentView('chat')
-                  }}
-                  onDeleteConversation={(id) => {
-                    setConversations(prev => prev.filter(c => c.id !== id))
-                    if (currentConversation?.id === id) {
-                      setCurrentConversation(null)
-                    }
-                  }}
-                  onRenameConversation={(id, newTitle) => {
-                    setConversations(prev => 
-                      prev.map(c => c.id === id ? { ...c, title: newTitle } : c)
-                    )
-                  }}
-                />
-              )}
-
-              {currentView === 'pricing' && user && (
-                <Pricing 
-                  user={user}
-                  onPlanSelect={handlePlanSelect}
-                  onCreditPurchase={handleCreditPurchase}
-                />
-              )}
-            </>
+          {currentView === 'pricing' && user && (
+            <Pricing 
+              user={user}
+              onPlanSelect={handlePlanSelect}
+              onCreditPurchase={handleCreditPurchase}
+            />
           )}
         </main>
 

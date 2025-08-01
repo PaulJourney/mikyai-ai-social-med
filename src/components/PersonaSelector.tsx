@@ -15,7 +15,7 @@ import type { Persona } from '../App'
 interface PersonaSelectorProps {
   selectedPersona: Persona | null
   onPersonaSelect: (persona: Persona) => void
-  userPlan: 'free' | 'plus' | 'business'
+  userPlan: 'free' | 'plus' | 'business' | undefined
   onUpgradeToPlusRequest?: () => void
 }
 
@@ -74,7 +74,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
 
   const canUsePersona = (persona: typeof personas[0]) => {
     if (!persona.requiresPaid) return true
-    return userPlan !== 'free'
+    return userPlan && userPlan !== 'free'
   }
 
   const handlePersonaClick = (persona: typeof personas[0]) => {
