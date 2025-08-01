@@ -56,9 +56,9 @@ export function MainInput({
   }
 
   const getPlaceholder = () => {
-    if (!selectedPersona) return 'Select a persona first, then ask Miky...'
     if (disabled) return 'Not enough credits to continue...'
-    return 'Ask to Miky...'
+    if (!selectedPersona) return 'Ask to Miky...'
+    return `Ask to Miky (${selectedPersona.replace('-', ' ')})...`
   }
 
   return (
@@ -109,10 +109,12 @@ export function MainInput({
           
           <div className="flex justify-between items-center">
             <div className="text-xs text-muted-foreground">
-              {selectedPersona && (
+              {selectedPersona ? (
                 <span>
-                  Speaking to: <span className="text-primary font-medium capitalize">{selectedPersona.replace('-', ' ')}</span>
+                  Ultra-skilled: <span className="text-primary font-medium capitalize">{selectedPersona.replace('-', ' ')}</span>
                 </span>
+              ) : (
+                <span>General chat mode</span>
               )}
             </div>
             <Button 

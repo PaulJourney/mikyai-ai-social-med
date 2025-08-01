@@ -30,7 +30,8 @@ export function ConversationHistory({
       marketer: '📈',
       coach: '💬',
       medical: '🏥',
-      'god-mode': '🌌'
+      'god-mode': '🌌',
+      general: '🤖'
     }
     return icons[persona as keyof typeof icons] || '🤖'
   }
@@ -96,7 +97,7 @@ export function ConversationHistory({
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-2">
                   <Badge variant="outline" className="text-xs">
-                    {getPersonaIcon(conversation.persona)} {conversation.persona.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    {getPersonaIcon(conversation.persona)} {conversation.persona === 'general' ? 'General' : conversation.persona.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
                   </Badge>
                   <span className="text-xs text-muted-foreground">
                     {formatDate(conversation.lastUpdated)}

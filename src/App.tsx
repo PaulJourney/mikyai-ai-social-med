@@ -14,7 +14,7 @@ import { WelcomeTutorial } from './components/WelcomeTutorial'
 import { ThemeProvider } from './components/ThemeProvider'
 import { Toaster } from 'sonner'
 
-export type Persona = 'lawyer' | 'engineer' | 'marketer' | 'coach' | 'medical' | 'god-mode'
+export type Persona = 'lawyer' | 'engineer' | 'marketer' | 'coach' | 'medical' | 'god-mode' | 'general'
 
 export interface Message {
   id: string
@@ -73,10 +73,10 @@ function App() {
     }
   }, [])
 
-  const handlePersonaSelect = (persona: Persona) => {
+  const handlePersonaSelect = (persona: Persona | null) => {
     setSelectedPersona(persona)
     // If we have an active conversation with a different persona, start new conversation
-    if (currentConversation && currentConversation.persona !== persona) {
+    if (currentConversation && currentConversation.persona !== (persona || 'general')) {
       setCurrentConversation(null)
     }
   }
@@ -148,7 +148,6 @@ function App() {
       return
     }
     
-    if (!selectedPersona) return
     if (user.credits <= 0) return
 
     const messageId = crypto.randomUUID()
@@ -157,7 +156,7 @@ function App() {
       content,
       sender: 'user',
       timestamp: new Date(),
-      persona: selectedPersona
+      persona: selectedPersona || undefined
     }
 
     // Create or update conversation
@@ -172,7 +171,7 @@ function App() {
       updatedConversation = {
         id: crypto.randomUUID(),
         title: content.slice(0, 50) + (content.length > 50 ? '...' : ''),
-        persona: selectedPersona,
+        persona: selectedPersona || 'general' as Persona,
         messages: [newMessage],
         lastUpdated: new Date()
       }
@@ -196,10 +195,10 @@ function App() {
     setTimeout(() => {
       const aiResponse: Message = {
         id: crypto.randomUUID(),
-        content: generatePersonaResponse(selectedPersona, content),
+        content: generatePersonaResponse(selectedPersona || 'general' as Persona, content),
         sender: 'assistant',
         timestamp: new Date(),
-        persona: selectedPersona
+        persona: selectedPersona || undefined
       }
 
       const finalConversation = {
@@ -220,7 +219,7 @@ function App() {
       })
 
       // Consume credits after successful response
-      consumeCredits(getPersonaCost(selectedPersona))
+      consumeCredits(getPersonaCost(selectedPersona || 'general' as Persona))
     }, 1000)
   }
 
@@ -231,7 +230,8 @@ function App() {
       marketer: `Great question! From a marketing standpoint, this presents interesting opportunities. ${input.includes('brand') ? 'Brand positioning is crucial here.' : 'We should consider your target audience and value proposition.'} Let's discuss strategy and execution tactics.`,
       coach: `I appreciate you sharing this with me. ${input.includes('goal') ? 'Setting clear goals is the foundation of success.' : 'Personal growth often starts with honest self-reflection.'} What specific outcome are you hoping to achieve? Let's work together on a practical approach.`,
       medical: `Thank you for your health-related question. ${input.includes('symptom') ? 'Symptoms should always be evaluated in context.' : 'Health matters require careful consideration.'} Please remember that this is educational information only - always consult with healthcare professionals for medical advice.`,
-      'god-mode': `*ACCESSING UNIVERSAL KNOWLEDGE MATRIX* Your question touches on fundamental aspects of existence and reality. ${input.includes('meaning') ? 'The search for meaning is perhaps the most human of all endeavors.' : 'Let me process this through multiple dimensional frameworks.'} Prepare for deep insights that transcend conventional thinking...`
+      'god-mode': `*ACCESSING UNIVERSAL KNOWLEDGE MATRIX* Your question touches on fundamental aspects of existence and reality. ${input.includes('meaning') ? 'The search for meaning is perhaps the most human of all endeavors.' : 'Let me process this through multiple dimensional frameworks.'} Prepare for deep insights that transcend conventional thinking...`,
+      general: `Hello! I'm Miky, your AI assistant. I'd be happy to help you with your question. ${input.includes('?') ? 'Let me provide you with a comprehensive answer.' : 'I can assist you with various topics and tasks.'} For specialized expertise, consider selecting one of my ultra-skilled personas above for more targeted assistance.`
     }
     return responses[persona] || 'I understand your request and will provide a comprehensive response.'
   }
@@ -243,9 +243,10 @@ function App() {
       marketer: 2,
       coach: 2,
       medical: 3,
-      'god-mode': 5
+      'god-mode': 5,
+      general: 1
     }
-    return costs[persona] || 2
+    return costs[persona] || 1
   }
 
   const handleVoiceInput = () => {
@@ -334,7 +335,7 @@ function App() {
                   onSendMessage={handleSendMessage}
                   onVoiceInput={handleVoiceInput}
                   isRecording={isRecording}
-                  disabled={!selectedPersona || (user && user.credits <= 0)}
+                  disabled={user && user.credits <= 0}
                   selectedPersona={selectedPersona}
                 />
                 
@@ -367,7 +368,7 @@ function App() {
               conversations={conversations}
               onSelectConversation={(conv) => {
                 setCurrentConversation(conv)
-                setSelectedPersona(conv.persona)
+                setSelectedPersona(conv.persona === 'general' ? null : conv.persona)
                 setCurrentView('chat')
               }}
               onDeleteConversation={(id) => {

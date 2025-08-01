@@ -14,7 +14,7 @@ import type { Persona } from '../App'
 
 interface PersonaSelectorProps {
   selectedPersona: Persona | null
-  onPersonaSelect: (persona: Persona) => void
+  onPersonaSelect: (persona: Persona | null) => void
   userPlan: 'free' | 'plus' | 'business' | undefined
   onUpgradeToPlusRequest?: () => void
 }
@@ -94,10 +94,27 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
     <div className="w-full max-w-4xl mx-auto">
       <div className="text-center mb-6">
         <h2 className="text-base font-medium text-muted-foreground mb-2">Choose Your Ultra‑Skilled AI Persona:</h2>
+        <p className="text-xs text-muted-foreground">
+          Optional: Select a specialized persona for expert assistance, or chat with Miky directly
+        </p>
       </div>
       
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-        {personas.map((persona) => {
+      <div className="space-y-4">
+        {selectedPersona && (
+          <div className="text-center">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onPersonaSelect(null)}
+              className="text-xs text-muted-foreground hover:text-foreground"
+            >
+              Switch to General Chat Mode
+            </Button>
+          </div>
+        )}
+        
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {personas.map((persona) => {
           const isSelected = selectedPersona === persona.id
           const canUse = canUsePersona(persona)
           const IconComponent = persona.icon
@@ -136,6 +153,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
             </Button>
           )
         })}
+        </div>
       </div>
 
       {userPlan === 'free' && (
