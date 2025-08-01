@@ -225,7 +225,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
               <CardFooter className="pt-6">
                 <Button
                   className={`w-full ${
-                    !plan.popular && !isCurrentPlan 
+                    (!plan.popular && !isCurrentPlan) || isDowngrade() 
                       ? 'border-border hover:border-primary/50 hover:bg-muted/50 hover:text-foreground' 
                       : ''
                   }`}
