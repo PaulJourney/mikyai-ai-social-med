@@ -250,7 +250,7 @@ function App() {
             <div className="space-y-8">
               <div className="text-center space-y-6">
                 <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-8">
-                  Miky<span className="text-primary">.ai</span>
+                  Ask to <span className="text-primary">Miky</span>
                 </h1>
                 
                 <MainInput 
@@ -265,6 +265,7 @@ function App() {
                   selectedPersona={selectedPersona}
                   onPersonaSelect={handlePersonaSelect}
                   userPlan={user.plan}
+                  onUpgradeToPlusRequest={() => setCurrentView('pricing')}
                 />
               </div>
 

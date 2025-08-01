@@ -29,6 +29,10 @@ export function Header({ user, onViewChange, currentView }: HeaderProps) {
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
+            <div className="text-lg font-bold text-foreground">
+              Miky<span className="text-primary">.ai</span>
+            </div>
+            <div className="h-6 w-px bg-border mx-2"></div>
             <Button
               variant={currentView === 'chat' ? 'default' : 'ghost'}
               size="sm"
