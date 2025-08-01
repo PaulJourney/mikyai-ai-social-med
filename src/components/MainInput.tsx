@@ -25,6 +25,8 @@ export function MainInput({
   const [animatedPlaceholder, setAnimatedPlaceholder] = useState('')
   const [isAnimating, setIsAnimating] = useState(true)
   const [isFocused, setIsFocused] = useState(false)
+  const [personaPlaceholder, setPersonaPlaceholder] = useState('')
+  const [isPersonaAnimating, setIsPersonaAnimating] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileUpload = () => {
@@ -68,6 +70,11 @@ export function MainInput({
       return 'Ask anything - or choose an ultra-skilled version of Miky...'
     }
     
+    // Return animated placeholder for persona mode
+    if (isPersonaAnimating && !isFocused) {
+      return personaPlaceholder
+    }
+    
     const personaNames = {
       'lawyer': 'Lawyer Miky',
       'engineer': 'Engineer Miky', 
@@ -107,7 +114,7 @@ export function MainInput({
         if (currentIndex < fullText.length) {
           setAnimatedPlaceholder(fullText.substring(0, currentIndex + 1))
           currentIndex++
-          timeoutId = setTimeout(animate, 100) // Typing speed
+          timeoutId = setTimeout(animate, 60) // Faster typing speed
         } else {
           timeoutId = setTimeout(() => {
             isDeleting = true
@@ -118,6 +125,60 @@ export function MainInput({
     }
 
     setIsAnimating(true)
+    animate()
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId)
+    }
+  }, [selectedPersona, isFocused, disabled])
+
+  // Typing animation effect for persona mode
+  useEffect(() => {
+    if (!selectedPersona || isFocused || disabled) {
+      setIsPersonaAnimating(false)
+      return
+    }
+
+    const personaNames = {
+      'lawyer': 'Lawyer Miky',
+      'engineer': 'Engineer Miky', 
+      'marketer': 'Marketer Miky',
+      'coach': 'Coach Miky',
+      'medical': 'Doctor Miky',
+      'god-mode': 'God Miky',
+      'general': 'Miky'
+    }
+    
+    const fullText = `Ask to ${personaNames[selectedPersona] || 'Miky'}...`
+    let currentIndex = 0
+    let isDeleting = false
+    let timeoutId: NodeJS.Timeout
+
+    const animate = () => {
+      if (isDeleting) {
+        if (currentIndex > 0) {
+          setPersonaPlaceholder(fullText.substring(0, currentIndex - 1))
+          currentIndex--
+          timeoutId = setTimeout(animate, 50) // Faster deletion
+        } else {
+          isDeleting = false
+          timeoutId = setTimeout(animate, 1000) // Pause before typing again
+        }
+      } else {
+        if (currentIndex < fullText.length) {
+          setPersonaPlaceholder(fullText.substring(0, currentIndex + 1))
+          currentIndex++
+          timeoutId = setTimeout(animate, 60) // Faster typing speed
+        } else {
+          timeoutId = setTimeout(() => {
+            isDeleting = true
+            animate()
+          }, 2000) // Pause at end before deleting
+        }
+      }
+    }
+
+    setIsPersonaAnimating(true)
     animate()
 
     return () => {

@@ -92,7 +92,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
             referralCode: 'SUPPORT123',
             referralsCount: 20,
             creditsEarned: 600,
-            cashEarned: 20.00,
+            cashEarned: 40.00,
             language: 'en'
           }
           
@@ -114,7 +114,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
           referralCode: 'ABC12345',
           referralsCount: 3,
           creditsEarned: 150,
-          cashEarned: 12.00,
+          cashEarned: 6.00,
           language: 'en'
         }
         

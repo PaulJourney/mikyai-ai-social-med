@@ -109,7 +109,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                       <div>
                         <h3 className="font-medium text-sm mb-2">Referral Program</h3>
                         <p className="text-xs text-muted-foreground">
-                          When someone signs up for a Plus plan using your referral code, they get 300 free credits and you earn $1!
+                          When someone signs up for a Plus plan using your referral code, they get 300 free credits and you earn $2!
                         </p>
                       </div>
                       
@@ -131,7 +131,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                         <div className="grid grid-cols-2 gap-3 text-xs">
                           <div className="p-2 bg-muted rounded">
                             <div className="text-muted-foreground">Total Earned</div>
-                            <div className="font-medium">${((user.cashEarned || 0) + (user.referralsCount * 1)).toFixed(2)}</div>
+                            <div className="font-medium">${((user.cashEarned || 0) + (user.referralsCount * 2)).toFixed(2)}</div>
                           </div>
                           <div className="p-2 bg-muted rounded">
                             <div className="text-muted-foreground">Available</div>
