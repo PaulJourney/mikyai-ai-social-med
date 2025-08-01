@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Card } from '@/components/ui/card'
@@ -22,6 +22,9 @@ export function MainInput({
   selectedPersona 
 }: MainInputProps) {
   const [message, setMessage] = useState('')
+  const [animatedPlaceholder, setAnimatedPlaceholder] = useState('')
+  const [isAnimating, setIsAnimating] = useState(true)
+  const [isFocused, setIsFocused] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileUpload = () => {
@@ -57,20 +60,70 @@ export function MainInput({
 
   const getPlaceholder = () => {
     if (disabled) return 'Not enough credits to continue...'
-    if (!selectedPersona) return 'Ask anything - or choose an ultra-skilled version of Miky.'
+    if (!selectedPersona) {
+      // Return animated placeholder for general mode
+      if (isAnimating && !isFocused) {
+        return animatedPlaceholder
+      }
+      return 'Ask anything - or choose an ultra-skilled version of Miky...'
+    }
     
     const personaNames = {
       'lawyer': 'Lawyer Miky',
       'engineer': 'Engineer Miky', 
       'marketer': 'Marketer Miky',
       'coach': 'Coach Miky',
-      'medical': 'Medical Advisor Miky',
-      'god-mode': 'God Mode Miky',
+      'medical': 'Doctor Miky',
+      'god-mode': 'God Miky',
       'general': 'Miky'
     }
     
     return `Ask to ${personaNames[selectedPersona] || 'Miky'}...`
   }
+
+  // Typing animation effect for general mode
+  useEffect(() => {
+    if (selectedPersona || isFocused || disabled) {
+      setIsAnimating(false)
+      return
+    }
+
+    const fullText = 'Ask anything - or choose an ultra-skilled version of Miky...'
+    let currentIndex = 0
+    let isDeleting = false
+    let timeoutId: NodeJS.Timeout
+
+    const animate = () => {
+      if (isDeleting) {
+        if (currentIndex > 0) {
+          setAnimatedPlaceholder(fullText.substring(0, currentIndex - 1))
+          currentIndex--
+          timeoutId = setTimeout(animate, 50) // Faster deletion
+        } else {
+          isDeleting = false
+          timeoutId = setTimeout(animate, 1000) // Pause before typing again
+        }
+      } else {
+        if (currentIndex < fullText.length) {
+          setAnimatedPlaceholder(fullText.substring(0, currentIndex + 1))
+          currentIndex++
+          timeoutId = setTimeout(animate, 100) // Typing speed
+        } else {
+          timeoutId = setTimeout(() => {
+            isDeleting = true
+            animate()
+          }, 2000) // Pause at end before deleting
+        }
+      }
+    }
+
+    setIsAnimating(true)
+    animate()
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId)
+    }
+  }, [selectedPersona, isFocused, disabled])
 
   return (
     <div className="w-full max-w-2xl mx-auto">
@@ -81,6 +134,8 @@ export function MainInput({
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
               placeholder={getPlaceholder()}
               className="min-h-[80px] pr-20 text-sm resize-none focus:ring-primary focus:ring-2 focus:ring-offset-0 border-input"
               disabled={disabled}
