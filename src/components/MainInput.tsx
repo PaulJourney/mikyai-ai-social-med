@@ -12,6 +12,8 @@ interface MainInputProps {
   isRecording: boolean
   disabled: boolean
   selectedPersona: Persona | null
+  onOpenChat?: () => void
+  showChatModal?: boolean
 }
 
 export function MainInput({ 
@@ -19,7 +21,9 @@ export function MainInput({
   onVoiceInput, 
   isRecording, 
   disabled, 
-  selectedPersona 
+  selectedPersona,
+  onOpenChat,
+  showChatModal = false
 }: MainInputProps) {
   const [message, setMessage] = useState('')
   const [animatedPlaceholder, setAnimatedPlaceholder] = useState('')
@@ -50,6 +54,8 @@ export function MainInput({
     if (message.trim() && !disabled) {
       onSendMessage(message.trim())
       setMessage('')
+      // Open chat modal when sending message
+      onOpenChat?.()
     }
   }
 
@@ -188,74 +194,76 @@ export function MainInput({
 
   return (
     <div className="w-full max-w-2xl mx-auto">
-      <Card className="p-4 bg-card/50 backdrop-blur border-border">
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <div className="relative">
-            <Textarea
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={handleKeyDown}
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
-              placeholder={getPlaceholder()}
-              className="min-h-[80px] pr-20 text-sm resize-none focus:ring-primary focus:ring-2 focus:ring-offset-0 border-input"
-              disabled={disabled}
+      <div className={`transform transition-all duration-300 ${showChatModal ? 'scale-105 opacity-50' : 'scale-100 opacity-100'}`}>
+        <Card className="p-4 bg-card/50 backdrop-blur border-border">
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <div className="relative">
+              <Textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={handleKeyDown}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+                placeholder={getPlaceholder()}
+                className="min-h-[80px] pr-20 text-sm resize-none focus:ring-primary focus:ring-2 focus:ring-offset-0 border-input"
+                disabled={disabled}
+              />
+              <div className="absolute bottom-3 right-3 flex gap-2">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={onVoiceInput}
+                  className={`p-2 ${isRecording ? 'voice-recording text-primary' : ''}`}
+                  disabled={disabled}
+                >
+                  <Microphone className={`w-4 h-4 ${isRecording ? 'text-primary' : ''}`} />
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleFileUpload}
+                  className="p-2"
+                  disabled={disabled}
+                >
+                  <Paperclip className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+            
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              className="hidden"
+              accept="image/*,video/*,.pdf,.doc,.docx,.txt"
+              onChange={handleFileChange}
             />
-            <div className="absolute bottom-3 right-3 flex gap-2">
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={onVoiceInput}
-                className={`p-2 ${isRecording ? 'voice-recording text-primary' : ''}`}
-                disabled={disabled}
+            
+            <div className="flex justify-between items-center">
+              <div className="text-xs text-muted-foreground">
+                {selectedPersona ? (
+                  <span>
+                    Ultra-skilled: <span className="text-primary font-medium capitalize">{selectedPersona.replace('-', ' ')}</span>
+                  </span>
+                ) : (
+                  <span>General chat mode</span>
+                )}
+              </div>
+              <Button 
+                type="submit" 
+                size="sm" 
+                disabled={!message.trim() || disabled}
+                className="hover:glow-effect text-xs"
               >
-                <Microphone className={`w-4 h-4 ${isRecording ? 'text-primary' : ''}`} />
-              </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={handleFileUpload}
-                className="p-2"
-                disabled={disabled}
-              >
-                <Paperclip className="w-4 h-4" />
+                <PaperPlaneRight className="w-4 h-4 mr-1" />
+                Send
               </Button>
             </div>
-          </div>
-          
-          <input
-            ref={fileInputRef}
-            type="file"
-            multiple
-            className="hidden"
-            accept="image/*,video/*,.pdf,.doc,.docx,.txt"
-            onChange={handleFileChange}
-          />
-          
-          <div className="flex justify-between items-center">
-            <div className="text-xs text-muted-foreground">
-              {selectedPersona ? (
-                <span>
-                  Ultra-skilled: <span className="text-primary font-medium capitalize">{selectedPersona.replace('-', ' ')}</span>
-                </span>
-              ) : (
-                <span>General chat mode</span>
-              )}
-            </div>
-            <Button 
-              type="submit" 
-              size="sm" 
-              disabled={!message.trim() || disabled}
-              className="hover:glow-effect text-xs"
-            >
-              <PaperPlaneRight className="w-4 h-4 mr-1" />
-              Send
-            </Button>
-          </div>
-        </form>
-      </Card>
+          </form>
+        </Card>
+      </div>
     </div>
   )
 }

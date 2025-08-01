@@ -4,6 +4,7 @@ import { Header } from './components/Header'
 import { MainInput } from './components/MainInput'
 import { PersonaSelector } from './components/PersonaSelector'
 import { ChatInterface } from './components/ChatInterface'
+import { ChatModal } from './components/ChatModal'
 import { ConversationHistory } from './components/ConversationHistory'
 import { AdminDashboard } from './components/AdminDashboard'
 import { Pricing } from './components/Pricing'
@@ -56,6 +57,8 @@ function App() {
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin')
   const [referralCode, setReferralCode] = useState<string | undefined>()
   const [showWelcomeTutorial, setShowWelcomeTutorial] = useState(false)
+  const [showChatModal, setShowChatModal] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   
   // Persistent user data - now nullable for unauthenticated users
   const [user, setUser] = useKV<User | null>('user', null)
@@ -150,6 +153,7 @@ function App() {
     
     if (user.credits <= 0) return
 
+    setIsLoading(true)
     const messageId = crypto.randomUUID()
     const newMessage: Message = {
       id: messageId,
@@ -220,6 +224,7 @@ function App() {
 
       // Consume credits after successful response
       consumeCredits(getPersonaCost(selectedPersona || 'general' as Persona))
+      setIsLoading(false)
     }, 1000)
   }
 
@@ -337,6 +342,8 @@ function App() {
                   isRecording={isRecording}
                   disabled={user && user.credits <= 0}
                   selectedPersona={selectedPersona}
+                  onOpenChat={() => setShowChatModal(true)}
+                  showChatModal={showChatModal}
                 />
                 
                 <PersonaSelector 
@@ -352,14 +359,6 @@ function App() {
                   </p>
                 )}
               </div>
-
-              {currentConversation && user && (
-                <ChatInterface 
-                  conversation={currentConversation}
-                  onSendMessage={handleSendMessage}
-                  isLoading={false}
-                />
-              )}
             </div>
           )}
 
@@ -412,6 +411,19 @@ function App() {
           isOpen={showWelcomeTutorial}
           onClose={() => setShowWelcomeTutorial(false)}
           userName={user?.firstName}
+        />
+        
+        <ChatModal
+          isOpen={showChatModal}
+          onClose={() => setShowChatModal(false)}
+          conversation={currentConversation}
+          selectedPersona={selectedPersona}
+          onSendMessage={handleSendMessage}
+          onVoiceInput={handleVoiceInput}
+          isRecording={isRecording}
+          disabled={!user || user.credits <= 0}
+          user={user}
+          isLoading={isLoading}
         />
         
         <Toaster />
