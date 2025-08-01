@@ -9,6 +9,7 @@ import { AdminDashboard } from './components/AdminDashboard'
 import { Pricing } from './components/Pricing'
 import { Footer } from './components/Footer'
 import { LegalPages } from './components/LegalPages'
+import { AuthModal } from './components/AuthModal'
 import { ThemeProvider } from './components/ThemeProvider'
 import { Toaster } from 'sonner'
 
@@ -32,11 +33,15 @@ export interface Conversation {
 
 export interface User {
   id: string
+  email?: string
+  firstName?: string
+  lastName?: string
   credits: number
   plan: 'free' | 'plus' | 'business'
   referralCode: string
   referralsCount: number
   creditsEarned: number
+  cashEarned?: number
   language: string
 }
 
@@ -46,20 +51,25 @@ function App() {
   const [selectedPersona, setSelectedPersona] = useState<Persona | null>(null)
   const [currentConversation, setCurrentConversation] = useState<Conversation | null>(null)
   const [showAdminLogin, setShowAdminLogin] = useState(false)
+  const [showAuthModal, setShowAuthModal] = useState(false)
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin')
+  const [referralCode, setReferralCode] = useState<string | undefined>()
   
-  // Persistent user data
-  const [user, setUser] = useKV<User>('user', {
-    id: crypto.randomUUID(),
-    credits: 100,
-    plan: 'free',
-    referralCode: crypto.randomUUID().slice(0, 8),
-    referralsCount: 0,
-    creditsEarned: 0,
-    language: 'en'
-  })
-  
+  // Persistent user data - now nullable for unauthenticated users
+  const [user, setUser] = useKV<User | null>('user', null)
   const [conversations, setConversations] = useKV<Conversation[]>('conversations', [])
   const [isRecording, setIsRecording] = useState(false)
+
+  // Check for referral code in URL on mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const refCode = urlParams.get('ref')
+    if (refCode) {
+      setReferralCode(refCode)
+      setAuthMode('signup')
+      setShowAuthModal(true)
+    }
+  }, [])
 
   const handlePersonaSelect = (persona: Persona) => {
     setSelectedPersona(persona)
@@ -70,35 +80,60 @@ function App() {
   }
 
   const consumeCredits = (amount: number) => {
-    setUser(prev => ({
+    if (!user) return
+    setUser(prev => prev ? ({
       ...prev,
       credits: Math.max(0, prev.credits - amount)
-    }))
+    }) : null)
   }
 
   const handlePlanSelect = (plan: 'free' | 'plus' | 'business') => {
+    if (!user) return
     const creditsByPlan = {
       free: 100,
       plus: 1000,
       business: 5000
     }
     
-    setUser(prev => ({
+    setUser(prev => prev ? ({
       ...prev,
       plan,
       credits: creditsByPlan[plan]
-    }))
+    }) : null)
   }
 
   const handleCreditPurchase = (credits: number) => {
-    setUser(prev => ({
+    if (!user) return
+    setUser(prev => prev ? ({
       ...prev,
       credits: prev.credits + credits
-    }))
+    }) : null)
+  }
+
+  const handleAuthSuccess = (userData: User) => {
+    setUser(userData)
+    setShowAuthModal(false)
+  }
+
+  const handleSignOut = () => {
+    setUser(null)
+    setConversations([])
+    setCurrentConversation(null)
+    setSelectedPersona(null)
+    setCurrentView('chat')
+  }
+
+  const handleAuthRequest = () => {
+    setShowAuthModal(true)
+  }
+
+  const handleUpdateUser = (updates: Partial<User>) => {
+    if (!user) return
+    setUser(prev => prev ? ({ ...prev, ...updates }) : null)
   }
 
   const handleSendMessage = (content: string) => {
-    if (!selectedPersona) return
+    if (!selectedPersona || !user) return
     if (user.credits <= 0) return
 
     const messageId = crypto.randomUUID()
@@ -199,6 +234,11 @@ function App() {
   }
 
   const handleVoiceInput = () => {
+    if (!user) {
+      handleAuthRequest()
+      return
+    }
+
     if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
       alert('Speech recognition not supported in this browser')
       return
@@ -262,70 +302,92 @@ function App() {
           user={user} 
           onViewChange={setCurrentView}
           currentView={currentView}
+          onSignOut={handleSignOut}
+          onAuthRequest={handleAuthRequest}
+          onUpdateUser={handleUpdateUser}
         />
         
         <main className="flex-1 container mx-auto px-4 py-8 max-w-4xl">
-          {currentView === 'chat' && (
-            <div className="space-y-8">
-              <div className="text-center space-y-6">
-                <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-8">
-                  Ask to <span className="text-primary">Miky</span>
-                </h1>
-                
-                <MainInput 
-                  onSendMessage={handleSendMessage}
-                  onVoiceInput={handleVoiceInput}
-                  isRecording={isRecording}
-                  disabled={!selectedPersona || user.credits <= 0}
-                  selectedPersona={selectedPersona}
-                />
-                
-                <PersonaSelector 
-                  selectedPersona={selectedPersona}
-                  onPersonaSelect={handlePersonaSelect}
-                  userPlan={user.plan}
-                  onUpgradeToPlusRequest={() => setCurrentView('pricing')}
-                />
-              </div>
+          {!user && currentView === 'chat' ? (
+            <div className="text-center space-y-6">
+              <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-8">
+                Ask to <span className="text-primary">Miky</span>
+              </h1>
+              <p className="text-muted-foreground mb-8">
+                Sign in to access your AI assistant with specialized personas
+              </p>
+              <button
+                onClick={handleAuthRequest}
+                className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+              >
+                Get Started
+              </button>
+            </div>
+          ) : (
+            <>
+              {currentView === 'chat' && user && (
+                <div className="space-y-8">
+                  <div className="text-center space-y-6">
+                    <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-8">
+                      Ask to <span className="text-primary">Miky</span>
+                    </h1>
+                    
+                    <MainInput 
+                      onSendMessage={handleSendMessage}
+                      onVoiceInput={handleVoiceInput}
+                      isRecording={isRecording}
+                      disabled={!selectedPersona || user.credits <= 0}
+                      selectedPersona={selectedPersona}
+                    />
+                    
+                    <PersonaSelector 
+                      selectedPersona={selectedPersona}
+                      onPersonaSelect={handlePersonaSelect}
+                      userPlan={user.plan}
+                      onUpgradeToPlusRequest={() => setCurrentView('pricing')}
+                    />
+                  </div>
 
-              {currentConversation && (
-                <ChatInterface 
-                  conversation={currentConversation}
-                  onSendMessage={handleSendMessage}
-                  isLoading={false}
+                  {currentConversation && (
+                    <ChatInterface 
+                      conversation={currentConversation}
+                      onSendMessage={handleSendMessage}
+                      isLoading={false}
+                    />
+                  )}
+                </div>
+              )}
+
+              {currentView === 'history' && user && (
+                <ConversationHistory 
+                  conversations={conversations}
+                  onSelectConversation={(conv) => {
+                    setCurrentConversation(conv)
+                    setSelectedPersona(conv.persona)
+                    setCurrentView('chat')
+                  }}
+                  onDeleteConversation={(id) => {
+                    setConversations(prev => prev.filter(c => c.id !== id))
+                    if (currentConversation?.id === id) {
+                      setCurrentConversation(null)
+                    }
+                  }}
+                  onRenameConversation={(id, newTitle) => {
+                    setConversations(prev => 
+                      prev.map(c => c.id === id ? { ...c, title: newTitle } : c)
+                    )
+                  }}
                 />
               )}
-            </div>
-          )}
 
-          {currentView === 'history' && (
-            <ConversationHistory 
-              conversations={conversations}
-              onSelectConversation={(conv) => {
-                setCurrentConversation(conv)
-                setSelectedPersona(conv.persona)
-                setCurrentView('chat')
-              }}
-              onDeleteConversation={(id) => {
-                setConversations(prev => prev.filter(c => c.id !== id))
-                if (currentConversation?.id === id) {
-                  setCurrentConversation(null)
-                }
-              }}
-              onRenameConversation={(id, newTitle) => {
-                setConversations(prev => 
-                  prev.map(c => c.id === id ? { ...c, title: newTitle } : c)
-                )
-              }}
-            />
-          )}
-
-          {currentView === 'pricing' && (
-            <Pricing 
-              user={user}
-              onPlanSelect={handlePlanSelect}
-              onCreditPurchase={handleCreditPurchase}
-            />
+              {currentView === 'pricing' && user && (
+                <Pricing 
+                  user={user}
+                  onPlanSelect={handlePlanSelect}
+                  onCreditPurchase={handleCreditPurchase}
+                />
+              )}
+            </>
           )}
         </main>
 
@@ -333,6 +395,16 @@ function App() {
           onAdminAccess={() => setCurrentView('admin')} 
           onLegalPageSelect={handleLegalPageSelect}
         />
+        
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          mode={authMode}
+          onModeSwitch={() => setAuthMode(authMode === 'signin' ? 'signup' : 'signin')}
+          onAuthSuccess={handleAuthSuccess}
+          referralCode={referralCode}
+        />
+        
         <Toaster />
       </div>
     </ThemeProvider>
