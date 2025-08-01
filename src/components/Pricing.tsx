@@ -256,8 +256,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
               </div>
               <h3 className="text-xl font-semibold">Need More Credits?</h3>
               <p className="text-muted-foreground">
-                Buy additional credits anytime to extend your monthly allowance. 
-                Credits never expire and can be used with any plan.
+                Buy additional credits anytime — they never expire.
               </p>
               <Button 
                 onClick={() => setShowBuyCreditsDialog(true)}
@@ -309,27 +308,12 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-8">
-            <div className="text-center space-y-4">
-              <div className="mx-auto w-24 h-24 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full flex items-center justify-center">
-                <Coins className="w-12 h-12 text-primary" />
-              </div>
-              <div className="space-y-2">
-                <div className="text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                  {creditsToBuy[0].toLocaleString()}
-                </div>
-                <div className="text-lg text-muted-foreground">Credits</div>
-              </div>
-            </div>
-            
             <div className="bg-card/50 rounded-xl p-6 space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-lg font-medium">Total Cost</span>
                 <div className="text-right">
                   <div className="text-3xl font-bold text-primary">
                     ${calculateCreditPrice(creditsToBuy[0])}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    ${(calculateCreditPrice(creditsToBuy[0]) / creditsToBuy[0]).toFixed(3)} per credit
                   </div>
                 </div>
               </div>
@@ -416,7 +400,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
               </div>
             </div>
           </div>
-          <DialogFooter className="justify-center">
+          <DialogFooter>
             <Button onClick={() => setShowPaymentSuccess(false)}>
               Close
             </Button>
@@ -445,7 +429,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
               </div>
             </div>
           </div>
-          <DialogFooter className="justify-center">
+          <DialogFooter>
             <Button onClick={() => setShowUpgradeSuccess(false)}>
               Close
             </Button>
