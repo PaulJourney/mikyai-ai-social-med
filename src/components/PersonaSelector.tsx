@@ -93,8 +93,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="text-center mb-6">
-        <h2 className="text-lg font-medium text-foreground mb-2">Choose Your Ultra‑Skilled AI Persona</h2>
-        <p className="text-sm text-muted-foreground">Select a specialized persona to get tailored responses</p>
+        <h2 className="text-lg font-medium text-foreground mb-2">Choose Your Ultra‑Skilled AI Persona:</h2>
       </div>
       
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -122,7 +121,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
                 />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="font-medium text-sm group-hover:text-primary transition-colors duration-200">{persona.name}</span>
+                    <span className={`font-medium text-sm transition-colors duration-200 ${isSelected ? 'text-black' : 'group-hover:text-primary'}`}>{persona.name}</span>
                     {persona.requiresPaid && (
                       <Badge variant="secondary" className="text-xs px-1 py-0">
                         Plus
@@ -144,7 +143,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
           <p className="text-xs text-muted-foreground">
             <button 
               onClick={onUpgradeToPlusRequest}
-              className="text-primary hover:text-primary/80 underline transition-colors duration-200"
+              className="text-primary hover:text-primary/80 transition-colors duration-200"
             >
               Upgrade
             </button> to unlock Medical Advisor and God Mode personas
