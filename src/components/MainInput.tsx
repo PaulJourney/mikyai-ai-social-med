@@ -57,8 +57,19 @@ export function MainInput({
 
   const getPlaceholder = () => {
     if (disabled) return 'Not enough credits to continue...'
-    if (!selectedPersona) return 'Ask to Miky...'
-    return `Ask to Miky (${selectedPersona.replace('-', ' ')})...`
+    if (!selectedPersona) return 'Ask anything - or choose an ultra-skilled version of Miky.'
+    
+    const personaNames = {
+      'lawyer': 'Lawyer Miky',
+      'engineer': 'Engineer Miky', 
+      'marketer': 'Marketer Miky',
+      'coach': 'Coach Miky',
+      'medical': 'Medical Advisor Miky',
+      'god-mode': 'God Mode Miky',
+      'general': 'Miky'
+    }
+    
+    return `Ask to ${personaNames[selectedPersona] || 'Miky'}...`
   }
 
   return (
