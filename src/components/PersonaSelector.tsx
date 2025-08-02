@@ -58,7 +58,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
     },
     {
       id: 'medical',
-      name: 'Medical Advisor',
+      name: 'Medical',
       icon: FirstAidKit,
       description: 'Health tips and wellness support',
       requiresPaid: true
@@ -164,7 +164,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
               className="text-primary hover:text-primary/80 transition-colors duration-200"
             >
               Upgrade
-            </button> to unlock Medical Advisor and God Mode personas
+            </button> to unlock Medical and God Mode personas
           </p>
         </div>
       )}
@@ -176,7 +176,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
           </DialogHeader>
           <div className="text-center space-y-4 p-4">
             <p className="text-sm text-muted-foreground">
-              Upgrade now to unlock Medical Advisor, God Mode, and other advanced features.
+              Upgrade now to unlock Medical, God Mode, and other advanced features.
             </p>
             <div className="flex gap-3 pt-4">
               <Button 

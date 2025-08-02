@@ -14,7 +14,9 @@ import {
   FirstAidKit, 
   Lightning,
   Robot,
-  MagnifyingGlass
+  MagnifyingGlass,
+  CaretLeft,
+  CaretRight
 } from '@phosphor-icons/react'
 import type { Conversation, Persona } from '../App'
 
@@ -36,11 +38,25 @@ export function ConversationHistory({
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editTitle, setEditTitle] = useState('')
   const [selectedFilter, setSelectedFilter] = useState<Persona | 'all'>('all')
+  const [currentPage, setCurrentPage] = useState(1)
+  const ITEMS_PER_PAGE = 20
 
   // Filter conversations based on selected persona
   const filteredConversations = selectedFilter === 'all' 
     ? conversations 
     : conversations.filter(conv => conv.persona === selectedFilter)
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredConversations.length / ITEMS_PER_PAGE)
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+  const endIndex = startIndex + ITEMS_PER_PAGE
+  const paginatedConversations = filteredConversations.slice(startIndex, endIndex)
+
+  // Reset to page 1 when filter changes
+  const handleFilterChange = (filter: Persona | 'all') => {
+    setSelectedFilter(filter)
+    setCurrentPage(1)
+  }
 
   const getPersonaIcon = (persona: string) => {
     const iconMap = {
@@ -61,7 +77,7 @@ export function ConversationHistory({
       engineer: 'Engineer', 
       marketer: 'Marketer',
       coach: 'Coach',
-      medical: 'Medical Advisor',
+      medical: 'Medical',
       'god-mode': 'God Mode',
       general: 'General'
     }
@@ -155,7 +171,7 @@ export function ConversationHistory({
                 key={persona.key}
                 variant={isSelected ? "default" : "outline"}
                 size="sm"
-                onClick={() => setSelectedFilter(persona.key)}
+                onClick={() => handleFilterChange(persona.key)}
                 className={`text-xs group transition-colors ${
                   !isSelected ? 'hover:border-primary' : ''
                 }`}
@@ -196,8 +212,9 @@ export function ConversationHistory({
           </p>
         </div>
       ) : (
-        <div className="grid gap-4">
-          {filteredConversations.map((conversation) => (
+        <div className="space-y-4">
+          <div className="grid gap-4">
+            {paginatedConversations.map((conversation) => (
             <Card key={conversation.id} className="p-4 hover:bg-card/80 transition-colors">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
@@ -297,6 +314,51 @@ export function ConversationHistory({
               </div>
             </Card>
           ))}
+          </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-2 mt-6">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                disabled={currentPage === 1}
+                className="h-8 w-8 p-0"
+              >
+                <CaretLeft className="w-4 h-4" />
+              </Button>
+              
+              <div className="flex items-center gap-1">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <Button
+                    key={page}
+                    variant={currentPage === page ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setCurrentPage(page)}
+                    className="h-8 w-8 p-0 text-xs"
+                  >
+                    {page}
+                  </Button>
+                ))}
+              </div>
+              
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                disabled={currentPage === totalPages}
+                className="h-8 w-8 p-0"
+              >
+                <CaretRight className="w-4 h-4" />
+              </Button>
+            </div>
+          )}
+
+          {/* Results info */}
+          <div className="text-center text-xs text-muted-foreground">
+            Showing {startIndex + 1}-{Math.min(endIndex, filteredConversations.length)} of {filteredConversations.length} conversations
+          </div>
         </div>
       )}
     </div>

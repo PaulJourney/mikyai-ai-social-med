@@ -4,7 +4,21 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Avatar } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { X, Microphone, Paperclip, PaperPlaneTilt, User, Robot, ClockCounterClockwise } from '@phosphor-icons/react'
+import { 
+  X, 
+  Microphone, 
+  Paperclip, 
+  PaperPlaneTilt, 
+  User, 
+  Robot, 
+  ClockCounterClockwise,
+  Scales, 
+  Wrench, 
+  TrendUp, 
+  ChatCircle, 
+  FirstAidKit, 
+  Lightning 
+} from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import type { Conversation, Persona } from '../App'
 
@@ -117,15 +131,15 @@ export function ChatModal({
   }
 
   const getPersonaIcon = (persona: string) => {
-    const icons = {
-      lawyer: '⚖️',
-      engineer: '🛠️', 
-      marketer: '📈',
-      coach: '💬',
-      medical: '🏥',
-      'god-mode': '🌌'
+    const iconMap = {
+      lawyer: Scales,
+      engineer: Wrench,
+      marketer: TrendUp,
+      coach: ChatCircle,
+      medical: FirstAidKit,
+      'god-mode': Lightning
     }
-    return icons[persona as keyof typeof icons] || '🤖'
+    return iconMap[persona as keyof typeof iconMap] || Robot
   }
 
   const getPersonaName = (persona: Persona | null) => {
@@ -140,6 +154,18 @@ export function ChatModal({
       'god-mode': 'God Miky'
     }
     return names[persona] || 'Miky'
+  }
+
+  const getPersonaDisplayName = (persona: string) => {
+    const names = {
+      lawyer: 'Legal',
+      engineer: 'Technical',
+      marketer: 'Marketing',
+      coach: 'Coaching',
+      medical: 'Medical',
+      'god-mode': 'God Mode'
+    }
+    return names[persona as keyof typeof names] || 'General'
   }
 
   const formatTime = (date: Date) => {
@@ -179,16 +205,26 @@ export function ChatModal({
             <div className="flex items-center gap-3">
               <Avatar className="w-10 h-10">
                 <div className="w-full h-full bg-primary/10 rounded-full flex items-center justify-center">
-                  <Robot className="w-5 h-5 text-primary" />
+                  {selectedPersona ? (() => {
+                    const IconComponent = getPersonaIcon(selectedPersona)
+                    return <IconComponent className="w-5 h-5 text-primary" />
+                  })() : <Robot className="w-5 h-5 text-primary" />}
                 </div>
               </Avatar>
               <div>
-                <h2 className="font-semibold text-lg">{getPersonaName(selectedPersona)}</h2>
-                {selectedPersona && (
-                  <Badge variant="outline" className="text-xs mt-1">
-                    {getPersonaIcon(selectedPersona)} {selectedPersona.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                  </Badge>
-                )}
+                <h2 className="font-semibold text-base">
+                  {conversation?.title || 'New Conversation'}
+                </h2>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-sm text-muted-foreground">
+                    {getPersonaName(selectedPersona)}
+                  </span>
+                  {selectedPersona && (
+                    <Badge variant="outline" className="text-xs">
+                      {getPersonaDisplayName(selectedPersona)}
+                    </Badge>
+                  )}
+                </div>
               </div>
             </div>
             

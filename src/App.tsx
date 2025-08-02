@@ -84,6 +84,34 @@ function App() {
     }
   }
 
+  const generateConversationTitle = (content: string, persona: Persona): string => {
+    // Generate more descriptive titles based on content and persona
+    const titlePrompts = {
+      lawyer: ['Legal advice about', 'Contract help for', 'Legal question on'],
+      engineer: ['Technical help with', 'Engineering problem:', 'Code review for'],
+      marketer: ['Marketing strategy for', 'Brand advice on', 'Campaign planning:'],
+      coach: ['Life coaching on', 'Personal goal:', 'Coaching session:'],
+      medical: ['Health question about', 'Medical advice on', 'Wellness guidance:'],
+      'god-mode': ['Philosophical inquiry:', 'Deep question about', 'Existential topic:'],
+      general: ['General question about', 'Help with', 'Discussion on']
+    }
+
+    const prompts = titlePrompts[persona] || titlePrompts.general
+    const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)]
+    
+    // Extract key words from content
+    const words = content.toLowerCase().split(' ')
+    const importantWords = words.filter(word => 
+      word.length > 3 && 
+      !['what', 'how', 'can', 'you', 'help', 'me', 'with', 'the', 'and', 'or', 'but', 'for', 'of', 'to', 'in', 'on', 'at', 'by'].includes(word)
+    )
+    
+    const keyPhrase = importantWords.slice(0, 3).join(' ')
+    const title = `${randomPrompt} ${keyPhrase}`
+    
+    return title.length > 60 ? title.slice(0, 57) + '...' : title
+  }
+
   const consumeCredits = (amount: number) => {
     if (!user) return
     setUser(prev => prev ? ({
@@ -174,7 +202,7 @@ function App() {
     } else {
       updatedConversation = {
         id: crypto.randomUUID(),
-        title: content.slice(0, 50) + (content.length > 50 ? '...' : ''),
+        title: generateConversationTitle(content, selectedPersona || 'general' as Persona),
         persona: selectedPersona || 'general' as Persona,
         messages: [newMessage],
         lastUpdated: new Date()
