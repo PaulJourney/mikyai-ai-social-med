@@ -357,7 +357,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
               <div className="space-y-4">
                 <div className="flex justify-between text-sm">
                   <span className="font-medium">{t('pricing.buyCreditsModal.selectAmount')}:</span>
-                  <span className="text-muted-foreground">{creditsToBuy[0].toLocaleString()} credits</span>
+                  <span className="text-muted-foreground">{creditsToBuy[0].toLocaleString()} {t('modals.credits')}</span>
                 </div>
                 <div className="relative">
                   <Slider
@@ -471,7 +471,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
             </div>
             <div className="space-y-2">
               <div className="text-lg font-semibold">
-                Welcome to {upgradedPlan}!
+                {upgradedPlan === 'Business' ? t('modals.welcomeToBusiness') : `Welcome to ${upgradedPlan}!`}
               </div>
               <div className="text-muted-foreground">
                 {t('modals.planUpgraded')}

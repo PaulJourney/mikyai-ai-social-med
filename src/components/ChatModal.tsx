@@ -20,6 +20,7 @@ import {
   Lightning 
 } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useT } from '../contexts/TranslationContext'
 import type { Conversation, Persona } from '../App'
 
 interface ChatModalProps {
@@ -49,6 +50,7 @@ export function ChatModal({
   isLoading = false,
   onViewHistory
 }: ChatModalProps) {
+  const { t } = useT()
   const [inputValue, setInputValue] = useState('')
   const [showTyping, setShowTyping] = useState(false)
   const [animatedPlaceholder, setAnimatedPlaceholder] = useState('')
@@ -146,26 +148,26 @@ export function ChatModal({
     if (!persona) return 'Miky'
     
     const names = {
-      lawyer: 'Lawyer Miky',
-      engineer: 'Engineer Miky',
-      marketer: 'Marketer Miky', 
-      coach: 'Coach Miky',
-      medical: 'Doctor Miky',
-      'god-mode': 'God Miky'
+      lawyer: t('chat.chatWith', { persona: t('personas.lawyer.name') }),
+      engineer: t('chat.chatWith', { persona: t('personas.engineer.name') }),
+      marketer: t('chat.chatWith', { persona: t('personas.marketer.name') }), 
+      coach: t('chat.chatWith', { persona: t('personas.coach.name') }),
+      medical: t('chat.chatWith', { persona: t('personas.medical.name') }),
+      'god-mode': t('chat.chatWith', { persona: t('personas.godMode.name') })
     }
     return names[persona] || 'Miky'
   }
 
   const getPersonaDisplayName = (persona: string) => {
     const names = {
-      lawyer: 'Legal',
-      engineer: 'Technical',
-      marketer: 'Marketing',
-      coach: 'Coaching',
-      medical: 'Medical',
-      'god-mode': 'God Mode'
+      lawyer: t('chat.legal'),
+      engineer: t('chat.technical'),
+      marketer: t('chat.marketing'),
+      coach: t('chat.coaching'),
+      medical: t('chat.medical'),
+      'god-mode': t('chat.philosophical')
     }
-    return names[persona as keyof typeof names] || 'General'
+    return names[persona as keyof typeof names] || t('chat.general')
   }
 
   const formatTime = (date: Date) => {
@@ -181,17 +183,17 @@ export function ChatModal({
   }
 
   const getStaticPlaceholder = () => {
-    if (!selectedPersona) return 'Ask to Miky'
+    if (!selectedPersona) return t('chat.placeholderGeneral')
     
     const placeholders = {
-      lawyer: 'Ask to Lawyer Miky',
-      engineer: 'Ask to Engineer Miky',
-      marketer: 'Ask to Marketer Miky',
-      coach: 'Ask to Coach Miky',
-      medical: 'Ask to Doctor Miky',
-      'god-mode': 'Ask to God Miky'
+      lawyer: t('chat.placeholderPersona', { persona: t('personas.lawyer.name') }),
+      engineer: t('chat.placeholderPersona', { persona: t('personas.engineer.name') }),
+      marketer: t('chat.placeholderPersona', { persona: t('personas.marketer.name') }),
+      coach: t('chat.placeholderPersona', { persona: t('personas.coach.name') }),
+      medical: t('chat.placeholderPersona', { persona: t('personas.medical.name') }),
+      'god-mode': t('chat.placeholderPersona', { persona: t('personas.godMode.name') })
     }
-    return placeholders[selectedPersona] || 'Ask to Miky'
+    return placeholders[selectedPersona] || t('chat.placeholderGeneral')
   }
 
   return (
@@ -213,7 +215,7 @@ export function ChatModal({
               </Avatar>
               <div>
                 <h2 className="font-semibold text-base">
-                  {conversation?.title || 'New Conversation'}
+                  {conversation?.title || t('chat.newConversation')}
                 </h2>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="text-sm text-muted-foreground">
@@ -236,7 +238,7 @@ export function ChatModal({
                 className="h-8 px-3 text-sm text-muted-foreground hover:text-primary"
               >
                 <ClockCounterClockwise className="w-4 h-4 mr-2" />
-                History
+                {t('chat.history')}
               </Button>
               <Button 
                 variant="ghost" 
@@ -262,7 +264,7 @@ export function ChatModal({
             >
               {conversation?.messages.length === 0 && (
                 <div className="flex items-center justify-center h-32 text-muted-foreground text-sm">
-                  Start a conversation with {getPersonaName(selectedPersona)}
+                  {t('chat.placeholderPersona', { persona: getPersonaName(selectedPersona) })}
                 </div>
               )}
               
@@ -380,7 +382,7 @@ export function ChatModal({
             
             {disabled && (
               <p className="text-xs text-muted-foreground mt-2 text-center">
-                No credits remaining. Please upgrade your plan to continue.
+                {t('chat.notEnoughCredits')}
               </p>
             )}
           </div>

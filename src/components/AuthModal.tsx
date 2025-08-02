@@ -465,10 +465,11 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
               
               <Button 
                 type="submit" 
-                className="w-full" 
+                className="w-full hover:bg-primary hover:text-primary-foreground" 
+                variant="outline"
                 disabled={isLoading || confirmationCode.length !== 6}
               >
-                {isLoading ? t('auth.verifying') : t('auth.confirmEmailButton')}
+                {isLoading ? t('auth.verifying') : t('auth.verifyButton')}
               </Button>
               
               <div className="text-center">

@@ -90,10 +90,8 @@ function AppContent() {
 
   const handlePersonaSelect = (persona: Persona | null) => {
     setSelectedPersona(persona)
-    // If we have an active conversation with a different persona, start new conversation
-    if (currentConversation && currentConversation.persona !== (persona || 'general')) {
-      setCurrentConversation(null)
-    }
+    // Reset current conversation when changing persona to ensure new conversations are created
+    setCurrentConversation(null)
   }
 
   const generateConversationTitle = (content: string, persona: Persona): string => {
@@ -203,15 +201,18 @@ function AppContent() {
       persona: selectedPersona || undefined
     }
 
-    // Create or update conversation
+    // Always create a new conversation for new messages from homepage
+    // Only use existing conversation if we're already in a conversation (currentConversation exists)
     let updatedConversation: Conversation
-    if (currentConversation) {
+    if (currentConversation && showChatModal) {
+      // We're continuing an existing conversation
       updatedConversation = {
         ...currentConversation,
         messages: [...currentConversation.messages, newMessage],
         lastUpdated: new Date()
       }
     } else {
+      // Create a new conversation (from homepage or when no current conversation)
       updatedConversation = {
         id: crypto.randomUUID(),
         title: generateConversationTitle(content, selectedPersona || 'general' as Persona),
@@ -479,7 +480,11 @@ function AppContent() {
         
         <ChatModal
           isOpen={showChatModal}
-          onClose={() => setShowChatModal(false)}
+          onClose={() => {
+            setShowChatModal(false)
+            // Reset current conversation when closing modal to ensure new conversations are created
+            setCurrentConversation(null)
+          }}
           conversation={currentConversation}
           selectedPersona={selectedPersona}
           onSendMessage={handleSendMessage}

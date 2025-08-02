@@ -70,6 +70,16 @@ export interface Translations {
     history: string
     askAnything: string
     notEnoughCredits: string
+    newConversation: string
+    chatWith: string
+    typeHere: string
+    technical: string
+    legal: string
+    marketing: string
+    coaching: string
+    medical: string
+    philosophical: string
+    general: string
   }
   
   // History
@@ -263,6 +273,8 @@ export interface Translations {
     insufficientCredits: string
     fileUploadError: string
     voiceInputError: string
+    welcomeToBusiness: string
+    credits: string
   }
   
   // Referral
@@ -422,9 +434,19 @@ const translations: Record<Language, Translations> = {
       send: 'Send',
       attach: 'Attach',
       voiceInput: 'Voice input',
-      history: 'History',
+      history: 'Conversations',
       askAnything: 'Ask anything - or choose an ultra-skilled version of Miky...',
-      notEnoughCredits: 'Not enough credits to continue...'
+      notEnoughCredits: 'Not enough credits to continue...',
+      newConversation: 'New Conversation',
+      chatWith: 'Chat with {{persona}} Miky',
+      typeHere: 'Type here...',
+      technical: 'Technical',
+      legal: 'Legal',
+      marketing: 'Marketing',
+      coaching: 'Coaching',
+      medical: 'Medical',
+      philosophical: 'Philosophical',
+      general: 'General'
     },
     history: {
       title: 'Conversations',
@@ -609,7 +631,9 @@ const translations: Record<Language, Translations> = {
       lowCredits: 'Low Credits Warning',
       insufficientCredits: 'Insufficient Credits',
       fileUploadError: 'File Upload Error',
-      voiceInputError: 'Voice Input Error'
+      voiceInputError: 'Voice Input Error',
+      welcomeToBusiness: 'Welcome to Business!',
+      credits: 'credits'
     },
     referral: {
       title: 'Referral Program',
@@ -757,9 +781,19 @@ const translations: Record<Language, Translations> = {
       send: 'Invia',
       attach: 'Allega',
       voiceInput: 'Input vocale',
-      history: 'Cronologia',
+      history: 'Conversazioni',
       askAnything: 'Chiedi qualsiasi cosa - o scegli una versione ultra-qualificata di Miky...',
-      notEnoughCredits: 'Crediti insufficienti per continuare...'
+      notEnoughCredits: 'Crediti insufficienti per continuare...',
+      newConversation: 'Nuova Conversazione',
+      chatWith: 'Chatta con {{persona}} Miky',
+      typeHere: 'Scrivi qui...',
+      technical: 'Tecnico',
+      legal: 'Legale',
+      marketing: 'Marketing',
+      coaching: 'Coaching',
+      medical: 'Medico',
+      philosophical: 'Filosofico',
+      general: 'Generale'
     },
     history: {
       title: 'Conversazioni',
@@ -944,7 +978,9 @@ const translations: Record<Language, Translations> = {
       lowCredits: 'Avviso Crediti Bassi',
       insufficientCredits: 'Crediti Insufficienti',
       fileUploadError: 'Errore Upload File',
-      voiceInputError: 'Errore Input Vocale'
+      voiceInputError: 'Errore Input Vocale',
+      welcomeToBusiness: 'Benvenuto in Business!',
+      credits: 'crediti'
     },
     referral: {
       title: 'Programma Referral',
@@ -1092,9 +1128,19 @@ const translations: Record<Language, Translations> = {
       send: 'Enviar',
       attach: 'Adjuntar',
       voiceInput: 'Entrada de voz',
-      history: 'Historial',
+      history: 'Conversaciones',
       askAnything: 'Pregunta cualquier cosa - o elige una versión ultra-capacitada de Miky...',
-      notEnoughCredits: 'Créditos insuficientes para continuar...'
+      notEnoughCredits: 'Créditos insuficientes para continuar...',
+      newConversation: 'Nueva Conversación',
+      chatWith: 'Chatea con {{persona}} Miky',
+      typeHere: 'Escribe aquí...',
+      technical: 'Técnico',
+      legal: 'Legal',
+      marketing: 'Marketing',
+      coaching: 'Coaching',
+      medical: 'Médico',
+      philosophical: 'Filosófico',
+      general: 'General'
     },
     history: {
       title: 'Conversaciones',
@@ -1279,7 +1325,9 @@ const translations: Record<Language, Translations> = {
       lowCredits: 'Advertencia Créditos Bajos',
       insufficientCredits: 'Créditos Insuficientes',
       fileUploadError: 'Error de Subida de Archivo',
-      voiceInputError: 'Error de Entrada de Voz'
+      voiceInputError: 'Error de Entrada de Voz',
+      welcomeToBusiness: '¡Bienvenido a Business!',
+      credits: 'créditos'
     },
     referral: {
       title: 'Programa de Referidos',
@@ -1427,9 +1475,19 @@ const translations: Record<Language, Translations> = {
       send: 'Senden',
       attach: 'Anhängen',
       voiceInput: 'Spracheingabe',
-      history: 'Verlauf',
+      history: 'Gespräche',
       askAnything: 'Frag alles - oder wähle eine ultra-qualifizierte Version von Miky...',
-      notEnoughCredits: 'Nicht genug Credits um fortzufahren...'
+      notEnoughCredits: 'Nicht genug Credits um fortzufahren...',
+      newConversation: 'Neues Gespräch',
+      chatWith: 'Chatte mit {{persona}} Miky',
+      typeHere: 'Hier tippen...',
+      technical: 'Technisch',
+      legal: 'Rechtlich',
+      marketing: 'Marketing',
+      coaching: 'Coaching',
+      medical: 'Medizinisch',
+      philosophical: 'Philosophisch',
+      general: 'Allgemein'
     },
     history: {
       title: 'Gespräche',
@@ -1614,7 +1672,9 @@ const translations: Record<Language, Translations> = {
       lowCredits: 'Niedrige Credits Warnung',
       insufficientCredits: 'Unzureichende Credits',
       fileUploadError: 'Datei-Upload Fehler',
-      voiceInputError: 'Spracheingabe Fehler'
+      voiceInputError: 'Spracheingabe Fehler',
+      welcomeToBusiness: 'Willkommen zu Business!',
+      credits: 'Credits'
     },
     referral: {
       title: 'Empfehlungsprogramm',
