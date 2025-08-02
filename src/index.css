@@ -100,30 +100,36 @@
   background: oklch(0.5 0 0);
 }
 
-/* Mobile menu animations - Updated for full page overlay */
+/* Mobile menu animations - Portal overlay */
 .mobile-menu-overlay-enter {
-  animation: fadeIn 0.3s ease-out forwards;
+  animation: mobileMenuFadeIn 0.3s ease-out forwards;
+  z-index: 999999 !important;
 }
 
 .mobile-menu-overlay-exit {
-  animation: fadeOut 0.3s ease-in forwards;
+  animation: mobileMenuFadeOut 0.3s ease-in forwards;
+  z-index: 999999 !important;
 }
 
-@keyframes fadeIn {
+@keyframes mobileMenuFadeIn {
   from {
     opacity: 0;
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@keyframes fadeOut {
+@keyframes mobileMenuFadeOut {
   from {
     opacity: 1;
+    transform: translateY(0);
   }
   to {
     opacity: 0;
+    transform: translateY(-10px);
   }
 }
 
