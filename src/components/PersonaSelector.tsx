@@ -117,7 +117,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
       </div>
       
       <div className="space-y-4">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="flex flex-wrap justify-center gap-3">
           {personas.map((persona) => {
           const isSelected = selectedPersona === persona.id
           const canUse = canUsePersona(persona)
@@ -128,47 +128,45 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
               key={persona.id}
               variant={isSelected ? 'default' : 'outline'}
               className={`
-                h-auto p-4 flex flex-col items-center gap-2 text-left transition-all duration-200 group
+                h-auto p-4 flex-shrink-0 flex items-center gap-3 text-left transition-all duration-200 group min-w-fit
                 ${isSelected ? 'glow-effect ring-2 ring-primary/50' : ''}
                 ${!canUse ? 'opacity-50' : 'hover:glow-effect'}
               `}
               onClick={() => handlePersonaClick(persona)}
               disabled={false}
             >
-              <div className="flex items-center gap-3 w-full">
-                <IconComponent 
-                  size={20} 
-                  className={`${isSelected ? 'text-black' : 'text-foreground group-hover:text-primary'} transition-colors duration-200`} 
-                />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className={`font-medium text-sm transition-colors duration-200 ${isSelected ? 'text-black' : 'group-hover:text-primary'}`}>{persona.name}</span>
-                    {persona.requiresPaid && (
-                      <Badge variant="secondary" className="text-xs px-1 py-0">
-                        Plus
-                      </Badge>
-                    )}
-                  </div>
-                  <p className={`text-xs mt-1 line-clamp-2 transition-colors duration-200 ${isSelected ? 'text-black font-normal' : 'text-muted-foreground'}`}>
-                    {persona.description}
-                  </p>
+              <IconComponent 
+                size={20} 
+                className={`${isSelected ? 'text-black' : 'text-foreground group-hover:text-primary'} transition-colors duration-200`} 
+              />
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <span className={`font-medium text-sm transition-colors duration-200 ${isSelected ? 'text-black' : 'group-hover:text-primary'}`}>{persona.name}</span>
+                  {persona.requiresPaid && (
+                    <Badge variant="secondary" className="text-xs px-1 py-0">
+                      Plus
+                    </Badge>
+                  )}
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="p-1 h-auto min-h-0 hover:bg-transparent group/info"
-                  onClick={(e) => handleInfoClick(e, persona)}
-                >
-                  <Info 
-                    size={16} 
-                    className={`transition-colors duration-200 ${
-                      isSelected 
-                        ? 'text-muted-foreground' 
-                        : 'text-muted-foreground group-hover/info:text-black'
-                    }`}
-                  />
-                </Button>
+                <p className={`text-xs mt-1 whitespace-nowrap transition-colors duration-200 ${isSelected ? 'text-black font-normal' : 'text-muted-foreground'}`}>
+                  {persona.description}
+                </p>
               </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="p-1 h-auto min-h-0 hover:bg-transparent group/info flex-shrink-0"
+                onClick={(e) => handleInfoClick(e, persona)}
+              >
+                <Info 
+                  size={16} 
+                  className={`transition-colors duration-200 ${
+                    isSelected 
+                      ? 'text-muted-foreground' 
+                      : 'text-muted-foreground group-hover/info:text-black'
+                  }`}
+                />
+              </Button>
             </Button>
           )
         })}
