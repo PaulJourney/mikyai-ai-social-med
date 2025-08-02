@@ -112,9 +112,9 @@
 
 @media (min-width: 769px) {
   .chat-modal {
-    width: 85vw !important;
+    width: 90vw !important;
     height: 85vh !important;
-    max-width: 6xl !important;
+    max-width: 90vw !important;
     max-height: 85vh !important;
   }
 }

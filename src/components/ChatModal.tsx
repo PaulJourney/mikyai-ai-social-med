@@ -171,7 +171,7 @@ export function ChatModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
-        className="chat-modal p-0 bg-background border-border overflow-hidden [&>button]:hidden w-[95vw] max-w-6xl h-[90vh] max-h-[90vh] md:w-[85vw] md:h-[85vh]"
+        className="chat-modal p-0 bg-background border-border overflow-hidden [&>button]:hidden w-[95vw] max-w-7xl h-[90vh] max-h-[90vh] md:w-[90vw] md:h-[85vh]"
       >
         <div className="flex flex-col h-full">
           {/* Header */}
@@ -248,7 +248,7 @@ export function ChatModal({
                   <div className={`flex-1 space-y-1 ${message.sender === 'user' ? 'text-right' : 'text-left'}`}>
                     <div
                       className={`
-                        inline-block px-4 py-3 rounded-lg text-sm max-w-[80%]
+                        inline-block px-4 py-3 rounded-lg text-xs max-w-[80%]
                         ${message.sender === 'user' 
                           ? 'bg-primary text-primary-foreground ml-auto' 
                           : 'bg-muted text-foreground'
@@ -272,7 +272,7 @@ export function ChatModal({
                     </div>
                   </Avatar>
                   <div className="flex-1">
-                    <div className="inline-block px-4 py-3 rounded-lg text-sm bg-muted">
+                    <div className="inline-block px-4 py-3 rounded-lg text-xs bg-muted">
                       <div className="flex space-x-1">
                         <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
                         <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
