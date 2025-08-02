@@ -5,6 +5,9 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Switch } from '@/components/ui/switch'
+import { toast } from 'sonner'
 import { 
   X, 
   Users, 
@@ -22,7 +25,8 @@ import {
   ShieldCheck,
   Robot,
   MoneyWavy,
-  GlobeHemisphereWest
+  GlobeHemisphereWest,
+  PencilSimple
 } from '@phosphor-icons/react'
 
 interface AdminDashboardProps {
@@ -31,6 +35,20 @@ interface AdminDashboardProps {
 
 export function AdminDashboard({ onClose }: AdminDashboardProps) {
   const [activeTab, setActiveTab] = useState('overview')
+  const [editingCredits, setEditingCredits] = useState<string | null>(null)
+  const [tempCredits, setTempCredits] = useState<{ [key: string]: number }>({})
+  
+  // Feature toggles state
+  const [featureToggles, setFeatureToggles] = useState({
+    voiceInput: true,
+    fileUpload: false,
+    godMode: true,
+    referralProgram: true,
+    multilingualSupport: true,
+    emailVerification: true,
+    chatHistory: true,
+    dataExport: true
+  })
 
   // Mock admin data - reflecting actual Miky.ai functionality
   const mockData = {
@@ -172,11 +190,79 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
   const handleSuspendUser = (userId: string) => {
     // Mock user suspension
     console.log('Suspending user:', userId)
+    toast.success('User suspended successfully')
   }
 
   const handleResetCredits = (userId: string) => {
     // Mock credit reset
     console.log('Resetting credits for user:', userId)
+    toast.success('Credits reset successfully')
+  }
+
+  const handleUpdateCredits = (userId: string) => {
+    const newCredits = tempCredits[userId]
+    if (newCredits !== undefined && newCredits >= 0) {
+      console.log('Updating credits for user:', userId, 'to:', newCredits)
+      toast.success(`Credits updated to ${newCredits}`)
+      setEditingCredits(null)
+      setTempCredits(prev => {
+        const updated = { ...prev }
+        delete updated[userId]
+        return updated
+      })
+    }
+  }
+
+  const handleCancelCreditsEdit = (userId: string) => {
+    setEditingCredits(null)
+    setTempCredits(prev => {
+      const updated = { ...prev }
+      delete updated[userId]
+      return updated
+    })
+  }
+
+  const handlePersonaAction = (action: string) => {
+    switch(action) {
+      case 'configure-models':
+        toast.success('AI Models configuration opened')
+        break
+      case 'adjust-costs':
+        toast.success('Credit costs adjustment panel opened')
+        break
+      case 'manage-restrictions':
+        toast.success('Restrictions management panel opened')
+        break
+      default:
+        break
+    }
+  }
+
+  const handleConversationAction = (action: string) => {
+    switch(action) {
+      case 'export':
+        handleExportConversations()
+        break
+      case 'generate':
+        toast.success('Usage report generation started')
+        setTimeout(() => {
+          toast.success('Usage report generated successfully')
+        }, 2000)
+        break
+      case 'review':
+        toast.success('Content review panel opened')
+        break
+      default:
+        break
+    }
+  }
+
+  const handleFeatureToggle = (feature: keyof typeof featureToggles) => {
+    setFeatureToggles(prev => ({
+      ...prev,
+      [feature]: !prev[feature]
+    }))
+    toast.success(`${feature.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())} ${featureToggles[feature] ? 'disabled' : 'enabled'}`)
   }
 
   return (
@@ -333,7 +419,6 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
                     <TableHead>User</TableHead>
                     <TableHead>Plan</TableHead>
                     <TableHead>Credits</TableHead>
-                    <TableHead>Status</TableHead>
                     <TableHead>Referrals</TableHead>
                     <TableHead>Spent</TableHead>
                     <TableHead>Language</TableHead>
@@ -355,11 +440,49 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
                           {user.plan.toUpperCase()}
                         </Badge>
                       </TableCell>
-                      <TableCell>{user.credits}</TableCell>
                       <TableCell>
-                        <Badge variant={user.status === 'active' ? 'default' : 'destructive'}>
-                          {user.status}
-                        </Badge>
+                        {editingCredits === user.id ? (
+                          <div className="flex items-center gap-2">
+                            <Input
+                              type="number"
+                              value={tempCredits[user.id] ?? user.credits}
+                              onChange={(e) => setTempCredits(prev => ({
+                                ...prev,
+                                [user.id]: parseInt(e.target.value) || 0
+                              }))}
+                              className="w-20"
+                              min="0"
+                            />
+                            <Button 
+                              size="sm" 
+                              variant="ghost"
+                              onClick={() => handleUpdateCredits(user.id)}
+                            >
+                              ✓
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="ghost"
+                              onClick={() => handleCancelCreditsEdit(user.id)}
+                            >
+                              ✕
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-2">
+                            <span>{user.credits}</span>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => {
+                                setEditingCredits(user.id)
+                                setTempCredits(prev => ({ ...prev, [user.id]: user.credits }))
+                              }}
+                            >
+                              <PencilSimple className="w-3 h-3" />
+                            </Button>
+                          </div>
+                        )}
                       </TableCell>
                       <TableCell>{user.referrals}</TableCell>
                       <TableCell>${user.totalSpent}</TableCell>
@@ -478,15 +601,27 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
                 <div className="space-y-4">
                   <p className="text-sm text-muted-foreground">Configure AI model routing and credit costs for each persona</p>
                   <div className="space-y-2">
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start hover:text-primary"
+                      onClick={() => handlePersonaAction('configure-models')}
+                    >
                       <Robot className="w-4 h-4 mr-2" />
                       Configure AI Models
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start hover:text-primary"
+                      onClick={() => handlePersonaAction('adjust-costs')}
+                    >
                       <Coins className="w-4 h-4 mr-2" />
                       Adjust Credit Costs
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start hover:text-primary"
+                      onClick={() => handlePersonaAction('manage-restrictions')}
+                    >
                       <ShieldCheck className="w-4 h-4 mr-2" />
                       Manage Restrictions
                     </Button>
@@ -635,15 +770,27 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
               <Card className="p-6">
                 <h3 className="text-lg font-medium mb-4">Conversation Management</h3>
                 <div className="space-y-4">
-                  <Button variant="outline" className="w-full justify-start" onClick={handleExportConversations}>
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start hover:text-primary" 
+                    onClick={() => handleConversationAction('export')}
+                  >
                     <Download className="w-4 h-4 mr-2" />
                     Export Conversation Data
                   </Button>
-                  <Button variant="outline" className="w-full justify-start">
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start hover:text-primary"
+                    onClick={() => handleConversationAction('generate')}
+                  >
                     <ChartLine className="w-4 h-4 mr-2" />
                     Generate Usage Report
                   </Button>
-                  <Button variant="outline" className="w-full justify-start">
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start hover:text-primary"
+                    onClick={() => handleConversationAction('review')}
+                  >
                     <ShieldCheck className="w-4 h-4 mr-2" />
                     Review Flagged Content
                   </Button>
@@ -794,55 +941,64 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
 
             <Card className="p-6">
               <h3 className="text-lg font-medium mb-4">Feature Configuration</h3>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span>Voice Input</span>
-                  <Badge variant="default">Enabled</Badge>
+                  <Switch 
+                    checked={featureToggles.voiceInput}
+                    onCheckedChange={() => handleFeatureToggle('voiceInput')}
+                  />
                 </div>
                 <div className="flex items-center justify-between">
                   <span>File Upload</span>
-                  <Badge variant="secondary">Coming Soon</Badge>
+                  <Switch 
+                    checked={featureToggles.fileUpload}
+                    onCheckedChange={() => handleFeatureToggle('fileUpload')}
+                  />
                 </div>
                 <div className="flex items-center justify-between">
                   <span>God Mode</span>
-                  <Badge variant="default">Enabled</Badge>
+                  <Switch 
+                    checked={featureToggles.godMode}
+                    onCheckedChange={() => handleFeatureToggle('godMode')}
+                  />
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Referral Program</span>
-                  <Badge variant="default">Active</Badge>
+                  <Switch 
+                    checked={featureToggles.referralProgram}
+                    onCheckedChange={() => handleFeatureToggle('referralProgram')}
+                  />
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Multilingual Support</span>
-                  <Badge variant="default">6 Languages</Badge>
+                  <Switch 
+                    checked={featureToggles.multilingualSupport}
+                    onCheckedChange={() => handleFeatureToggle('multilingualSupport')}
+                  />
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Email Verification</span>
-                  <Badge variant="default">Required</Badge>
+                  <Switch 
+                    checked={featureToggles.emailVerification}
+                    onCheckedChange={() => handleFeatureToggle('emailVerification')}
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Chat History</span>
+                  <Switch 
+                    checked={featureToggles.chatHistory}
+                    onCheckedChange={() => handleFeatureToggle('chatHistory')}
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Data Export</span>
+                  <Switch 
+                    checked={featureToggles.dataExport}
+                    onCheckedChange={() => handleFeatureToggle('dataExport')}
+                  />
                 </div>
               </div>
-            </Card>
-
-            <Card className="p-6">
-              <h3 className="text-lg font-medium mb-4">Credit System</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">General Chat Cost</label>
-                  <Input defaultValue="1" type="number" className="mt-1" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Lawyer/Medical Cost</label>
-                  <Input defaultValue="3" type="number" className="mt-1" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Engineer/Marketer/Coach Cost</label>
-                  <Input defaultValue="2" type="number" className="mt-1" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium">God Mode Cost</label>
-                  <Input defaultValue="5" type="number" className="mt-1" />
-                </div>
-              </div>
-              <Button className="mt-4">Update Credit Costs</Button>
             </Card>
           </TabsContent>
         </Tabs>
