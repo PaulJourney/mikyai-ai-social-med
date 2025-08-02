@@ -349,7 +349,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
                     variant={creditsToBuy[0] === amount ? "default" : "outline"}
                     size="sm"
                     onClick={() => setCreditsToBuy([amount])}
-                    className="text-xs"
+                    className={`text-xs ${creditsToBuy[0] !== amount ? 'hover:text-primary' : ''}`}
                   >
                     {amount.toLocaleString()}
                   </Button>
@@ -370,7 +370,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
             </div>
           </div>
           <DialogFooter className="gap-3">
-            <Button variant="outline" onClick={() => setShowBuyCreditsDialog(false)}>
+            <Button variant="outline" onClick={() => setShowBuyCreditsDialog(false)} className="hover:text-primary">
               Cancel
             </Button>
             <Button onClick={handleBuyCredits} className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90">
