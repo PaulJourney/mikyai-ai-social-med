@@ -94,9 +94,6 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
     <div className="w-full max-w-4xl mx-auto">
       <div className="text-center mb-6">
         <h2 className="text-base font-medium text-muted-foreground mb-2">Choose Your Ultra‑Skilled AI Persona:</h2>
-        <p className="text-xs text-muted-foreground">
-          Optional: Select a specialized persona for expert assistance, or chat with Miky directly
-        </p>
       </div>
       
       <div className="space-y-4">
@@ -118,10 +115,10 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
               onClick={() => handlePersonaClick(persona)}
               disabled={false}
             >
-              <div className="flex items-center gap-2 w-full">
+              <div className="flex items-center gap-3 w-full">
                 <IconComponent 
                   size={20} 
-                  className={`${isSelected ? 'text-black' : 'text-foreground'} transition-colors duration-200`} 
+                  className={`${isSelected ? 'text-black' : 'text-foreground group-hover:text-primary'} transition-colors duration-200`} 
                 />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
