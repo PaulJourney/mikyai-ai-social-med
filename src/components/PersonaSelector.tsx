@@ -38,7 +38,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
       icon: Scales,
       description: 'Legal advice and contract help',
       requiresPaid: false,
-      detailedDescription: 'Ultra-skilled AI Lawyer specialized in national and international law. Provides advanced consulting in civil, criminal, commercial, tax, labor and technology law. Creates legal documents, contracts, legal opinions and defense strategies with precision and academic rigor.'
+      detailedDescription: 'Ultra-skilled AI Lawyer specialized in national and international law. Provides advanced consulting in civil, criminal, commercial, tax, labor, administrative, and technology law. Drafts legal documents, contracts, opinions, defenses, exposés, complaints, and preventive filings with precision and academic rigor.'
     },
     {
       id: 'engineer',

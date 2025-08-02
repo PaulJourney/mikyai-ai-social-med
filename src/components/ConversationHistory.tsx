@@ -156,6 +156,7 @@ export function ConversationHistory({
           <Button 
             onClick={() => onAuthRequest('signin')}
             variant="outline"
+            className="hover:text-primary"
           >
             Sign In
           </Button>
