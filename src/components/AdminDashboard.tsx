@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
@@ -40,6 +41,7 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
   const [tempCredits, setTempCredits] = useState<{ [key: string]: number }>({})
   const [showCreditCostModal, setShowCreditCostModal] = useState(false)
   const [showAddUserModal, setShowAddUserModal] = useState(false)
+  const [showPersonaTextModal, setShowPersonaTextModal] = useState(false)
   const [userSuspensions, setUserSuspensions] = useState<{ [key: string]: boolean }>({})
   const [creditCosts, setCreditCosts] = useState({
     general: 1,
@@ -50,12 +52,43 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
     medical: 3,
     'god-mode': 5
   })
+  const [personaTexts, setPersonaTexts] = useState({
+    lawyer: {
+      description: 'Legal advice and contract help',
+      detailedDescription: 'Ultra-skilled AI Lawyer specialized in national and international law. Provides advanced consulting in civil, criminal, commercial, tax, labor, administrative, and technology law. Drafts legal documents, contracts, opinions, defenses, exposés, complaints, and preventive filings with precision and academic rigor.'
+    },
+    engineer: {
+      description: 'Technical help and code review',
+      detailedDescription: 'Senior AI Engineer capable of writing, correcting and reviewing code in over 20 languages: Python, JavaScript, TypeScript, Rust, Go, C++, C#, Solidity, Swift, Kotlin, Java, Ruby, PHP, HTML/CSS, SQL, Bash, and many others. Provides architectural solutions, complex debugging, performance optimization and AI integration.'
+    },
+    marketer: {
+      description: 'Brand growth and marketing plans',
+      detailedDescription: 'Strategic AI Marketer with advanced expertise in brand positioning, organic growth, paid campaigns, SEO/SEM, data analysis, conversion funnels, persuasive copywriting and social media management (Instagram, TikTok, X, LinkedIn, Facebook). Supports entrepreneurs, agencies and creators in building and scaling digital projects.'
+    },
+    coach: {
+      description: 'Personal goals and life coaching',
+      detailedDescription: 'High-level AI Life & Performance Coach, capable of helping you overcome emotional blocks, organize your life, improve productivity, find motivation, develop winning habits, work on personal relationships, physical wellness and personal growth. No topic is too complex for Coach Miky.'
+    },
+    medical: {
+      description: 'Health tips and wellness support',
+      detailedDescription: 'Medical AI Consultant highly specialized in analyzing symptoms, reports, radiographs, CT scans, X-rays, blood tests and medical records. Supports diagnosis, offers lifestyle guidance, dietary plans, integrative approaches and helps you understand any medical report. You can also send images and documents for in-depth analysis.'
+    },
+    'god-mode': {
+      description: 'Uncover the purpose of existence',
+      detailedDescription: 'Philosophical AI Explorer, capable of answering the deepest and most mysterious questions about the universe, existence, consciousness, free will, destiny. Accompanies you on an intellectual and spiritual journey exploring the deepest mysteries of reality. But first of all asks you: Are you really sure you exist?'
+    }
+  })
   const [newUser, setNewUser] = useState({
     email: '',
     firstName: '',
     lastName: '',
     plan: 'free'
   })
+  const [editingPersonaText, setEditingPersonaText] = useState<{
+    persona: string
+    field: 'description' | 'detailedDescription'
+  } | null>(null)
+  const [tempPersonaText, setTempPersonaText] = useState('')
   
   // Feature toggles state
   const [featureToggles, setFeatureToggles] = useState({
@@ -298,6 +331,9 @@ Generated on: ${new Date().toISOString()}`
       case 'adjust-costs':
         setShowCreditCostModal(true)
         break
+      case 'edit-texts':
+        setShowPersonaTextModal(true)
+        break
       case 'manage-restrictions':
         toast.success('Restrictions management panel opened')
         // Open restrictions management panel
@@ -311,6 +347,37 @@ Generated on: ${new Date().toISOString()}`
     console.log('Updated credit costs:', creditCosts)
     toast.success('Credit costs updated successfully')
     setShowCreditCostModal(false)
+  }
+
+  const handleUpdatePersonaTexts = () => {
+    console.log('Updated persona texts:', personaTexts)
+    toast.success('Persona texts updated successfully')
+    setShowPersonaTextModal(false)
+  }
+
+  const handleEditPersonaText = (persona: string, field: 'description' | 'detailedDescription') => {
+    setEditingPersonaText({ persona, field })
+    setTempPersonaText(personaTexts[persona as keyof typeof personaTexts][field])
+  }
+
+  const handleSavePersonaText = () => {
+    if (editingPersonaText) {
+      setPersonaTexts(prev => ({
+        ...prev,
+        [editingPersonaText.persona]: {
+          ...prev[editingPersonaText.persona as keyof typeof prev],
+          [editingPersonaText.field]: tempPersonaText
+        }
+      }))
+      setEditingPersonaText(null)
+      setTempPersonaText('')
+      toast.success('Persona text updated successfully')
+    }
+  }
+
+  const handleCancelPersonaTextEdit = () => {
+    setEditingPersonaText(null)
+    setTempPersonaText('')
   }
 
   const handleConversationAction = (action: string) => {
@@ -780,6 +847,105 @@ Generated on: ${new Date().toISOString()}`
                               className="flex-1 hover:text-primary"
                             >
                               Cancel
+                            </Button>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                    <Dialog open={showPersonaTextModal} onOpenChange={setShowPersonaTextModal}>
+                      <DialogTrigger asChild>
+                        <Button 
+                          variant="outline" 
+                          className="w-full justify-start hover:text-primary"
+                          onClick={() => handlePersonaAction('edit-texts')}
+                        >
+                          <PencilSimple className="w-4 h-4 mr-2" />
+                          Edit Persona Texts
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                        <DialogHeader>
+                          <DialogTitle>Edit Persona Information</DialogTitle>
+                        </DialogHeader>
+                        <div className="space-y-6">
+                          {Object.entries(personaTexts).map(([persona, texts]) => (
+                            <div key={persona} className="border rounded-lg p-4 space-y-4">
+                              <h4 className="font-medium capitalize text-lg">
+                                {persona === 'god-mode' ? 'God Mode' : persona} Miky
+                              </h4>
+                              
+                              {/* Short Description */}
+                              <div>
+                                <Label className="text-sm font-medium">Short Description</Label>
+                                {editingPersonaText?.persona === persona && editingPersonaText?.field === 'description' ? (
+                                  <div className="flex items-center gap-2 mt-1">
+                                    <Input
+                                      value={tempPersonaText}
+                                      onChange={(e) => setTempPersonaText(e.target.value)}
+                                      className="flex-1"
+                                    />
+                                    <Button size="sm" onClick={handleSavePersonaText}>✓</Button>
+                                    <Button size="sm" variant="ghost" onClick={handleCancelPersonaTextEdit}>✕</Button>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-2 mt-1">
+                                    <span className="flex-1 text-sm bg-muted p-2 rounded">
+                                      {texts.description}
+                                    </span>
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      onClick={() => handleEditPersonaText(persona, 'description')}
+                                    >
+                                      <PencilSimple className="w-3 h-3" />
+                                    </Button>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Detailed Description */}
+                              <div>
+                                <Label className="text-sm font-medium">Detailed Description (Info Popup)</Label>
+                                {editingPersonaText?.persona === persona && editingPersonaText?.field === 'detailedDescription' ? (
+                                  <div className="space-y-2 mt-1">
+                                    <Textarea
+                                      value={tempPersonaText}
+                                      onChange={(e) => setTempPersonaText(e.target.value)}
+                                      rows={4}
+                                      className="resize-none"
+                                    />
+                                    <div className="flex gap-2">
+                                      <Button size="sm" onClick={handleSavePersonaText}>Save</Button>
+                                      <Button size="sm" variant="ghost" onClick={handleCancelPersonaTextEdit}>Cancel</Button>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="flex gap-2 mt-1">
+                                    <div className="flex-1 text-sm bg-muted p-3 rounded leading-relaxed">
+                                      {texts.detailedDescription}
+                                    </div>
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      onClick={() => handleEditPersonaText(persona, 'detailedDescription')}
+                                    >
+                                      <PencilSimple className="w-3 h-3" />
+                                    </Button>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                          <div className="flex gap-2 pt-4">
+                            <Button onClick={handleUpdatePersonaTexts} className="flex-1">
+                              Save All Changes
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              onClick={() => setShowPersonaTextModal(false)} 
+                              className="flex-1 hover:text-primary"
+                            >
+                              Close
                             </Button>
                           </div>
                         </div>

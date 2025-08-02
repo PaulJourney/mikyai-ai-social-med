@@ -156,10 +156,17 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="p-1 h-auto min-h-0 hover:bg-transparent"
+                  className="p-1 h-auto min-h-0 hover:bg-transparent group/info"
                   onClick={(e) => handleInfoClick(e, persona)}
                 >
-                  <Info size={16} className="text-muted-foreground hover:text-primary transition-colors duration-200" />
+                  <Info 
+                    size={16} 
+                    className={`transition-colors duration-200 ${
+                      isSelected 
+                        ? 'text-muted-foreground' 
+                        : 'text-muted-foreground group-hover/info:text-black'
+                    }`}
+                  />
                 </Button>
               </div>
             </Button>
