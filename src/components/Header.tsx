@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Badge } from '@/components/ui/badge'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { User, Globe, ShareNetwork, ClockCounterClockwise, CreditCard, SignOut, DollarSign, Copy, WhatsappLogo, Link, ChatCircle, List } from '@phosphor-icons/react'
+import { User, Globe, ShareNetwork, ClockCounterClockwise, CreditCard, SignOut, DollarSign, Copy, WhatsappLogo, Link, ChatCircle } from '@phosphor-icons/react'
 import type { User as UserType } from '../App'
 import { toast } from 'sonner'
 import { CashoutModal } from './CashoutModal'
@@ -21,7 +20,6 @@ interface HeaderProps {
 
 export function Header({ user, onViewChange, currentView, onSignOut, onAuthRequest, onUpdateUser }: HeaderProps) {
   const [showCashoutModal, setShowCashoutModal] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { t, language, setLanguage } = useT()
   const availableLanguages = getAvailableLanguages()
 
@@ -332,13 +330,14 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
             )}
           </div>
 
-          {/* Mobile Menu */}
+          {/* Mobile Navigation - Same as Desktop */}
           <div className="md:hidden flex items-center gap-2">
             {/* Language Selector - Mobile */}
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="ghost" size="sm" className="text-xs px-2">
-                  <Globe className="w-4 h-4" />
+                  <Globe className="w-4 h-4 mr-1" />
+                  {getCurrentLanguageDisplay()}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-40 p-2">
@@ -358,156 +357,203 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
               </PopoverContent>
             </Popover>
 
-            {user && (
-              <Badge variant={getCreditsBadgeColor()} className="text-xs font-medium">
-                {user.credits}
-              </Badge>
-            )}
+            <div className="h-4 w-px bg-border mx-1"></div>
+            
+            <Button
+              variant={currentView === 'chat' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => onViewChange('chat')}
+              className="text-xs px-2"
+            >
+              <ChatCircle className="w-4 h-4" />
+            </Button>
+            <Button
+              variant={currentView === 'history' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => onViewChange('history')}
+              className="text-xs px-2"
+            >
+              <ClockCounterClockwise className="w-4 h-4" />
+            </Button>
+            <Button
+              variant={currentView === 'pricing' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => onViewChange('pricing')}
+              className="text-xs px-2"
+            >
+              <CreditCard className="w-4 h-4" />
+            </Button>
 
-            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="sm" className="p-2">
-                  <List className="w-5 h-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-80 p-0">
-                <div className="flex flex-col h-full">
-                  {/* Header */}
-                  <div className="flex items-center justify-between p-4 border-b">
-                    <h2 className="font-semibold">Menu</h2>
-                  </div>
+            {user ? (
+              <>
+                <div className="h-4 w-px bg-border mx-1"></div>
+                
+                {/* Credits Badge */}
+                <Badge variant={getCreditsBadgeColor()} className="text-xs font-medium">
+                  {user.credits}
+                </Badge>
 
-                  {/* Navigation Items */}
-                  <div className="flex-1 p-4 space-y-3">
+                {/* Referral Button */}
+                <Popover>
+                  <PopoverTrigger asChild>
                     <Button
-                      variant={currentView === 'chat' ? 'default' : 'ghost'}
-                      className="w-full justify-start"
-                      onClick={() => {
-                        onViewChange('chat')
-                        setMobileMenuOpen(false)
-                      }}
+                      variant="outline"
+                      size="sm"
+                      className="text-xs px-2 hover:glow-effect group"
                     >
-                      <ChatCircle className="w-4 h-4 mr-2" />
-                      Chat
+                      <ShareNetwork className="w-4 h-4 group-hover:text-primary transition-colors duration-200" />
                     </Button>
-                    
-                    <Button
-                      variant={currentView === 'history' ? 'default' : 'ghost'}
-                      className="w-full justify-start"
-                      onClick={() => {
-                        onViewChange('history')
-                        setMobileMenuOpen(false)
-                      }}
-                    >
-                      <ClockCounterClockwise className="w-4 h-4 mr-2" />
-                      {t('header.conversations')}
-                    </Button>
-                    
-                    <Button
-                      variant={currentView === 'pricing' ? 'default' : 'ghost'}
-                      className="w-full justify-start"
-                      onClick={() => {
-                        onViewChange('pricing')
-                        setMobileMenuOpen(false)
-                      }}
-                    >
-                      <CreditCard className="w-4 h-4 mr-2" />
-                      {t('header.pricing')}
-                    </Button>
-
-                    {user ? (
-                      <>
-                        {/* User Info */}
-                        <div className="pt-4 border-t space-y-3">
-                          <div className="text-sm font-medium">Account</div>
-                          <div className="space-y-2 text-xs text-muted-foreground">
-                            <div>{t('profile.plan')}: <span className="text-foreground font-medium capitalize">{user.plan}</span></div>
-                            <div>{t('profile.credits')}: <span className="text-foreground font-medium">{user.credits}</span></div>
-                            <div>{t('profile.referrals')}: <span className="text-foreground font-medium">{user.referralsCount}</span></div>
-                            <div>{t('profile.earned')}: <span className="text-foreground font-medium">${((user.cashEarned || 0) + (user.referralsCount * 2)).toFixed(2)}</span></div>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80 p-4">
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="font-medium text-sm mb-2">{t('referral.title')}</h3>
+                        <p className="text-xs text-muted-foreground">
+                          {t('referral.howItWorks')}
+                        </p>
+                      </div>
+                      
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                          <div>
+                            <div className="text-xs text-muted-foreground">{t('referral.yourReferralCode')}</div>
+                            <div className="font-mono text-sm">{user.referralCode}</div>
                           </div>
-                          
-                          <div className="space-y-2">
-                            {user.plan !== 'business' ? (
-                              <Button 
-                                variant="outline" 
-                                size="sm" 
-                                className="w-full text-xs"
-                                onClick={() => {
-                                  onViewChange('pricing')
-                                  setMobileMenuOpen(false)
-                                }}
-                              >
-                                {t('header.upgradePlan')}
-                              </Button>
-                            ) : (
-                              <Button 
-                                variant="outline" 
-                                size="sm" 
-                                className="w-full text-xs"
-                                onClick={() => {
-                                  onViewChange('pricing')
-                                  setMobileMenuOpen(false)
-                                }}
-                              >
-                                {t('header.getMoreCredits')}
-                              </Button>
-                            )}
-                            
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              className="w-full text-xs"
-                              onClick={() => setMobileMenuOpen(false)}
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => handleReferralCopy(user.referralCode)}
+                          >
+                            <Copy className="w-4 h-4" />
+                          </Button>
+                        </div>
+
+                        {/* Share Options */}
+                        <div>
+                          <div className="text-xs text-muted-foreground mb-2">{t('referral.shareOptions')}</div>
+                          <div className="grid grid-cols-2 gap-4 px-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="text-xs group hover:text-primary transition-colors duration-200"
+                              onClick={handleWhatsAppShare}
                             >
-                              <ShareNetwork className="w-4 h-4 mr-2" />
-                              {t('header.refer')}
+                              <WhatsappLogo className="w-4 h-4 mr-1" />
+                              <span className="group-hover:text-primary transition-colors duration-200">WhatsApp</span>
                             </Button>
-                            
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              className="w-full text-xs text-destructive hover:text-destructive"
-                              onClick={() => {
-                                onSignOut()
-                                setMobileMenuOpen(false)
-                              }}
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="text-xs group hover:text-primary transition-colors duration-200"
+                              onClick={handleCopyReferralMessage}
                             >
-                              <SignOut className="w-4 h-4 mr-2" />
-                              {t('auth.logout')}
+                              <Copy className="w-4 h-4 mr-1" />
+                              <span className="group-hover:text-primary transition-colors duration-200">Copy</span>
                             </Button>
                           </div>
                         </div>
-                      </>
-                    ) : (
-                      <div className="pt-4 border-t space-y-2">
+
+                        <div className="grid grid-cols-2 gap-3 text-xs">
+                          <div className="p-2 bg-muted rounded">
+                            <div className="text-muted-foreground">{t('referral.earnings')}</div>
+                            <div className="font-medium">${((user.cashEarned || 0) + (user.referralsCount * 2)).toFixed(2)}</div>
+                          </div>
+                          <div className="p-2 bg-muted rounded">
+                            <div className="text-muted-foreground">{t('referral.pending')}</div>
+                            <div className="font-medium text-primary">${(user.cashEarned || 0).toFixed(2)}</div>
+                          </div>
+                        </div>
+
+                        <Button
+                          size="sm"
+                          className="w-full"
+                          disabled={(user.cashEarned || 0) < 10}
+                          onClick={() => setShowCashoutModal(true)}
+                        >
+                          {t('referral.cashOutMinimum')}
+                        </Button>
+
+                        <div className="text-xs text-muted-foreground pt-2 border-t">
+                          <div>{t('referral.successful')}: {user.referralsCount}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+
+                {/* User Menu */}
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="ghost" size="sm" className="px-2">
+                      <User className="w-4 h-4" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-64 p-4">
+                    <div className="space-y-3">
+                      <div className="text-sm font-medium">Account</div>
+                      <div className="space-y-2 text-xs text-muted-foreground">
+                        <div>{t('profile.plan')}: <span className="text-foreground font-medium capitalize">{user.plan}</span></div>
+                        <div>{t('profile.credits')}: <span className="text-foreground font-medium">{user.credits}</span></div>
+                        <div>{t('profile.referrals')}: <span className="text-foreground font-medium">{user.referralsCount}</span></div>
+                        <div>{t('profile.earned')}: <span className="text-foreground font-medium">${((user.cashEarned || 0) + (user.referralsCount * 2)).toFixed(2)}</span></div>
+                      </div>
+                      <div className="pt-2 border-t space-y-2">
+                        {user.plan !== 'business' ? (
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="w-full text-xs group"
+                            onClick={() => onViewChange('pricing')}
+                          >
+                            <span className="group-hover:text-primary transition-colors duration-200">
+                              {t('header.upgradePlan')}
+                            </span>
+                          </Button>
+                        ) : (
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="w-full text-xs group"
+                            onClick={() => onViewChange('pricing')}
+                          >
+                            <span className="group-hover:text-primary transition-colors duration-200">
+                              {t('header.getMoreCredits')}
+                            </span>
+                          </Button>
+                        )}
                         <Button 
                           variant="ghost" 
                           size="sm" 
-                          className="w-full justify-start text-primary"
-                          onClick={() => {
-                            onAuthRequest('signin')
-                            setMobileMenuOpen(false)
-                          }}
+                          className="w-full text-xs text-destructive hover:text-destructive"
+                          onClick={onSignOut}
                         >
-                          {t('auth.signIn')}
-                        </Button>
-                        <Button 
-                          size="sm"
-                          className="w-full"
-                          onClick={() => {
-                            onAuthRequest('signup')
-                            setMobileMenuOpen(false)
-                          }}
-                        >
-                          {t('auth.signUp')}
+                          <SignOut className="w-4 h-4 mr-1" />
+                          {t('auth.logout')}
                         </Button>
                       </div>
-                    )}
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              </>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => onAuthRequest('signin')}
+                  className="text-xs text-primary hover:text-primary px-2"
+                >
+                  {t('auth.signIn')}
+                </Button>
+                <Button 
+                  onClick={() => onAuthRequest('signup')} 
+                  size="sm"
+                  className="text-xs px-2"
+                >
+                  {t('auth.signUp')}
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>

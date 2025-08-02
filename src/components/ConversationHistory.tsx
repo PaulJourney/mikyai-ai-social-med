@@ -224,28 +224,28 @@ export function ConversationHistory({
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-2 sm:px-4">
-      <div className="mb-4 sm:mb-6">
-        <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-2">{t('history.title')}</h1>
-        <p className="text-sm text-muted-foreground hidden sm:block">{t('history.title')}</p>
+    <div className="max-w-4xl mx-auto">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-foreground mb-2">{t('history.title')}</h1>
+        <p className="text-sm text-muted-foreground">{t('history.title')}</p>
       </div>
 
       {/* Search Bar */}
-      <div className="mb-4 sm:mb-6">
+      <div className="mb-6">
         <div className="relative">
           <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
             placeholder={t('history.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
-            className="pl-10 h-10 text-sm"
+            className="pl-10"
           />
         </div>
       </div>
 
       {/* Persona Filters */}
-      <div className="mb-4 sm:mb-6">
-        <div className="flex flex-wrap gap-1 sm:gap-2">
+      <div className="mb-6">
+        <div className="flex flex-wrap gap-2">
           {getAllPersonas().map((persona) => {
             const IconComponent = persona.icon
             const isSelected = selectedFilter === persona.key
@@ -256,23 +256,17 @@ export function ConversationHistory({
                 variant={isSelected ? "default" : "outline"}
                 size="sm"
                 onClick={() => handleFilterChange(persona.key)}
-                className={`mobile-filter-btn text-xs group transition-colors ${
+                className={`text-xs group transition-colors ${
                   !isSelected ? 'hover:border-primary' : ''
                 }`}
               >
                 <IconComponent className={`w-3 h-3 mr-1 ${
                   !isSelected ? 'group-hover:text-primary' : ''
                 }`} />
-                <span className={`hidden sm:inline ${
+                <span className={`${
                   !isSelected ? 'group-hover:text-primary' : ''
                 }`}>
                   {persona.label}
-                </span>
-                {/* Short label for mobile */}
-                <span className={`sm:hidden ${
-                  !isSelected ? 'group-hover:text-primary' : ''
-                }`}>
-                  {persona.key === 'all' ? t('history.filters.all') : persona.label.slice(0, 3)}
                 </span>
                 <Badge variant="secondary" className="ml-1 text-xs px-1">
                   {persona.key !== 'all' ? (
@@ -302,80 +296,25 @@ export function ConversationHistory({
         <div className="space-y-4">
           <div className="space-y-4">
             {paginatedConversations.map((conversation) => (
-            <Card key={conversation.id} className="mobile-conversation-card hover:bg-card/80 transition-colors">
-              <div className="space-y-3">
-                {/* Mobile-optimized header */}
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-center gap-2 min-w-0 flex-1">
-                    <Badge variant="outline" className="mobile-badge-compact shrink-0">
+            <Card key={conversation.id} className="p-4 hover:bg-card/80 transition-colors">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Badge variant="outline" className="shrink-0">
                       {(() => {
                         const IconComponent = getPersonaIcon(conversation.persona)
                         return <IconComponent className="w-3 h-3 mr-1" />
                       })()}
-                      <span className="hidden sm:inline">{getPersonaDisplayName(conversation.persona)}</span>
-                      <span className="sm:hidden">{getPersonaDisplayName(conversation.persona).slice(0, 3)}</span>
+                      {getPersonaDisplayName(conversation.persona)}
                     </Badge>
-                    <div className="text-xs text-muted-foreground truncate">
+                    <div className="text-sm text-muted-foreground">
                       {formatDate(conversation.lastUpdated)}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      {conversation.messages.length} {conversation.messages.length === 1 ? t('history.message') : t('history.messages')}
                     </div>
                   </div>
                   
-                  {/* Action buttons */}
-                  <div className="mobile-conversation-actions flex items-center shrink-0">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => onContinueConversation ? onContinueConversation(conversation) : onSelectConversation(conversation)}
-                      className="text-xs px-2 py-1 h-auto"
-                    >
-                      {t('history.continue')}
-                    </Button>
-                    
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleRename(conversation.id, conversation.title)}
-                      className="p-1 h-auto"
-                    >
-                      <PencilSimple className="w-4 h-4" />
-                    </Button>
-
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="ghost" size="sm" className="p-1 h-auto text-destructive hover:text-destructive">
-                          <Trash className="w-4 h-4" />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>{t('history.delete')}</DialogTitle>
-                        </DialogHeader>
-                        <div className="space-y-4">
-                          <p className="text-sm text-muted-foreground">
-                            {t('history.deleteConfirmation', { title: conversation.title })}
-                          </p>
-                          <div className="flex justify-end gap-2">
-                            <Button variant="outline" size="sm" className="group">
-                              <span className="group-hover:text-primary transition-colors duration-200">
-                                {t('modals.cancel')}
-                              </span>
-                            </Button>
-                            <Button 
-                              variant="destructive" 
-                              size="sm"
-                              onClick={() => onDeleteConversation(conversation.id)}
-                            >
-                              {t('modals.delete')}
-                            </Button>
-                          </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  </div>
-                </div>
-
-                {/* Title and content */}
-                <div className="space-y-2">
                   {editingId === conversation.id ? (
                     <div className="flex items-center gap-2">
                       <Input
@@ -388,15 +327,15 @@ export function ConversationHistory({
                         }}
                         autoFocus
                       />
-                      <Button size="sm" onClick={saveRename} className="text-xs shrink-0">
+                      <Button size="sm" onClick={saveRename} className="text-xs">
                         {t('modals.save')}
                       </Button>
-                      <Button size="sm" variant="ghost" onClick={cancelRename} className="text-xs shrink-0">
+                      <Button size="sm" variant="ghost" onClick={cancelRename} className="text-xs">
                         {t('modals.cancel')}
                       </Button>
                     </div>
                   ) : (
-                    <h3 className="font-medium text-foreground text-sm md:text-base line-clamp-2">
+                    <h3 className="font-medium text-foreground mb-2">
                       {conversation.title}
                     </h3>
                   )}
@@ -404,11 +343,58 @@ export function ConversationHistory({
                   <p className="text-sm text-muted-foreground line-clamp-2">
                     {conversation.messages[conversation.messages.length - 1]?.content}
                   </p>
+                </div>
+                
+                <div className="flex items-center gap-2 shrink-0">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onContinueConversation ? onContinueConversation(conversation) : onSelectConversation(conversation)}
+                    className="text-xs"
+                  >
+                    {t('history.continue')}
+                  </Button>
                   
-                  {/* Message count for mobile */}
-                  <div className="text-xs text-muted-foreground">
-                    {conversation.messages.length} {conversation.messages.length === 1 ? t('history.message') : t('history.messages')}
-                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleRename(conversation.id, conversation.title)}
+                    className="text-xs p-2"
+                  >
+                    <PencilSimple className="w-4 h-4" />
+                  </Button>
+
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="ghost" size="sm" className="text-xs p-2 text-destructive hover:text-destructive">
+                        <Trash className="w-4 h-4" />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>{t('history.delete')}</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <p className="text-sm text-muted-foreground">
+                          {t('history.deleteConfirmation', { title: conversation.title })}
+                        </p>
+                        <div className="flex justify-end gap-2">
+                          <Button variant="outline" size="sm" className="group">
+                            <span className="group-hover:text-primary transition-colors duration-200">
+                              {t('modals.cancel')}
+                            </span>
+                          </Button>
+                          <Button 
+                            variant="destructive" 
+                            size="sm"
+                            onClick={() => onDeleteConversation(conversation.id)}
+                          >
+                            {t('modals.delete')}
+                          </Button>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </div>
             </Card>
@@ -417,24 +403,20 @@ export function ConversationHistory({
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-center gap-1 sm:gap-2 mt-4 sm:mt-6">
+            <div className="flex items-center justify-center gap-2 mt-6">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                 disabled={currentPage === 1}
-                className="h-8 w-8 p-0 group"
+                className="group"
               >
                 <CaretLeft className="w-4 h-4 group-hover:text-primary transition-colors duration-200" />
               </Button>
               
               <div className="flex items-center gap-1">
-                {/* Show max 5 pages on mobile, all on desktop */}
                 {Array.from({ length: totalPages }, (_, i) => i + 1)
                   .filter((page) => {
-                    // On mobile (small screens), show fewer pages
-                    if (totalPages <= 5) return true
-                    
                     // Show current page and 2 adjacent pages, plus first and last
                     return Math.abs(page - currentPage) <= 1 || page === 1 || page === totalPages
                   })
@@ -445,7 +427,7 @@ export function ConversationHistory({
                     return (
                       <React.Fragment key={page}>
                         {showEllipsis && (
-                          <span className="px-2 text-xs text-muted-foreground hidden sm:inline">...</span>
+                          <span className="px-2 text-xs text-muted-foreground">...</span>
                         )}
                         <Button
                           variant={currentPage === page ? "default" : "outline"}
@@ -471,7 +453,7 @@ export function ConversationHistory({
                 size="sm"
                 onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                 disabled={currentPage === totalPages}
-                className="h-8 w-8 p-0 group"
+                className="group"
               >
                 <CaretRight className="w-4 h-4 group-hover:text-primary transition-colors duration-200" />
               </Button>
@@ -479,7 +461,7 @@ export function ConversationHistory({
           )}
 
           {/* Results info */}
-          <div className="text-center text-xs text-muted-foreground mt-2 sm:mt-4">
+          <div className="text-center text-xs text-muted-foreground mt-4">
             {t('history.showingConversations', { 
               start: startIndex + 1, 
               end: Math.min(endIndex, filteredConversations.length), 
