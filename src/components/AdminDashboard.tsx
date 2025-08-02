@@ -266,12 +266,6 @@ Generated on: ${new Date().toISOString()}`
     toast.success(`User ${isNowSuspended ? 'suspended' : 'activated'} successfully`)
   }
 
-  const handleResetCredits = (userId: string) => {
-    // Mock credit reset
-    console.log('Resetting credits for user:', userId)
-    toast.success('Credits reset successfully')
-  }
-
   const handleUpdateCredits = (userId: string) => {
     const newCredits = tempCredits[userId]
     if (newCredits !== undefined && newCredits >= 0) {
@@ -563,7 +557,6 @@ Generated on: ${new Date().toISOString()}`
                     <TableHead>Language</TableHead>
                     <TableHead>Joined</TableHead>
                     <TableHead>Suspended</TableHead>
-                    <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -633,11 +626,6 @@ Generated on: ${new Date().toISOString()}`
                           checked={userSuspensions[user.id] || false}
                           onCheckedChange={() => handleToggleUserSuspension(user.id)}
                         />
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="sm" onClick={() => handleResetCredits(user.id)}>
-                          Reset Credits
-                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -789,7 +777,7 @@ Generated on: ${new Date().toISOString()}`
                             <Button 
                               variant="outline" 
                               onClick={() => setShowCreditCostModal(false)} 
-                              className="flex-1"
+                              className="flex-1 hover:text-primary"
                             >
                               Cancel
                             </Button>

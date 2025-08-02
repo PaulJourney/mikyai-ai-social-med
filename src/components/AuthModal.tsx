@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Eye, EyeSlash, CheckCircle, Envelope } from '@phosphor-icons/react'
+import { Eye, EyeSlash, CheckCircle, Envelope, Lock } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 
 interface AuthModalProps {
@@ -28,6 +28,11 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
   const [emailSent, setEmailSent] = useState(false)
   const [confirmationCode, setConfirmationCode] = useState('')
   const [verificationCode] = useState('123456') // Mock verification code
+  const [showForgotPassword, setShowForgotPassword] = useState(false)
+  const [resetEmailSent, setResetEmailSent] = useState(false)
+  const [resetCode, setResetCode] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmNewPassword, setConfirmNewPassword] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -126,6 +131,52 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
     }, 1500)
   }
 
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+    
+    // Simulate password reset email sending
+    setTimeout(() => {
+      setResetEmailSent(true)
+      setIsLoading(false)
+      toast.success('Password reset code sent! Check your inbox.')
+    }, 1000)
+  }
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+    
+    if (resetCode !== '123456') {
+      toast.error('Invalid reset code')
+      setIsLoading(false)
+      return
+    }
+    
+    if (newPassword !== confirmNewPassword) {
+      toast.error('Passwords do not match')
+      setIsLoading(false)
+      return
+    }
+    
+    if (newPassword.length < 6) {
+      toast.error('Password must be at least 6 characters')
+      setIsLoading(false)
+      return
+    }
+    
+    // Simulate password reset
+    setTimeout(() => {
+      toast.success('Password reset successfully! You can now sign in with your new password.')
+      setShowForgotPassword(false)
+      setResetEmailSent(false)
+      setResetCode('')
+      setNewPassword('')
+      setConfirmNewPassword('')
+      setIsLoading(false)
+    }, 1000)
+  }
+
   const handleConfirmEmail = (e: React.FormEvent) => {
     e.preventDefault()
     handleSubmit(e)
@@ -141,6 +192,11 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
     })
     setEmailSent(false)
     setConfirmationCode('')
+    setShowForgotPassword(false)
+    setResetEmailSent(false)
+    setResetCode('')
+    setNewPassword('')
+    setConfirmNewPassword('')
   }
 
   const handleModeSwitch = () => {
@@ -158,12 +214,154 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-center">
-            {mode === 'signin' ? 'Welcome Back' : 
-             emailSent ? 'Confirm Your Email' : 'Create Account'}
+            {showForgotPassword ? 
+              (resetEmailSent ? 'Reset Your Password' : 'Forgot Password') :
+              mode === 'signin' ? 'Welcome Back' : 
+              emailSent ? 'Confirm Your Email' : 'Create Account'}
           </DialogTitle>
         </DialogHeader>
         
-        {mode === 'signup' && emailSent ? (
+        {showForgotPassword ? (
+          resetEmailSent ? (
+            // Password reset form
+            <div className="space-y-6">
+              <div className="text-center space-y-4">
+                <div className="flex justify-center">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Lock className="w-8 h-8 text-primary" />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-medium mb-2">Enter reset code</h3>
+                  <p className="text-sm text-muted-foreground">
+                    We sent a reset code to {formData.email}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    For demo purposes, use code: <span className="font-mono text-primary">123456</span>
+                  </p>
+                </div>
+              </div>
+              
+              <form onSubmit={handleResetPassword} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="resetCode">Reset Code</Label>
+                  <Input
+                    id="resetCode"
+                    value={resetCode}
+                    onChange={(e) => setResetCode(e.target.value)}
+                    placeholder="Enter 6-digit code"
+                    maxLength={6}
+                    className="text-center text-lg tracking-widest"
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="newPassword">New Password</Label>
+                  <Input
+                    id="newPassword"
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Enter new password"
+                    required
+                    minLength={6}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="confirmNewPassword">Confirm New Password</Label>
+                  <Input
+                    id="confirmNewPassword"
+                    type="password"
+                    value={confirmNewPassword}
+                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                    placeholder="Confirm new password"
+                    required
+                    minLength={6}
+                  />
+                </div>
+                
+                <Button 
+                  type="submit" 
+                  className="w-full" 
+                  disabled={isLoading || resetCode.length !== 6 || !newPassword || !confirmNewPassword}
+                >
+                  {isLoading ? 'Resetting...' : 'Reset Password'}
+                </Button>
+                
+                <div className="text-center">
+                  <Button
+                    type="button"
+                    variant="link"
+                    size="sm"
+                    onClick={() => {
+                      setShowForgotPassword(false)
+                      setResetEmailSent(false)
+                      setResetCode('')
+                      setNewPassword('')
+                      setConfirmNewPassword('')
+                    }}
+                    className="text-muted-foreground"
+                  >
+                    ← Back to sign in
+                  </Button>
+                </div>
+              </form>
+            </div>
+          ) : (
+            // Request password reset
+            <div className="space-y-6">
+              <div className="text-center space-y-4">
+                <div className="flex justify-center">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Lock className="w-8 h-8 text-primary" />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-medium mb-2">Reset your password</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Enter your email address and we'll send you a reset code.
+                  </p>
+                </div>
+              </div>
+              
+              <form onSubmit={handleForgotPassword} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="resetEmail">Email</Label>
+                  <Input
+                    id="resetEmail"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                    placeholder="Enter your email address"
+                    required
+                  />
+                </div>
+                
+                <Button 
+                  type="submit" 
+                  className="w-full" 
+                  disabled={isLoading || !formData.email}
+                >
+                  {isLoading ? 'Sending...' : 'Send Reset Code'}
+                </Button>
+                
+                <div className="text-center">
+                  <Button
+                    type="button"
+                    variant="link"
+                    size="sm"
+                    onClick={() => setShowForgotPassword(false)}
+                    className="text-muted-foreground"
+                  >
+                    ← Back to sign in
+                  </Button>
+                </div>
+              </form>
+            </div>
+          )
+        ) : mode === 'signup' && emailSent ? (
           // Email confirmation step
           <div className="space-y-6">
             <div className="text-center space-y-4">
@@ -301,14 +499,6 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                 </p>
               </div>
             )}
-
-            {mode === 'signin' && (
-              <div className="p-3 bg-muted/50 rounded-lg">
-                <p className="text-xs text-muted-foreground">
-                  Test account: support@miky.ai / 1234
-                </p>
-              </div>
-            )}
             
             <Button 
               type="submit" 
@@ -317,6 +507,20 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
             >
               {isLoading ? 'Processing...' : mode === 'signin' ? 'Sign In' : 'Create Account'}
             </Button>
+            
+            {mode === 'signin' && (
+              <div className="text-center">
+                <Button
+                  type="button"
+                  variant="link"
+                  size="sm"
+                  onClick={() => setShowForgotPassword(true)}
+                  className="text-muted-foreground"
+                >
+                  Lost Password?
+                </Button>
+              </div>
+            )}
             
             <div className="text-center text-sm text-muted-foreground">
               {mode === 'signin' ? "Don't have an account?" : "Already have an account?"}
