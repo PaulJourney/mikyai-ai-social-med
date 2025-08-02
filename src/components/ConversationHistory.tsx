@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Trash, PencilSimple, ChatCircle } from '@phosphor-icons/react'
-import type { Conversation } from '../App'
+import type { Conversation, Persona } from '../App'
 
 interface ConversationHistoryProps {
   conversations: Conversation[]
@@ -24,6 +24,12 @@ export function ConversationHistory({
 }: ConversationHistoryProps) {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editTitle, setEditTitle] = useState('')
+  const [selectedFilter, setSelectedFilter] = useState<Persona | 'all'>('all')
+
+  // Filter conversations based on selected persona
+  const filteredConversations = selectedFilter === 'all' 
+    ? conversations 
+    : conversations.filter(conv => conv.persona === selectedFilter)
 
   const getPersonaIcon = (persona: string) => {
     const icons = {
@@ -36,6 +42,34 @@ export function ConversationHistory({
       general: '🤖'
     }
     return icons[persona as keyof typeof icons] || '🤖'
+  }
+
+  const getPersonaDisplayName = (persona: string) => {
+    const names = {
+      lawyer: 'Lawyer',
+      engineer: 'Engineer', 
+      marketer: 'Marketer',
+      coach: 'Coach',
+      medical: 'Medical Advisor',
+      'god-mode': 'God Mode',
+      general: 'General'
+    }
+    return names[persona as keyof typeof names] || 'General'
+  }
+
+  const getAllPersonas = (): Array<{ key: Persona | 'all', label: string, icon: string }> => {
+    const uniquePersonas = Array.from(new Set(conversations.map(c => c.persona)))
+    
+    const allPersonas = [
+      { key: 'all' as const, label: 'All', icon: '🔍' },
+      ...uniquePersonas.map(persona => ({
+        key: persona,
+        label: getPersonaDisplayName(persona),
+        icon: getPersonaIcon(persona)
+      }))
+    ]
+    
+    return allPersonas
   }
 
   const formatDate = (date: Date) => {
@@ -92,104 +126,145 @@ export function ConversationHistory({
         <p className="text-muted-foreground">Manage and continue your previous conversations</p>
       </div>
 
-      <div className="grid gap-4">
-        {conversations.map((conversation) => (
-          <Card key={conversation.id} className="p-4 hover:bg-card/80 transition-colors">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-2">
-                  <Badge variant="outline" className="text-xs">
-                    {getPersonaIcon(conversation.persona)} {conversation.persona === 'general' ? 'General' : conversation.persona.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                  </Badge>
-                  <span className="text-xs text-muted-foreground">
-                    {formatDate(conversation.lastUpdated)}
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    {conversation.messages.length} messages
-                  </span>
+      {/* Persona Filters */}
+      <div className="mb-6">
+        <div className="flex flex-wrap gap-2">
+          {getAllPersonas().map((persona) => (
+            <Button
+              key={persona.key}
+              variant={selectedFilter === persona.key ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSelectedFilter(persona.key)}
+              className="text-xs"
+            >
+              <span className="mr-1">{persona.icon}</span>
+              {persona.label}
+              {persona.key !== 'all' && (
+                <Badge variant="secondary" className="ml-2 text-xs">
+                  {conversations.filter(c => c.persona === persona.key).length}
+                </Badge>
+              )}
+              {persona.key === 'all' && (
+                <Badge variant="secondary" className="ml-2 text-xs">
+                  {conversations.length}
+                </Badge>
+              )}
+            </Button>
+          ))}
+        </div>
+      </div>
+
+      {filteredConversations.length === 0 ? (
+        <div className="text-center py-12">
+          <ChatCircle className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+          <h2 className="text-xl font-medium text-foreground mb-2">No conversations found</h2>
+          <p className="text-muted-foreground">
+            {selectedFilter === 'all' 
+              ? 'Start a conversation to see your history here'
+              : `No conversations with ${getPersonaDisplayName(selectedFilter as string)} persona`
+            }
+          </p>
+        </div>
+      ) : (
+        <div className="grid gap-4">
+          {filteredConversations.map((conversation) => (
+            <Card key={conversation.id} className="p-4 hover:bg-card/80 transition-colors">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Badge variant="outline" className="text-xs">
+                      {getPersonaIcon(conversation.persona)} {conversation.persona === 'general' ? 'General' : conversation.persona.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    </Badge>
+                    <span className="text-xs text-muted-foreground">
+                      {formatDate(conversation.lastUpdated)}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {conversation.messages.length} messages
+                    </span>
+                  </div>
+
+                  {editingId === conversation.id ? (
+                    <div className="flex items-center gap-2">
+                      <Input
+                        value={editTitle}
+                        onChange={(e) => setEditTitle(e.target.value)}
+                        className="text-sm"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') saveRename()
+                          if (e.key === 'Escape') cancelRename()
+                        }}
+                        autoFocus
+                      />
+                      <Button size="sm" onClick={saveRename} className="text-xs">
+                        Save
+                      </Button>
+                      <Button size="sm" variant="ghost" onClick={cancelRename} className="text-xs">
+                        Cancel
+                      </Button>
+                    </div>
+                  ) : (
+                    <h3 className="font-medium text-foreground truncate mb-1">
+                      {conversation.title}
+                    </h3>
+                  )}
+
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {conversation.messages[conversation.messages.length - 1]?.content}
+                  </p>
                 </div>
 
-                {editingId === conversation.id ? (
-                  <div className="flex items-center gap-2">
-                    <Input
-                      value={editTitle}
-                      onChange={(e) => setEditTitle(e.target.value)}
-                      className="text-sm"
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') saveRename()
-                        if (e.key === 'Escape') cancelRename()
-                      }}
-                      autoFocus
-                    />
-                    <Button size="sm" onClick={saveRename} className="text-xs">
-                      Save
-                    </Button>
-                    <Button size="sm" variant="ghost" onClick={cancelRename} className="text-xs">
-                      Cancel
-                    </Button>
-                  </div>
-                ) : (
-                  <h3 className="font-medium text-foreground truncate mb-1">
-                    {conversation.title}
-                  </h3>
-                )}
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => onContinueConversation ? onContinueConversation(conversation) : onSelectConversation(conversation)}
+                    className="text-xs"
+                  >
+                    Continue
+                  </Button>
+                  
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleRename(conversation.id, conversation.title)}
+                    className="p-2"
+                  >
+                    <PencilSimple className="w-4 h-4" />
+                  </Button>
 
-                <p className="text-sm text-muted-foreground line-clamp-2">
-                  {conversation.messages[conversation.messages.length - 1]?.content}
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onContinueConversation ? onContinueConversation(conversation) : onSelectConversation(conversation)}
-                  className="text-xs"
-                >
-                  Continue
-                </Button>
-                
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleRename(conversation.id, conversation.title)}
-                  className="p-2"
-                >
-                  <PencilSimple className="w-4 h-4" />
-                </Button>
-
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="ghost" size="sm" className="p-2 text-destructive hover:text-destructive">
-                      <Trash className="w-4 h-4" />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Delete Conversation</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4">
-                      <p className="text-sm text-muted-foreground">
-                        Are you sure you want to delete "{conversation.title}"? This action cannot be undone.
-                      </p>
-                      <div className="flex justify-end gap-2">
-                        <Button variant="outline" size="sm">Cancel</Button>
-                        <Button 
-                          variant="destructive" 
-                          size="sm"
-                          onClick={() => onDeleteConversation(conversation.id)}
-                        >
-                          Delete
-                        </Button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="ghost" size="sm" className="p-2 text-destructive hover:text-destructive">
+                        <Trash className="w-4 h-4" />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Delete Conversation</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <p className="text-sm text-muted-foreground">
+                          Are you sure you want to delete "{conversation.title}"? This action cannot be undone.
+                        </p>
+                        <div className="flex justify-end gap-2">
+                          <Button variant="outline" size="sm">Cancel</Button>
+                          <Button 
+                            variant="destructive" 
+                            size="sm"
+                            onClick={() => onDeleteConversation(conversation.id)}
+                          >
+                            Delete
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                    </DialogContent>
+                  </Dialog>
+                </div>
               </div>
-            </div>
-          </Card>
-        ))}
-      </div>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

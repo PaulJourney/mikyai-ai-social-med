@@ -248,7 +248,7 @@ export function ChatModal({
                   <div className={`flex-1 space-y-1 ${message.sender === 'user' ? 'text-right' : 'text-left'}`}>
                     <div
                       className={`
-                        inline-block px-4 py-3 rounded-lg text-xs max-w-[80%]
+                        inline-block px-4 py-3 rounded-md text-sm max-w-[80%]
                         ${message.sender === 'user' 
                           ? 'bg-primary text-primary-foreground ml-auto' 
                           : 'bg-muted text-foreground'
@@ -272,7 +272,7 @@ export function ChatModal({
                     </div>
                   </Avatar>
                   <div className="flex-1">
-                    <div className="inline-block px-4 py-3 rounded-lg text-xs bg-muted">
+                    <div className="inline-block px-4 py-3 rounded-md text-sm bg-muted">
                       <div className="flex space-x-1">
                         <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
                         <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
