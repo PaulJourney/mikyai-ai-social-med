@@ -372,6 +372,7 @@ function App() {
                   selectedPersona={selectedPersona}
                   onOpenChat={() => setShowChatModal(true)}
                   showChatModal={showChatModal}
+                  isAuthenticated={!!user}
                 />
                 
                 <PersonaSelector 

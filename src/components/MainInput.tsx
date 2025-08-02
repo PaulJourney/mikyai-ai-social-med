@@ -14,6 +14,7 @@ interface MainInputProps {
   selectedPersona: Persona | null
   onOpenChat?: () => void
   showChatModal?: boolean
+  isAuthenticated?: boolean
 }
 
 export function MainInput({ 
@@ -23,7 +24,8 @@ export function MainInput({
   disabled, 
   selectedPersona,
   onOpenChat,
-  showChatModal = false
+  showChatModal = false,
+  isAuthenticated = false
 }: MainInputProps) {
   const [message, setMessage] = useState('')
   const [animatedPlaceholder, setAnimatedPlaceholder] = useState('')
@@ -54,8 +56,10 @@ export function MainInput({
     if (message.trim() && !disabled) {
       onSendMessage(message.trim())
       setMessage('')
-      // Open chat modal when sending message
-      onOpenChat?.()
+      // Only open chat modal if user is authenticated
+      if (isAuthenticated) {
+        onOpenChat?.()
+      }
     }
   }
 
