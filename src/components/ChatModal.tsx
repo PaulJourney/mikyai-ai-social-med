@@ -327,7 +327,7 @@ export function ChatModal({
               <Button
                 type="submit"
                 disabled={!inputValue.trim() || disabled}
-                className="h-12 px-6"
+                className="h-12 w-12 rounded-full p-0"
               >
                 <PaperPlaneTilt className="w-4 h-4" />
               </Button>

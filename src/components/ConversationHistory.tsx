@@ -4,7 +4,18 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { Trash, PencilSimple, ChatCircle } from '@phosphor-icons/react'
+import { 
+  Trash, 
+  PencilSimple, 
+  ChatCircle, 
+  Scales, 
+  Wrench, 
+  TrendUp, 
+  FirstAidKit, 
+  Lightning,
+  Robot,
+  MagnifyingGlass
+} from '@phosphor-icons/react'
 import type { Conversation, Persona } from '../App'
 
 interface ConversationHistoryProps {
@@ -32,16 +43,16 @@ export function ConversationHistory({
     : conversations.filter(conv => conv.persona === selectedFilter)
 
   const getPersonaIcon = (persona: string) => {
-    const icons = {
-      lawyer: '⚖️',
-      engineer: '🛠️',
-      marketer: '📈',
-      coach: '💬',
-      medical: '🏥',
-      'god-mode': '🌌',
-      general: '🤖'
+    const iconMap = {
+      lawyer: Scales,
+      engineer: Wrench,
+      marketer: TrendUp,
+      coach: ChatCircle,
+      medical: FirstAidKit,
+      'god-mode': Lightning,
+      general: Robot
     }
-    return icons[persona as keyof typeof icons] || '🤖'
+    return iconMap[persona as keyof typeof iconMap] || Robot
   }
 
   const getPersonaDisplayName = (persona: string) => {
@@ -57,11 +68,11 @@ export function ConversationHistory({
     return names[persona as keyof typeof names] || 'General'
   }
 
-  const getAllPersonas = (): Array<{ key: Persona | 'all', label: string, icon: string }> => {
+  const getAllPersonas = (): Array<{ key: Persona | 'all', label: string, icon: React.ElementType }> => {
     const uniquePersonas = Array.from(new Set(conversations.map(c => c.persona)))
     
     const allPersonas = [
-      { key: 'all' as const, label: 'All', icon: '🔍' },
+      { key: 'all' as const, label: 'All', icon: MagnifyingGlass },
       ...uniquePersonas.map(persona => ({
         key: persona,
         label: getPersonaDisplayName(persona),
@@ -77,17 +88,23 @@ export function ConversationHistory({
     const diffMs = now.getTime() - new Date(date).getTime()
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
     
+    const timeString = new Intl.DateTimeFormat('en-US', {
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(new Date(date))
+    
     if (diffDays === 0) {
-      return 'Today'
+      return `Today at ${timeString}`
     } else if (diffDays === 1) {
-      return 'Yesterday'
+      return `Yesterday at ${timeString}`
     } else if (diffDays < 7) {
-      return `${diffDays} days ago`
+      return `${diffDays} days ago at ${timeString}`
     } else {
-      return new Intl.DateTimeFormat('en-US', {
+      const dateString = new Intl.DateTimeFormat('en-US', {
         month: 'short',
         day: 'numeric'
       }).format(new Date(date))
+      return `${dateString} at ${timeString}`
     }
   }
 
@@ -129,28 +146,42 @@ export function ConversationHistory({
       {/* Persona Filters */}
       <div className="mb-6">
         <div className="flex flex-wrap gap-2">
-          {getAllPersonas().map((persona) => (
-            <Button
-              key={persona.key}
-              variant={selectedFilter === persona.key ? "default" : "outline"}
-              size="sm"
-              onClick={() => setSelectedFilter(persona.key)}
-              className="text-xs"
-            >
-              <span className="mr-1">{persona.icon}</span>
-              {persona.label}
-              {persona.key !== 'all' && (
-                <Badge variant="secondary" className="ml-2 text-xs">
-                  {conversations.filter(c => c.persona === persona.key).length}
-                </Badge>
-              )}
-              {persona.key === 'all' && (
-                <Badge variant="secondary" className="ml-2 text-xs">
-                  {conversations.length}
-                </Badge>
-              )}
-            </Button>
-          ))}
+          {getAllPersonas().map((persona) => {
+            const IconComponent = persona.icon
+            const isSelected = selectedFilter === persona.key
+            
+            return (
+              <Button
+                key={persona.key}
+                variant={isSelected ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedFilter(persona.key)}
+                className={`text-xs group transition-colors ${
+                  !isSelected ? 'hover:border-primary' : ''
+                }`}
+              >
+                <IconComponent className={`w-4 h-4 mr-1 ${
+                  !isSelected ? 'group-hover:text-primary' : ''
+                }`} />
+                <span className={`${
+                  !isSelected ? 'group-hover:text-primary' : ''
+                }`}>
+                  {persona.label}
+                </span>
+                {persona.key !== 'all' && (
+                  <Badge variant="secondary" className="ml-2 text-xs">
+                    {conversations.filter(c => c.persona === persona.key).length}
+                  </Badge>
+                )}
+                {persona.key === 'all' && (
+                  <Badge variant="secondary" className="ml-2 text-xs">
+                    {conversations.length}
+                  </Badge>
+                )}
+              </Button>
+            )
+          })}
+        </div>
         </div>
       </div>
 
@@ -173,7 +204,11 @@ export function ConversationHistory({
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-2">
                     <Badge variant="outline" className="text-xs">
-                      {getPersonaIcon(conversation.persona)} {conversation.persona === 'general' ? 'General' : conversation.persona.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      {(() => {
+                        const IconComponent = getPersonaIcon(conversation.persona)
+                        return <IconComponent className="w-3 h-3 mr-1" />
+                      })()}
+                      {conversation.persona === 'general' ? 'General' : conversation.persona.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
                     </Badge>
                     <span className="text-xs text-muted-foreground">
                       {formatDate(conversation.lastUpdated)}
