@@ -100,19 +100,6 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
       </div>
       
       <div className="space-y-4">
-        {selectedPersona && (
-          <div className="text-center">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onPersonaSelect(null)}
-              className="text-xs text-muted-foreground hover:text-foreground"
-            >
-              Switch to General Chat Mode
-            </Button>
-          </div>
-        )}
-        
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {personas.map((persona) => {
           const isSelected = selectedPersona === persona.id
@@ -154,6 +141,19 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
           )
         })}
         </div>
+        
+        {selectedPersona && (
+          <div className="text-center">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onPersonaSelect(null)}
+              className="text-xs text-muted-foreground hover:text-foreground"
+            >
+              Switch to General Chat Mode
+            </Button>
+          </div>
+        )}
       </div>
 
       {userPlan === 'free' && (

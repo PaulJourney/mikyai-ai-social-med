@@ -15,7 +15,6 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    subject: '',
     message: ''
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -27,7 +26,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+    if (!formData.name || !formData.email || !formData.message) {
       toast.error('Please fill in all fields')
       return
     }
@@ -42,7 +41,6 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
       setFormData({
         name: '',
         email: '',
-        subject: '',
         message: ''
       })
       
@@ -65,46 +63,39 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
           <DialogTitle className="text-lg font-semibold">Contact Us</DialogTitle>
         </DialogHeader>
         
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Name</label>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-3">
+            <label className="text-sm font-medium">Name *</label>
             <Input
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
               placeholder="Your full name"
               disabled={isSubmitting}
+              required
             />
           </div>
           
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Email</label>
+          <div className="space-y-3">
+            <label className="text-sm font-medium">Email *</label>
             <Input
               type="email"
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
               placeholder="your.email@example.com"
               disabled={isSubmitting}
+              required
             />
           </div>
           
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Subject</label>
-            <Input
-              value={formData.subject}
-              onChange={(e) => handleInputChange('subject', e.target.value)}
-              placeholder="What's this about?"
-              disabled={isSubmitting}
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Message</label>
+          <div className="space-y-3">
+            <label className="text-sm font-medium">Message *</label>
             <Textarea
               value={formData.message}
               onChange={(e) => handleInputChange('message', e.target.value)}
               placeholder="Tell us how we can help you..."
               rows={4}
               disabled={isSubmitting}
+              required
             />
           </div>
           
