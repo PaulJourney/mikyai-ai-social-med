@@ -244,9 +244,9 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
         <DialogHeader>
           <DialogTitle className="text-center">
             {showForgotPassword ? 
-              (resetEmailSent ? 'Reset Your Password' : 'Forgot Password') :
-              mode === 'signin' ? 'Welcome Back' : 
-              emailSent ? 'Confirm Your Email' : 'Create Account'}
+              (resetEmailSent ? t('auth.resetPassword') : t('auth.lostPassword')) :
+              mode === 'signin' ? t('modals.welcomeBack') : 
+              emailSent ? t('auth.confirmEmail') : t('auth.createAccount')}
           </DialogTitle>
         </DialogHeader>
         
@@ -278,7 +278,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                     id="resetCode"
                     value={resetCode}
                     onChange={(e) => setResetCode(e.target.value)}
-                    placeholder="Enter 6-digit code"
+                    placeholder="123456"
                     maxLength={6}
                     className="text-center text-lg tracking-widest"
                     required
@@ -286,26 +286,26 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="newPassword">New Password</Label>
+                  <Label htmlFor="newPassword">{t('auth.password')}</Label>
                   <Input
                     id="newPassword"
                     type="password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="Enter new password"
+                    placeholder={t('auth.newPasswordPlaceholder')}
                     required
                     minLength={6}
                   />
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="confirmNewPassword">Confirm New Password</Label>
+                  <Label htmlFor="confirmNewPassword">{t('auth.confirmPassword')}</Label>
                   <Input
                     id="confirmNewPassword"
                     type="password"
                     value={confirmNewPassword}
                     onChange={(e) => setConfirmNewPassword(e.target.value)}
-                    placeholder="Confirm new password"
+                    placeholder={t('auth.confirmPasswordPlaceholder')}
                     required
                     minLength={6}
                   />
@@ -357,13 +357,13 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
               
               <form onSubmit={handleForgotPassword} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="resetEmail">Email</Label>
+                  <Label htmlFor="resetEmail">{t('auth.email')}</Label>
                   <Input
                     id="resetEmail"
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                    placeholder="Enter your email address"
+                    placeholder={t('auth.emailPlaceholder')}
                     required
                   />
                 </div>
@@ -417,7 +417,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                   id="confirmationCode"
                   value={confirmationCode}
                   onChange={(e) => setConfirmationCode(e.target.value)}
-                  placeholder="Enter 6-digit code"
+                  placeholder="123456"
                   maxLength={6}
                   className="text-center text-lg tracking-widest"
                   required
@@ -454,20 +454,22 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
             {mode === 'signup' && (
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName">First Name</Label>
+                  <Label htmlFor="firstName">{t('auth.firstName')}</Label>
                   <Input
                     id="firstName"
                     value={formData.firstName}
                     onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
+                    placeholder={t('auth.firstNamePlaceholder')}
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">Last Name</Label>
+                  <Label htmlFor="lastName">{t('auth.lastName')}</Label>
                   <Input
                     id="lastName"
                     value={formData.lastName}
                     onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
+                    placeholder={t('auth.lastNamePlaceholder')}
                     required
                   />
                 </div>
@@ -475,24 +477,26 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
             )}
             
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('auth.email')}</Label>
               <Input
                 id="email"
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                placeholder={t('auth.emailPlaceholder')}
                 required
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t('auth.password')}</Label>
               <div className="relative">
                 <Input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   value={formData.password}
                   onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                  placeholder={t('auth.passwordPlaceholder')}
                   required
                   className="pr-10"
                 />
@@ -511,26 +515,27 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
             {mode === 'signup' && (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Label htmlFor="confirmPassword">{t('auth.confirmPassword')}</Label>
                   <Input
                     id="confirmPassword"
                     type="password"
                     value={formData.confirmPassword}
                     onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                    placeholder={t('auth.confirmPasswordPlaceholder')}
                     required
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="referralCode">
-                    Referral Code <span className="text-muted-foreground">(Optional)</span>
+                    {t('referral.referralCode')} <span className="text-muted-foreground">({t('auth.referralCodePlaceholder').split(' ')[1]})</span>
                   </Label>
                   <div className="flex gap-2">
                     <Input
                       id="referralCode"
                       value={formData.referralCode}
                       onChange={(e) => setFormData(prev => ({ ...prev, referralCode: e.target.value }))}
-                      placeholder="Enter referral code"
+                      placeholder={t('auth.referralCodePlaceholder')}
                       disabled={referralVerified}
                       className={referralVerified ? 'bg-primary/10 border-primary' : ''}
                     />
@@ -543,7 +548,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                         disabled={isVerifyingReferral}
                         className="px-3 whitespace-nowrap"
                       >
-                        {isVerifyingReferral ? 'Verifying...' : 'Verify'}
+                        {isVerifyingReferral ? 'Verifying...' : t('referral.verifyReferral')}
                       </Button>
                     )}
                     {referralVerified && (
@@ -558,7 +563,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                   {referralVerified && (
                     <div className="p-2 bg-primary/10 border border-primary/20 rounded-lg">
                       <p className="text-xs text-primary font-medium">
-                        ✨ Verified! You'll receive 300 bonus credits from {referrerName}
+                        {t('referral.referralVerified', { name: referrerName })}
                       </p>
                     </div>
                   )}
@@ -579,7 +584,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
               className="w-full" 
               disabled={isLoading}
             >
-              {isLoading ? 'Processing...' : mode === 'signin' ? 'Sign In' : 'Create Account'}
+              {isLoading ? t('modals.processing') : mode === 'signin' ? t('auth.signIn') : t('auth.createAccount')}
             </Button>
             
             {mode === 'signin' && (
@@ -591,13 +596,13 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                   onClick={() => setShowForgotPassword(true)}
                   className="text-muted-foreground"
                 >
-                  Lost Password?
+                  {t('auth.lostPassword')}?
                 </Button>
               </div>
             )}
             
             <div className="text-center text-sm text-muted-foreground">
-              {mode === 'signin' ? "Don't have an account?" : "Already have an account?"}
+              {mode === 'signin' ? t('auth.noAccount') : t('auth.haveAccount')}
               <Button
                 type="button"
                 variant="link"
@@ -605,7 +610,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                 onClick={handleModeSwitch}
                 className="p-0 ml-1 h-auto text-primary"
               >
-                {mode === 'signin' ? 'Sign up' : 'Sign in'}
+                {mode === 'signin' ? t('auth.signUp') : t('auth.signIn')}
               </Button>
             </div>
           </form>

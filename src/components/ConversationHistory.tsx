@@ -116,17 +116,17 @@ export function ConversationHistory({
     }).format(new Date(date))
     
     if (diffDays === 0) {
-      return `Today at ${timeString}`
+      return `${t('history.today')} ${t('history.at')} ${timeString}`
     } else if (diffDays === 1) {
-      return `Yesterday at ${timeString}`
+      return `${t('history.yesterday')} ${t('history.at')} ${timeString}`
     } else if (diffDays < 7) {
-      return `${diffDays} days ago at ${timeString}`
+      return `${diffDays} days ago ${t('history.at')} ${timeString}`
     } else {
       const dateString = new Intl.DateTimeFormat('en-US', {
         month: 'short',
         day: 'numeric'
       }).format(new Date(date))
-      return `${dateString} at ${timeString}`
+      return `${dateString} ${t('history.at')} ${timeString}`
     }
   }
 
@@ -260,7 +260,7 @@ export function ConversationHistory({
                       {formatDate(conversation.lastUpdated)}
                     </span>
                     <span className="text-xs text-muted-foreground">
-                      {conversation.messages.length} messages
+                      {conversation.messages.length} {conversation.messages.length === 1 ? t('history.message') : t('history.messages')}
                     </span>
                   </div>
 

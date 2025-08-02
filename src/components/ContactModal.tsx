@@ -71,7 +71,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
             <Input
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
-              placeholder="Your full name"
+              placeholder={t('contact.namePlaceholder')}
               disabled={isSubmitting}
               required
             />
@@ -83,7 +83,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               type="email"
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
-              placeholder="your.email@example.com"
+              placeholder={t('contact.emailPlaceholder')}
               disabled={isSubmitting}
               required
             />
@@ -94,7 +94,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
             <Textarea
               value={formData.message}
               onChange={(e) => handleInputChange('message', e.target.value)}
-              placeholder="Tell us how we can help you..."
+              placeholder={t('contact.messagePlaceholder')}
               rows={4}
               disabled={isSubmitting}
               required

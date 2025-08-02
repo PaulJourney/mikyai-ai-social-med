@@ -314,7 +314,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
               {t('modals.downgradeConfirmation')}
             </p>
             <div className="bg-muted/50 p-4 rounded-lg space-y-2">
-              <div className="font-medium">Billing Information:</div>
+              <div className="font-medium">{t('pricing.billingInformation')}:</div>
               <div className="text-sm text-muted-foreground">
                 Your current plan will remain active until {formatNextBillingDate()}.
                 After this date, you'll be charged {plans.find(p => p.id === targetPlan)?.price}/month for the {plans.find(p => p.id === targetPlan)?.name} plan.
@@ -337,7 +337,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-center">
-              {t('pricing.buyCredits')}
+              {t('pricing.buyCreditsModal.title')}
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-8">
@@ -353,7 +353,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
               
               <div className="space-y-4">
                 <div className="flex justify-between text-sm">
-                  <span className="font-medium">Select amount:</span>
+                  <span className="font-medium">{t('pricing.buyCreditsModal.selectAmount')}:</span>
                   <span className="text-muted-foreground">{creditsToBuy[0].toLocaleString()} credits</span>
                 </div>
                 <div className="relative">
@@ -374,17 +374,30 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
               </div>
               
               <div className="grid grid-cols-3 gap-2 mt-4">
-                {[500, 1000, 2000].map((amount) => (
-                  <Button
-                    key={amount}
-                    variant={creditsToBuy[0] === amount ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setCreditsToBuy([amount])}
-                    className={`text-xs ${creditsToBuy[0] !== amount ? 'hover:text-primary' : ''}`}
-                  >
-                    {amount.toLocaleString()}
-                  </Button>
-                ))}
+                <Button
+                  variant={creditsToBuy[0] === 500 ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setCreditsToBuy([500])}
+                  className={`text-xs ${creditsToBuy[0] !== 500 ? 'hover:text-primary' : ''}`}
+                >
+                  {t('pricing.buyCreditsModal.credits500')}
+                </Button>
+                <Button
+                  variant={creditsToBuy[0] === 1000 ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setCreditsToBuy([1000])}
+                  className={`text-xs ${creditsToBuy[0] !== 1000 ? 'hover:text-primary' : ''}`}
+                >
+                  {t('pricing.buyCreditsModal.credits1000')}
+                </Button>
+                <Button
+                  variant={creditsToBuy[0] === 2000 ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setCreditsToBuy([2000])}
+                  className={`text-xs ${creditsToBuy[0] !== 2000 ? 'hover:text-primary' : ''}`}
+                >
+                  {t('pricing.buyCreditsModal.credits2000')}
+                </Button>
               </div>
             </div>
             
@@ -402,11 +415,11 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
           </div>
           <DialogFooter className="gap-3">
             <Button variant="outline" onClick={() => setShowBuyCreditsDialog(false)} className="hover:text-primary">
-              {t('modals.cancel')}
+              {t('pricing.buyCreditsModal.cancel')}
             </Button>
             <Button onClick={handleBuyCredits} className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90">
               <CreditCard className="w-4 h-4 mr-2" />
-              {t('pricing.buyCredits')}
+              {t('pricing.buyCreditsModal.purchase')}
             </Button>
           </DialogFooter>
         </DialogContent>

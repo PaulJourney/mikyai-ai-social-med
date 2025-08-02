@@ -94,6 +94,12 @@ export interface Translations {
       page: string
       of: string
     }
+    // Date formatting
+    today: string
+    yesterday: string
+    at: string
+    messages: string
+    message: string
   }
   
   // Pricing
@@ -120,6 +126,22 @@ export interface Translations {
     downgradeTo: string
     buyAdditional: string
     creditInfo: string
+    // Buy Credits Modal
+    buyCreditsModal: {
+      title: string
+      selectAmount: string
+      credits500: string
+      credits1000: string
+      credits2000: string
+      purchase: string
+      cancel: string
+    }
+    // Billing
+    billingInformation: string
+    cardNumber: string
+    expiryDate: string
+    cvv: string
+    billingAddress: string
   }
   
   // Auth
@@ -142,6 +164,21 @@ export interface Translations {
     confirmEmail: string
     welcome: string
     logout: string
+    // Form placeholders
+    emailPlaceholder: string
+    passwordPlaceholder: string
+    firstNamePlaceholder: string
+    lastNamePlaceholder: string
+    confirmPasswordPlaceholder: string
+    referralCodePlaceholder: string
+    newPasswordPlaceholder: string
+    // Messages
+    emailSentMessage: string
+    emailNotFoundMessage: string
+    passwordResetSuccess: string
+    accountActivated: string
+    verificationEmailSent: string
+    signUpSuccess: string
   }
   
   // Modals
@@ -213,6 +250,10 @@ export interface Translations {
     send: string
     success: string
     processing: string
+    // Form placeholders
+    namePlaceholder: string
+    emailPlaceholder: string
+    messagePlaceholder: string
   }
   
   // Footer
@@ -343,7 +384,13 @@ const translations: Record<Language, Translations> = {
         next: 'Next',
         page: 'Page',
         of: 'of'
-      }
+      },
+      // Date formatting
+      today: 'Today',
+      yesterday: 'Yesterday',
+      at: 'at',
+      messages: 'messages',
+      message: 'message'
     },
     pricing: {
       title: 'Choose your plan',
@@ -367,7 +414,23 @@ const translations: Record<Language, Translations> = {
       upgradeTo: 'Upgrade to {{plan}}',
       downgradeTo: 'Downgrade to {{plan}}',
       buyAdditional: 'Buy additional credits anytime — they never expire.',
-      creditInfo: 'Credits are consumed per message based on persona complexity.'
+      creditInfo: 'Credits are consumed per message based on persona complexity.',
+      // Buy Credits Modal
+      buyCreditsModal: {
+        title: 'Buy Additional Credits',
+        selectAmount: 'Select credit amount',
+        credits500: '500 Credits',
+        credits1000: '1,000 Credits',
+        credits2000: '2,000 Credits',
+        purchase: 'Purchase Credits',
+        cancel: 'Cancel'
+      },
+      // Billing
+      billingInformation: 'Billing Information',
+      cardNumber: 'Card Number',
+      expiryDate: 'MM/YY',
+      cvv: 'CVV',
+      billingAddress: 'Billing Address'
     },
     auth: {
       signIn: 'Sign in',
@@ -387,7 +450,22 @@ const translations: Record<Language, Translations> = {
       checkEmail: 'Check your email for the reset link.',
       confirmEmail: 'Please confirm your email to continue.',
       welcome: 'Welcome to Miky!',
-      logout: 'Logout'
+      logout: 'Logout',
+      // Form placeholders
+      emailPlaceholder: 'your@email.com',
+      passwordPlaceholder: 'Enter your password',
+      firstNamePlaceholder: 'Your first name',
+      lastNamePlaceholder: 'Your last name',
+      confirmPasswordPlaceholder: 'Confirm your password',
+      referralCodePlaceholder: 'Enter referral code (optional)',
+      newPasswordPlaceholder: 'Enter new password',
+      // Messages
+      emailSentMessage: 'Reset link sent to your email.',
+      emailNotFoundMessage: 'Email address not found.',
+      passwordResetSuccess: 'Password reset successfully.',
+      accountActivated: 'Account activated successfully!',
+      verificationEmailSent: 'Verification email sent. Please check your inbox.',
+      signUpSuccess: 'Account created successfully! Please verify your email.'
     },
     modals: {
       close: 'Close',
@@ -452,7 +530,11 @@ const translations: Record<Language, Translations> = {
       message: 'Message',
       send: 'Send Message',
       success: 'Message sent successfully! Our team will get back to you soon.',
-      processing: 'Sending message...'
+      processing: 'Sending message...',
+      // Form placeholders
+      namePlaceholder: 'Your full name',
+      emailPlaceholder: 'your@email.com',
+      messagePlaceholder: 'Tell us how we can help you'
     },
     footer: {
       copyright: '© 2025 Miky.ai - Ultra‑Skilled AI Personas',
@@ -575,7 +657,13 @@ const translations: Record<Language, Translations> = {
         next: 'Successivo',
         page: 'Pagina',
         of: 'di'
-      }
+      },
+      // Date formatting
+      today: 'Oggi',
+      yesterday: 'Ieri',
+      at: 'alle',
+      messages: 'messaggi',
+      message: 'messaggio'
     },
     pricing: {
       title: 'Scegli il tuo piano',
@@ -599,7 +687,23 @@ const translations: Record<Language, Translations> = {
       upgradeTo: 'Upgrade a {{plan}}',
       downgradeTo: 'Downgrade a {{plan}}',
       buyAdditional: 'Acquista crediti aggiuntivi in qualsiasi momento — non scadono mai.',
-      creditInfo: 'I crediti vengono consumati per messaggio in base alla complessità della personalità.'
+      creditInfo: 'I crediti vengono consumati per messaggio in base alla complessità della personalità.',
+      // Buy Credits Modal
+      buyCreditsModal: {
+        title: 'Acquista Crediti Aggiuntivi',
+        selectAmount: 'Seleziona quantità crediti',
+        credits500: '500 Crediti',
+        credits1000: '1.000 Crediti',
+        credits2000: '2.000 Crediti',
+        purchase: 'Acquista Crediti',
+        cancel: 'Annulla'
+      },
+      // Billing
+      billingInformation: 'Informazioni Fatturazione',
+      cardNumber: 'Numero Carta',
+      expiryDate: 'MM/AA',
+      cvv: 'CVV',
+      billingAddress: 'Indirizzo Fatturazione'
     },
     auth: {
       signIn: 'Accedi',
@@ -619,7 +723,22 @@ const translations: Record<Language, Translations> = {
       checkEmail: 'Controlla la tua email per il link di reset.',
       confirmEmail: 'Conferma la tua email per continuare.',
       welcome: 'Benvenuto in Miky!',
-      logout: 'Esci'
+      logout: 'Esci',
+      // Form placeholders
+      emailPlaceholder: 'tua@email.com',
+      passwordPlaceholder: 'Inserisci la password',
+      firstNamePlaceholder: 'Il tuo nome',
+      lastNamePlaceholder: 'Il tuo cognome',
+      confirmPasswordPlaceholder: 'Conferma la password',
+      referralCodePlaceholder: 'Codice referral (opzionale)',
+      newPasswordPlaceholder: 'Nuova password',
+      // Messages
+      emailSentMessage: 'Link di reset inviato alla tua email.',
+      emailNotFoundMessage: 'Indirizzo email non trovato.',
+      passwordResetSuccess: 'Password reimpostata con successo.',
+      accountActivated: 'Account attivato con successo!',
+      verificationEmailSent: 'Email di verifica inviata. Controlla la tua casella.',
+      signUpSuccess: 'Account creato con successo! Verifica la tua email.'
     },
     modals: {
       close: 'Chiudi',
@@ -684,7 +803,11 @@ const translations: Record<Language, Translations> = {
       message: 'Messaggio',
       send: 'Invia Messaggio',
       success: 'Messaggio inviato con successo! Il nostro team ti risponderà presto.',
-      processing: 'Invio messaggio...'
+      processing: 'Invio messaggio...',
+      // Form placeholders
+      namePlaceholder: 'Il tuo nome completo',
+      emailPlaceholder: 'tua@email.com',
+      messagePlaceholder: 'Dicci come possiamo aiutarti'
     },
     footer: {
       copyright: '© 2025 Miky.ai - Personalità AI Ultra‑Qualificate',
@@ -806,7 +929,13 @@ const translations: Record<Language, Translations> = {
         next: 'Siguiente',
         page: 'Página',
         of: 'de'
-      }
+      },
+      // Date formatting
+      today: 'Hoy',
+      yesterday: 'Ayer',
+      at: 'a las',
+      messages: 'mensajes',
+      message: 'mensaje'
     },
     pricing: {
       title: 'Elige tu plan',
@@ -830,7 +959,23 @@ const translations: Record<Language, Translations> = {
       upgradeTo: 'Actualizar a {{plan}}',
       downgradeTo: 'Bajar a {{plan}}',
       buyAdditional: 'Compra créditos adicionales cuando quieras — nunca expiran.',
-      creditInfo: 'Los créditos se consumen por mensaje según la complejidad de la personalidad.'
+      creditInfo: 'Los créditos se consumen por mensaje según la complejidad de la personalidad.',
+      // Buy Credits Modal
+      buyCreditsModal: {
+        title: 'Comprar Créditos Adicionales',
+        selectAmount: 'Seleccionar cantidad de créditos',
+        credits500: '500 Créditos',
+        credits1000: '1.000 Créditos',
+        credits2000: '2.000 Créditos',
+        purchase: 'Comprar Créditos',
+        cancel: 'Cancelar'
+      },
+      // Billing
+      billingInformation: 'Información de Facturación',
+      cardNumber: 'Número de Tarjeta',
+      expiryDate: 'MM/AA',
+      cvv: 'CVV',
+      billingAddress: 'Dirección de Facturación'
     },
     auth: {
       signIn: 'Iniciar sesión',
@@ -850,7 +995,22 @@ const translations: Record<Language, Translations> = {
       checkEmail: 'Revisa tu email para el enlace de restablecimiento.',
       confirmEmail: 'Por favor confirma tu email para continuar.',
       welcome: '¡Bienvenido a Miky!',
-      logout: 'Cerrar sesión'
+      logout: 'Cerrar sesión',
+      // Form placeholders
+      emailPlaceholder: 'tu@email.com',
+      passwordPlaceholder: 'Ingresa tu contraseña',
+      firstNamePlaceholder: 'Tu nombre',
+      lastNamePlaceholder: 'Tu apellido',
+      confirmPasswordPlaceholder: 'Confirma tu contraseña',
+      referralCodePlaceholder: 'Código de referido (opcional)',
+      newPasswordPlaceholder: 'Nueva contraseña',
+      // Messages
+      emailSentMessage: 'Enlace de restablecimiento enviado a tu email.',
+      emailNotFoundMessage: 'Dirección de email no encontrada.',
+      passwordResetSuccess: 'Contraseña restablecida exitosamente.',
+      accountActivated: '¡Cuenta activada exitosamente!',
+      verificationEmailSent: 'Email de verificación enviado. Revisa tu bandeja.',
+      signUpSuccess: '¡Cuenta creada exitosamente! Por favor verifica tu email.'
     },
     modals: {
       close: 'Cerrar',
@@ -915,7 +1075,11 @@ const translations: Record<Language, Translations> = {
       message: 'Mensaje',
       send: 'Enviar Mensaje',
       success: '¡Mensaje enviado exitosamente! Nuestro equipo te contactará pronto.',
-      processing: 'Enviando mensaje...'
+      processing: 'Enviando mensaje...',
+      // Form placeholders
+      namePlaceholder: 'Tu nombre completo',
+      emailPlaceholder: 'tu@email.com',
+      messagePlaceholder: 'Dinos cómo podemos ayudarte'
     },
     footer: {
       copyright: '© 2025 Miky.ai - Personalidades AI Ultra‑Capacitadas',
@@ -1037,7 +1201,13 @@ const translations: Record<Language, Translations> = {
         next: 'Nächste',
         page: 'Seite',
         of: 'von'
-      }
+      },
+      // Date formatting
+      today: 'Heute',
+      yesterday: 'Gestern',
+      at: 'um',
+      messages: 'Nachrichten',
+      message: 'Nachricht'
     },
     pricing: {
       title: 'Wähle deinen Plan',
@@ -1061,7 +1231,23 @@ const translations: Record<Language, Translations> = {
       upgradeTo: 'Upgrade zu {{plan}}',
       downgradeTo: 'Downgrade zu {{plan}}',
       buyAdditional: 'Kaufe zusätzliche Credits jederzeit — sie verfallen nie.',
-      creditInfo: 'Credits werden pro Nachricht basierend auf Persona-Komplexität verbraucht.'
+      creditInfo: 'Credits werden pro Nachricht basierend auf Persona-Komplexität verbraucht.',
+      // Buy Credits Modal
+      buyCreditsModal: {
+        title: 'Zusätzliche Credits Kaufen',
+        selectAmount: 'Credit-Menge wählen',
+        credits500: '500 Credits',
+        credits1000: '1.000 Credits',
+        credits2000: '2.000 Credits',
+        purchase: 'Credits Kaufen',
+        cancel: 'Abbrechen'
+      },
+      // Billing
+      billingInformation: 'Rechnungsinformationen',
+      cardNumber: 'Kartennummer',
+      expiryDate: 'MM/JJ',
+      cvv: 'CVV',
+      billingAddress: 'Rechnungsadresse'
     },
     auth: {
       signIn: 'Anmelden',
@@ -1081,7 +1267,22 @@ const translations: Record<Language, Translations> = {
       checkEmail: 'Überprüfe deine E-Mail für den Reset-Link.',
       confirmEmail: 'Bitte bestätige deine E-Mail um fortzufahren.',
       welcome: 'Willkommen bei Miky!',
-      logout: 'Abmelden'
+      logout: 'Abmelden',
+      // Form placeholders
+      emailPlaceholder: 'deine@email.com',
+      passwordPlaceholder: 'Passwort eingeben',
+      firstNamePlaceholder: 'Dein Vorname',
+      lastNamePlaceholder: 'Dein Nachname',
+      confirmPasswordPlaceholder: 'Passwort bestätigen',
+      referralCodePlaceholder: 'Empfehlungscode (optional)',
+      newPasswordPlaceholder: 'Neues Passwort',
+      // Messages
+      emailSentMessage: 'Reset-Link an deine E-Mail gesendet.',
+      emailNotFoundMessage: 'E-Mail-Adresse nicht gefunden.',
+      passwordResetSuccess: 'Passwort erfolgreich zurückgesetzt.',
+      accountActivated: 'Account erfolgreich aktiviert!',
+      verificationEmailSent: 'Bestätigungs-E-Mail gesendet. Überprüfe deinen Posteingang.',
+      signUpSuccess: 'Account erfolgreich erstellt! Bitte bestätige deine E-Mail.'
     },
     modals: {
       close: 'Schließen',
@@ -1146,7 +1347,11 @@ const translations: Record<Language, Translations> = {
       message: 'Nachricht',
       send: 'Nachricht Senden',
       success: 'Nachricht erfolgreich gesendet! Unser Team wird sich bald bei dir melden.',
-      processing: 'Nachricht wird gesendet...'
+      processing: 'Nachricht wird gesendet...',
+      // Form placeholders
+      namePlaceholder: 'Dein vollständiger Name',
+      emailPlaceholder: 'deine@email.com',
+      messagePlaceholder: 'Sag uns, wie wir dir helfen können'
     },
     footer: {
       copyright: '© 2025 Miky.ai - Ultra‑Qualifizierte AI-Personas',
