@@ -13,7 +13,7 @@ import { LegalPages } from './components/LegalPages'
 import { AuthModal } from './components/AuthModal'
 import { WelcomeTutorial } from './components/WelcomeTutorial'
 import { ThemeProvider } from './components/ThemeProvider'
-import { TranslationProvider } from './contexts/TranslationContext'
+import { TranslationProvider, useT } from './contexts/TranslationContext'
 import { Toaster } from 'sonner'
 
 export type Persona = 'lawyer' | 'engineer' | 'marketer' | 'coach' | 'medical' | 'god-mode' | 'general'
