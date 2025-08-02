@@ -229,10 +229,11 @@ export function ChatModal({
                 </div>
               </Avatar>
               <div>
-                <h2 className="font-semibold text-base">
+                {/* Hide title on mobile, show on desktop */}
+                <h2 className="font-semibold text-base hidden md:block">
                   {conversation?.title || t('chat.newConversation')}
                 </h2>
-                <div className="flex items-center gap-2 mt-1">
+                <div className="flex items-center gap-2 mt-1 md:mt-1">
                   <span className="text-sm text-muted-foreground">
                     {getPersonaName(selectedPersona)}
                   </span>
@@ -246,11 +247,12 @@ export function ChatModal({
             </div>
             
             <div className="flex items-center gap-2">
+              {/* Hide conversations link on mobile, show on desktop */}
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={onViewHistory}
-                className="h-8 px-3 text-sm text-muted-foreground hover:text-primary"
+                className="h-8 px-3 text-sm text-muted-foreground hover:text-primary hidden md:flex"
               >
                 <ClockCounterClockwise className="w-4 h-4 mr-2" />
                 {t('chat.history')}

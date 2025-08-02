@@ -238,7 +238,7 @@ export function ConversationHistory({
             placeholder={t('history.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
-            className="pl-10"
+            className="pl-10 text-sm md:text-base"
           />
         </div>
       </div>
@@ -299,53 +299,141 @@ export function ConversationHistory({
             <Card key={conversation.id} className="p-4 hover:bg-card/80 transition-colors">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="outline" className="shrink-0">
-                      {(() => {
-                        const IconComponent = getPersonaIcon(conversation.persona)
-                        return <IconComponent className="w-3 h-3 mr-1" />
-                      })()}
-                      {getPersonaDisplayName(conversation.persona)}
-                    </Badge>
-                    <div className="text-sm text-muted-foreground">
-                      {formatDate(conversation.lastUpdated)}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      {conversation.messages.length} {conversation.messages.length === 1 ? t('history.message') : t('history.messages')}
+                  {/* Mobile: Show simplified layout with only title and continue button */}
+                  <div className="md:hidden">
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1 min-w-0">
+                        {editingId === conversation.id ? (
+                          <div className="flex items-center gap-2">
+                            <Input
+                              value={editTitle}
+                              onChange={(e) => setEditTitle(e.target.value)}
+                              className="text-sm"
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') saveRename()
+                                if (e.key === 'Escape') cancelRename()
+                              }}
+                              autoFocus
+                            />
+                            <Button size="sm" onClick={saveRename} className="text-xs">
+                              {t('modals.save')}
+                            </Button>
+                            <Button size="sm" variant="ghost" onClick={cancelRename} className="text-xs">
+                              {t('modals.cancel')}
+                            </Button>
+                          </div>
+                        ) : (
+                          <h3 className="font-medium text-foreground truncate">
+                            {conversation.title}
+                          </h3>
+                        )}
+                      </div>
+                      
+                      <div className="flex items-center gap-2 shrink-0">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => onContinueConversation ? onContinueConversation(conversation) : onSelectConversation(conversation)}
+                          className="text-xs"
+                        >
+                          {t('history.continue')}
+                        </Button>
+                        
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleRename(conversation.id, conversation.title)}
+                          className="text-xs p-2"
+                        >
+                          <PencilSimple className="w-4 h-4" />
+                        </Button>
+
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="ghost" size="sm" className="text-xs p-2 text-destructive hover:text-destructive">
+                              <Trash className="w-4 h-4" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>{t('history.delete')}</DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-4">
+                              <p className="text-sm text-muted-foreground">
+                                {t('history.deleteConfirmation', { title: conversation.title })}
+                              </p>
+                              <div className="flex justify-end gap-2">
+                                <Button variant="outline" size="sm" className="group">
+                                  <span className="group-hover:text-primary transition-colors duration-200">
+                                    {t('modals.cancel')}
+                                  </span>
+                                </Button>
+                                <Button 
+                                  variant="destructive" 
+                                  size="sm"
+                                  onClick={() => onDeleteConversation(conversation.id)}
+                                >
+                                  {t('modals.delete')}
+                                </Button>
+                              </div>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      </div>
                     </div>
                   </div>
-                  
-                  {editingId === conversation.id ? (
-                    <div className="flex items-center gap-2">
-                      <Input
-                        value={editTitle}
-                        onChange={(e) => setEditTitle(e.target.value)}
-                        className="text-sm"
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') saveRename()
-                          if (e.key === 'Escape') cancelRename()
-                        }}
-                        autoFocus
-                      />
-                      <Button size="sm" onClick={saveRename} className="text-xs">
-                        {t('modals.save')}
-                      </Button>
-                      <Button size="sm" variant="ghost" onClick={cancelRename} className="text-xs">
-                        {t('modals.cancel')}
-                      </Button>
-                    </div>
-                  ) : (
-                    <h3 className="font-medium text-foreground mb-2">
-                      {conversation.title}
-                    </h3>
-                  )}
 
-                  <p className="text-sm text-muted-foreground line-clamp-2">
-                    {conversation.messages[conversation.messages.length - 1]?.content}
-                  </p>
+                  {/* Desktop: Show full layout with all details */}
+                  <div className="hidden md:block">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Badge variant="outline" className="shrink-0">
+                        {(() => {
+                          const IconComponent = getPersonaIcon(conversation.persona)
+                          return <IconComponent className="w-3 h-3 mr-1" />
+                        })()}
+                        {getPersonaDisplayName(conversation.persona)}
+                      </Badge>
+                      <div className="text-sm text-muted-foreground">
+                        {formatDate(conversation.lastUpdated)}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        {conversation.messages.length} {conversation.messages.length === 1 ? t('history.message') : t('history.messages')}
+                      </div>
+                    </div>
+                    
+                    {editingId === conversation.id ? (
+                      <div className="flex items-center gap-2">
+                        <Input
+                          value={editTitle}
+                          onChange={(e) => setEditTitle(e.target.value)}
+                          className="text-sm"
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') saveRename()
+                            if (e.key === 'Escape') cancelRename()
+                          }}
+                          autoFocus
+                        />
+                        <Button size="sm" onClick={saveRename} className="text-xs">
+                          {t('modals.save')}
+                        </Button>
+                        <Button size="sm" variant="ghost" onClick={cancelRename} className="text-xs">
+                          {t('modals.cancel')}
+                        </Button>
+                      </div>
+                    ) : (
+                      <h3 className="font-medium text-foreground mb-2">
+                        {conversation.title}
+                      </h3>
+                    )}
+
+                    <p className="text-sm text-muted-foreground line-clamp-2">
+                      {conversation.messages[conversation.messages.length - 1]?.content}
+                    </p>
+                  </div>
                 </div>
                 
-                <div className="flex items-center gap-2 shrink-0">
+                {/* Desktop actions - hidden on mobile */}
+                <div className="hidden md:flex items-center gap-2 shrink-0">
                   <Button
                     variant="outline"
                     size="sm"
