@@ -171,6 +171,9 @@ export interface Translations {
     minimum: string
     successful: string
     pending: string
+    shareOptions: string
+    linkCopied: string
+    messageCopied: string
   }
   
   // Contact
@@ -364,7 +367,10 @@ const translations: Record<Language, Translations> = {
       cashOut: 'Cash Out',
       minimum: 'Minimum $10 to cash out',
       successful: 'Successful Referrals',
-      pending: 'Pending Earnings'
+      pending: 'Pending Earnings',
+      shareOptions: 'Share',
+      linkCopied: 'Link copied!',
+      messageCopied: 'Message copied!'
     },
     contact: {
       title: 'Contact Us',
@@ -549,8 +555,11 @@ const translations: Record<Language, Translations> = {
       earnings: 'Guadagni Totali',
       cashOut: 'Incassa',
       minimum: 'Minimo €10 per incassare',
-      successful: 'Link copiato!',
-      pending: 'Guadagni in Sospeso'
+      successful: 'Referral Riusciti',
+      pending: 'Guadagni in Sospeso',
+      shareOptions: 'Condividi',
+      linkCopied: 'Link copiato!',
+      messageCopied: 'Messaggio copiato!'
     },
     contact: {
       title: 'Contattaci',
@@ -735,7 +744,10 @@ const translations: Record<Language, Translations> = {
       cashOut: 'Cobrar',
       minimum: 'Mínimo $10 para cobrar',
       successful: 'Referidos Exitosos',
-      pending: 'Ganancias Pendientes'
+      pending: 'Ganancias Pendientes',
+      shareOptions: 'Compartir',
+      linkCopied: '¡Enlace copiado!',
+      messageCopied: '¡Mensaje copiado!'
     },
     contact: {
       title: 'Contáctanos',
@@ -920,7 +932,10 @@ const translations: Record<Language, Translations> = {
       cashOut: 'Auszahlen',
       minimum: 'Mindestens €10 für Auszahlung',
       successful: 'Erfolgreiche Empfehlungen',
-      pending: 'Ausstehende Einnahmen'
+      pending: 'Ausstehende Einnahmen',
+      shareOptions: 'Teilen',
+      linkCopied: 'Link kopiert!',
+      messageCopied: 'Nachricht kopiert!'
     },
     contact: {
       title: 'Kontaktiere Uns',

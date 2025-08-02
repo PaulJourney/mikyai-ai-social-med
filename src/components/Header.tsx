@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Badge } from '@/components/ui/badge'
-import { User, Globe, ShareNetwork, ClockCounterClockwise, CreditCard, SignOut, DollarSign, Copy } from '@phosphor-icons/react'
+import { User, Globe, ShareNetwork, ClockCounterClockwise, CreditCard, SignOut, DollarSign, Copy, WhatsappLogo, TelegramLogo, Link } from '@phosphor-icons/react'
 import type { User as UserType } from '../App'
 import { toast } from 'sonner'
 import { CashoutModal } from './CashoutModal'
@@ -48,7 +48,32 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
   const handleReferralCopy = (code: string) => {
     const referralLink = `https://miky.ai/ref/${code}`
     navigator.clipboard.writeText(referralLink)
-    toast.success(t('referral.successful'))
+    toast.success(t('referral.linkCopied'))
+  }
+
+  const createReferralMessage = (userName: string, referralCode: string) => {
+    return `${userName} ti ha invitato a provare Miky.ai! 🤖\n\nScopri le nostre AI Personas ultra-specializzate per lavoro, studio e crescita personale.\n\n✨ Usa il codice ${referralCode} e ottieni 300 crediti gratis!\n\n👉 https://miky.ai`
+  }
+
+  const handleWhatsAppShare = () => {
+    if (!user) return
+    const message = createReferralMessage(user.firstName || 'Un amico', user.referralCode)
+    const url = `https://wa.me/?text=${encodeURIComponent(message)}`
+    window.open(url, '_blank')
+  }
+
+  const handleTelegramShare = () => {
+    if (!user) return
+    const message = createReferralMessage(user.firstName || 'Un amico', user.referralCode)
+    const url = `https://t.me/share/url?text=${encodeURIComponent(message)}`
+    window.open(url, '_blank')
+  }
+
+  const handleCopyReferralMessage = () => {
+    if (!user) return
+    const message = createReferralMessage(user.firstName || 'Un amico', user.referralCode)
+    navigator.clipboard.writeText(message)
+    toast.success(t('referral.messageCopied'))
   }
 
   const getCurrentLanguageDisplay = () => {
@@ -138,6 +163,40 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                           >
                             <Copy className="w-4 h-4" />
                           </Button>
+                        </div>
+
+                        {/* Share Options */}
+                        <div>
+                          <div className="text-xs text-muted-foreground mb-2">{t('referral.shareOptions')}</div>
+                          <div className="grid grid-cols-3 gap-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="text-xs"
+                              onClick={handleWhatsAppShare}
+                            >
+                              <WhatsappLogo className="w-4 h-4 mr-1" />
+                              WhatsApp
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="text-xs"
+                              onClick={handleTelegramShare}
+                            >
+                              <TelegramLogo className="w-4 h-4 mr-1" />
+                              Telegram
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="text-xs"
+                              onClick={handleCopyReferralMessage}
+                            >
+                              <Copy className="w-4 h-4 mr-1" />
+                              Copy
+                            </Button>
+                          </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-3 text-xs">

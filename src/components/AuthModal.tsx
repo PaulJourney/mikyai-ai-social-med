@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Eye, EyeSlash, CheckCircle, Envelope, Lock } from '@phosphor-icons/react'
+import { Eye, EyeSlash, CheckCircle, Envelope, Lock, Check } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 
 interface AuthModalProps {
@@ -21,7 +21,8 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
     password: '',
     confirmPassword: '',
     firstName: '',
-    lastName: ''
+    lastName: '',
+    referralCode: referralCode || ''
   })
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -33,6 +34,9 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
   const [resetCode, setResetCode] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmNewPassword, setConfirmNewPassword] = useState('')
+  const [referralVerified, setReferralVerified] = useState(false)
+  const [referrerName, setReferrerName] = useState('')
+  const [isVerifyingReferral, setIsVerifyingReferral] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -68,7 +72,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
           email: formData.email,
           firstName: formData.firstName,
           lastName: formData.lastName,
-          credits: referralCode ? 300 : 100,
+          credits: referralVerified ? 300 : 100,
           plan: 'free' as const,
           referralCode: crypto.randomUUID().slice(0, 8),
           referralsCount: 0,
@@ -78,7 +82,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
         }
         
         onAuthSuccess(newUser, true) // Mark as new user
-        toast.success(referralCode ? 'Account created! You received 300 bonus credits!' : 'Account created successfully!')
+        toast.success(referralVerified ? 'Account created! You received 300 bonus credits!' : 'Account created successfully!')
         setIsLoading(false)
         onClose()
         return
@@ -177,6 +181,26 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
     }, 1000)
   }
 
+  const handleVerifyReferral = async () => {
+    if (!formData.referralCode.trim()) return
+    
+    setIsVerifyingReferral(true)
+    
+    // Simulate referral verification
+    setTimeout(() => {
+      // Mock verification - in real app, this would check against database
+      if (formData.referralCode === 'SUPPORT123' || formData.referralCode.length >= 6) {
+        setReferralVerified(true)
+        const mockReferrerName = 'Marco'  // Mock referrer name
+        setReferrerName(mockReferrerName)
+        toast.success(`Complimenti, ${mockReferrerName} ti ha regalato 300 crediti!`)
+      } else {
+        toast.error('Invalid referral code')
+      }
+      setIsVerifyingReferral(false)
+    }, 1000)
+  }
+
   const handleConfirmEmail = (e: React.FormEvent) => {
     e.preventDefault()
     handleSubmit(e)
@@ -188,7 +212,8 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
       password: '',
       confirmPassword: '',
       firstName: '',
-      lastName: ''
+      lastName: '',
+      referralCode: referralCode || ''
     })
     setEmailSent(false)
     setConfirmationCode('')
@@ -197,6 +222,8 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
     setResetCode('')
     setNewPassword('')
     setConfirmNewPassword('')
+    setReferralVerified(false)
+    setReferrerName('')
   }
 
   const handleModeSwitch = () => {
@@ -480,19 +507,64 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
             </div>
             
             {mode === 'signup' && (
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  value={formData.confirmPassword}
-                  onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                  required
-                />
-              </div>
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    value={formData.confirmPassword}
+                    onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="referralCode">
+                    Referral Code <span className="text-muted-foreground">(Optional)</span>
+                  </Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="referralCode"
+                      value={formData.referralCode}
+                      onChange={(e) => setFormData(prev => ({ ...prev, referralCode: e.target.value }))}
+                      placeholder="Enter referral code"
+                      disabled={referralVerified}
+                      className={referralVerified ? 'bg-primary/10 border-primary' : ''}
+                    />
+                    {formData.referralCode && !referralVerified && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={handleVerifyReferral}
+                        disabled={isVerifyingReferral}
+                        className="px-3 whitespace-nowrap"
+                      >
+                        {isVerifyingReferral ? 'Verifying...' : 'Verify'}
+                      </Button>
+                    )}
+                    {referralVerified && (
+                      <div className="flex items-center justify-center px-3">
+                        <Check className="w-4 h-4 text-primary" />
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Get 300 free credits if you were invited by someone
+                  </p>
+                  {referralVerified && (
+                    <div className="p-2 bg-primary/10 border border-primary/20 rounded-lg">
+                      <p className="text-xs text-primary font-medium">
+                        ✨ Verified! You'll receive 300 bonus credits from {referrerName}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </>
             )}
 
-            {referralCode && mode === 'signup' && (
+            {referralCode && mode === 'signup' && !formData.referralCode && (
               <div className="p-3 bg-primary/10 border border-primary/20 rounded-lg">
                 <p className="text-sm text-primary font-medium">
                   🎉 Referral bonus: You'll receive 300 free credits!
