@@ -28,7 +28,12 @@ import {
   Robot,
   MoneyWavy,
   GlobeHemisphereWest,
-  PencilSimple
+  PencilSimple,
+  Globe,
+  Image,
+  Tag,
+  TwitterLogo,
+  FacebookLogo
 } from '@phosphor-icons/react'
 
 interface AdminDashboardProps {
@@ -96,6 +101,23 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
     selectorTitle: 'Choose your personalized AI specialist:'
   })
   const [showHomepageTextModal, setShowHomepageTextModal] = useState(false)
+  
+  // SEO settings state
+  const [seoSettings, setSeoSettings] = useState({
+    title: 'Miky.ai - Ultra-Skilled AI Personas for Your Goals',
+    metaDescription: 'AI Personas highly trained for your personal, professional, and technical goals.',
+    keywords: 'AI assistant, AI personas, artificial intelligence, lawyer AI, engineer AI, marketing AI, coach AI, medical AI, productivity, automation',
+    ogTitle: 'Miky.ai - Ultra-Skilled AI Personas for Your Goals',
+    ogDescription: 'AI Personas highly trained for your personal, professional, and technical goals.',
+    twitterTitle: 'Miky.ai - Ultra-Skilled AI Personas for Your Goals',
+    twitterDescription: 'AI Personas highly trained for your personal, professional, and technical goals.',
+    canonicalUrl: 'https://miky.ai',
+    author: 'Neuronica Srl',
+    themeColor: '#7FFF00'
+  })
+  const [showSeoModal, setShowSeoModal] = useState(false)
+  const [editingSeoField, setEditingSeoField] = useState<string | null>(null)
+  const [tempSeoValue, setTempSeoValue] = useState('')
   
   // Feature toggles state
   const [featureToggles, setFeatureToggles] = useState({
@@ -420,6 +442,41 @@ Generated on: ${new Date().toISOString()}`
     toast.success(`${feature.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())} ${featureToggles[feature] ? 'disabled' : 'enabled'}`)
   }
 
+  // SEO Management Functions
+  const handleUpdateSeoSettings = () => {
+    // In a real app, this would update the HTML meta tags dynamically
+    console.log('Updated SEO settings:', seoSettings)
+    toast.success('SEO settings updated successfully')
+    setShowSeoModal(false)
+  }
+
+  const handleEditSeoField = (field: string) => {
+    setEditingSeoField(field)
+    setTempSeoValue(seoSettings[field as keyof typeof seoSettings])
+  }
+
+  const handleSaveSeoField = () => {
+    if (editingSeoField) {
+      setSeoSettings(prev => ({
+        ...prev,
+        [editingSeoField]: tempSeoValue
+      }))
+      setEditingSeoField(null)
+      setTempSeoValue('')
+      toast.success('SEO field updated successfully')
+    }
+  }
+
+  const handleCancelSeoEdit = () => {
+    setEditingSeoField(null)
+    setTempSeoValue('')
+  }
+
+  const handleFileUpload = (type: 'favicon' | 'ogImage') => {
+    // In a real app, this would handle file upload
+    toast.success(`${type === 'favicon' ? 'Favicon' : 'Social sharing image'} uploaded successfully`)
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <div className="border-b border-border bg-card">
@@ -443,6 +500,7 @@ Generated on: ${new Date().toISOString()}`
             <TabsTrigger value="referrals">Referrals</TabsTrigger>
             <TabsTrigger value="conversations">Conversations</TabsTrigger>
             <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsTrigger value="seo">SEO & Assets</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
@@ -1258,6 +1316,159 @@ Generated on: ${new Date().toISOString()}`
                 </div>
                 <Button>Update Legal Info</Button>
               </div>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="seo" className="space-y-6">
+            <h2 className="text-lg font-medium">SEO & Assets Management</h2>
+            
+            <Card className="p-6">
+              <h3 className="text-lg font-medium mb-4">Meta Tags & SEO</h3>
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {Object.entries(seoSettings).map(([key, value]) => (
+                    <div key={key} className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <label className="text-sm font-medium capitalize">
+                          {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                        </label>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleEditSeoField(key)}
+                          className="hover:text-primary"
+                        >
+                          <PencilSimple className="w-3 h-3" />
+                        </Button>
+                      </div>
+                      {editingSeoField === key ? (
+                        <div className="space-y-2">
+                          {key.includes('Description') ? (
+                            <Textarea
+                              value={tempSeoValue}
+                              onChange={(e) => setTempSeoValue(e.target.value)}
+                              rows={3}
+                            />
+                          ) : (
+                            <Input
+                              value={tempSeoValue}
+                              onChange={(e) => setTempSeoValue(e.target.value)}
+                            />
+                          )}
+                          <div className="flex gap-2">
+                            <Button size="sm" onClick={handleSaveSeoField}>
+                              Save
+                            </Button>
+                            <Button size="sm" variant="outline" onClick={handleCancelSeoEdit} className="hover:text-primary">
+                              Cancel
+                            </Button>
+                          </div>
+                        </div>
+                      ) : (
+                        <p className="text-sm text-muted-foreground p-2 bg-muted rounded">
+                          {value}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <Button onClick={handleUpdateSeoSettings} className="w-full">
+                  <Globe className="w-4 h-4 mr-2" />
+                  Update SEO Settings
+                </Button>
+              </div>
+            </Card>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="p-6">
+                <h3 className="text-lg font-medium mb-4">Favicon Management</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-muted rounded-lg flex items-center justify-center">
+                      <span className="text-xs text-muted-foreground">Current</span>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium">favicon.svg</p>
+                      <p className="text-xs text-muted-foreground">32×32 px</p>
+                    </div>
+                  </div>
+                  <Input type="file" accept="image/*" className="hidden" />
+                  <Button 
+                    variant="outline" 
+                    className="w-full hover:text-primary"
+                    onClick={() => handleFileUpload('favicon')}
+                  >
+                    <Image className="w-4 h-4 mr-2" />
+                    Upload New Favicon
+                  </Button>
+                  <p className="text-xs text-muted-foreground">
+                    Recommended: 32×32 px or 16×16 px, SVG or PNG format
+                  </p>
+                </div>
+              </Card>
+
+              <Card className="p-6">
+                <h3 className="text-lg font-medium mb-4">Social Sharing Image</h3>
+                <div className="space-y-4">
+                  <div className="w-full h-20 bg-muted rounded-lg flex items-center justify-center">
+                    <span className="text-xs text-muted-foreground">Current OG Image</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">og-image.svg</p>
+                    <p className="text-xs text-muted-foreground">1200×630 px</p>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    className="w-full hover:text-primary"
+                    onClick={() => handleFileUpload('ogImage')}
+                  >
+                    <Image className="w-4 h-4 mr-2" />
+                    Upload New Image
+                  </Button>
+                  <p className="text-xs text-muted-foreground">
+                    Recommended: 1200×630 px, JPG or PNG format
+                  </p>
+                </div>
+              </Card>
+            </div>
+
+            <Card className="p-6">
+              <h3 className="text-lg font-medium mb-4">Social Media Configuration</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <FacebookLogo className="w-5 h-5 text-blue-600" />
+                    <h4 className="font-medium">Facebook / Open Graph</h4>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm">Site Name</label>
+                    <Input defaultValue="Miky.ai" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm">Locale</label>
+                    <Input defaultValue="en_US" />
+                  </div>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <TwitterLogo className="w-5 h-5 text-blue-400" />
+                    <h4 className="font-medium">Twitter / X</h4>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm">Twitter Handle</label>
+                    <Input defaultValue="@mikyai" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm">Card Type</label>
+                    <Input defaultValue="summary_large_image" />
+                  </div>
+                </div>
+              </div>
+              <Button className="w-full mt-4">
+                <Tag className="w-4 h-4 mr-2" />
+                Update Social Settings
+              </Button>
             </Card>
           </TabsContent>
 
