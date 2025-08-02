@@ -364,7 +364,7 @@ function App() {
                   <h1 className="text-4xl md:text-5xl font-bold text-foreground">
                     Ask to <span className="text-primary">Miky</span>
                   </h1>
-                  <p className="text-lg text-muted-foreground font-medium">
+                  <p className="text-base text-muted-foreground font-normal">
                     Ultra-skilled AI personas ready to act as your advisors in life, work, and achievement.
                   </p>
                 </div>
