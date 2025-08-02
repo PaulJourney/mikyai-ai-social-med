@@ -363,9 +363,9 @@ export function ConversationHistory({
                 size="sm"
                 onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                 disabled={currentPage === 1}
-                className="h-8 w-8 p-0"
+                className="h-8 w-8 p-0 group"
               >
-                <CaretLeft className="w-4 h-4" />
+                <CaretLeft className="w-4 h-4 group-hover:text-primary transition-colors duration-200" />
               </Button>
               
               <div className="flex items-center gap-1">
@@ -375,9 +375,15 @@ export function ConversationHistory({
                     variant={currentPage === page ? "default" : "outline"}
                     size="sm"
                     onClick={() => setCurrentPage(page)}
-                    className="h-8 w-8 p-0 text-xs"
+                    className={`h-8 w-8 p-0 text-xs ${
+                      currentPage !== page ? 'group' : ''
+                    }`}
                   >
-                    {page}
+                    <span className={`${
+                      currentPage !== page ? 'group-hover:text-primary transition-colors duration-200' : ''
+                    }`}>
+                      {page}
+                    </span>
                   </Button>
                 ))}
               </div>
@@ -387,9 +393,9 @@ export function ConversationHistory({
                 size="sm"
                 onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                 disabled={currentPage === totalPages}
-                className="h-8 w-8 p-0"
+                className="h-8 w-8 p-0 group"
               >
-                <CaretRight className="w-4 h-4" />
+                <CaretRight className="w-4 h-4 group-hover:text-primary transition-colors duration-200" />
               </Button>
             </div>
           )}
