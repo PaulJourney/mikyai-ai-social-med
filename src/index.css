@@ -141,6 +141,15 @@
     max-width: 95vw !important;
     max-height: 90vh !important;
   }
+  
+  /* Mobile-specific font sizing for conversation filters */
+  .conversation-filter-button {
+    font-size: 10px !important;
+  }
+  
+  .conversation-filter-badge {
+    font-size: 9px !important;
+  }
 }
 
 @media (min-width: 769px) {

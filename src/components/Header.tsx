@@ -286,7 +286,11 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                 variant={currentView === 'chat' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => handleMobileNavigation('chat')}
-                className="w-full justify-start text-white hover:text-primary"
+                className={`w-full justify-start ${
+                  currentView === 'chat' 
+                    ? 'text-black' 
+                    : 'text-white hover:text-primary'
+                }`}
               >
                 <ChatCircle className="w-4 h-4 mr-3" />
                 Chat
@@ -295,7 +299,11 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                 variant={currentView === 'history' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => handleMobileNavigation('history')}
-                className="w-full justify-start text-white hover:text-primary"
+                className={`w-full justify-start ${
+                  currentView === 'history' 
+                    ? 'text-black' 
+                    : 'text-white hover:text-primary'
+                }`}
               >
                 <ClockCounterClockwise className="w-4 h-4 mr-3" />
                 {t('header.conversations')}
@@ -304,7 +312,11 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                 variant={currentView === 'pricing' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => handleMobileNavigation('pricing')}
-                className="w-full justify-start text-white hover:text-primary"
+                className={`w-full justify-start ${
+                  currentView === 'pricing' 
+                    ? 'text-black' 
+                    : 'text-white hover:text-primary'
+                }`}
               >
                 <CreditCard className="w-4 h-4 mr-3" />
                 {t('header.pricing')}

@@ -256,7 +256,7 @@ export function ConversationHistory({
                 variant={isSelected ? "default" : "outline"}
                 size="sm"
                 onClick={() => handleFilterChange(persona.key)}
-                className={`text-xs group transition-colors ${
+                className={`text-xs conversation-filter-button group transition-colors ${
                   !isSelected ? 'hover:border-primary' : ''
                 }`}
               >
@@ -268,7 +268,7 @@ export function ConversationHistory({
                 }`}>
                   {persona.label}
                 </span>
-                <Badge variant="secondary" className="ml-1 text-xs px-1">
+                <Badge variant="secondary" className="ml-1 text-xs conversation-filter-badge px-1">
                   {persona.key !== 'all' ? (
                     conversations.filter(c => c.persona === persona.key).length
                   ) : (
