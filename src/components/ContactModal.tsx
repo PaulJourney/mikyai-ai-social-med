@@ -64,7 +64,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-3">
+          <div className="space-y-4">
             <label className="text-sm font-medium">Name *</label>
             <Input
               value={formData.name}
@@ -75,7 +75,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
             />
           </div>
           
-          <div className="space-y-3">
+          <div className="space-y-4">
             <label className="text-sm font-medium">Email *</label>
             <Input
               type="email"
@@ -87,7 +87,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
             />
           </div>
           
-          <div className="space-y-3">
+          <div className="space-y-4">
             <label className="text-sm font-medium">Message *</label>
             <Textarea
               value={formData.message}
