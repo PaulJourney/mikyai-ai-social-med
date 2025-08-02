@@ -97,6 +97,7 @@ export interface Translations {
     // Date formatting
     today: string
     yesterday: string
+    daysAgo: string
     at: string
     messages: string
     message: string
@@ -414,6 +415,7 @@ const translations: Record<Language, Translations> = {
       // Date formatting
       today: 'Today',
       yesterday: 'Yesterday',
+      daysAgo: 'days ago',
       at: 'at',
       messages: 'messages',
       message: 'message',
@@ -492,6 +494,16 @@ const translations: Record<Language, Translations> = {
       confirmPasswordPlaceholder: 'Confirm your password',
       referralCodePlaceholder: 'Enter referral code (optional)',
       newPasswordPlaceholder: 'Enter new password',
+      // Auth Lost Password Modal
+      lostPasswordTitle: 'Reset your password',
+      lostPasswordMessage: 'Enter your email address and we\'ll send you a reset code.',
+      sendResetCode: 'Send Reset Code',
+      sending: 'Sending...',
+      backToSignIn: 'Back to sign in',
+      // Reset Password Modal  
+      resetPasswordTitle: 'Enter reset code',
+      resetCodeMessage: 'We sent a reset code to',
+      resetPasswordButton: 'Reset Password',
       // Messages
       emailSentMessage: 'Reset link sent to your email.',
       emailNotFoundMessage: 'Email address not found.',
@@ -703,6 +715,7 @@ const translations: Record<Language, Translations> = {
       // Date formatting
       today: 'Oggi',
       yesterday: 'Ieri',
+      daysAgo: 'giorni fa',
       at: 'alle',
       messages: 'messaggi',
       message: 'messaggio',
@@ -1003,6 +1016,7 @@ const translations: Record<Language, Translations> = {
       // Date formatting
       today: 'Hoy',
       yesterday: 'Ayer',
+      daysAgo: 'días atrás',
       at: 'a las',
       messages: 'mensajes',
       message: 'mensaje',
@@ -1303,6 +1317,7 @@ const translations: Record<Language, Translations> = {
       // Date formatting
       today: 'Heute',
       yesterday: 'Gestern',
+      daysAgo: 'Tage her',
       at: 'um',
       messages: 'Nachrichten',
       message: 'Nachricht',

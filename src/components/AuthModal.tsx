@@ -275,7 +275,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                     id="resetCode"
                     value={resetCode}
                     onChange={(e) => setResetCode(e.target.value)}
-                    placeholder="123456"
+                    placeholder=""
                     maxLength={6}
                     className="text-center text-lg tracking-widest"
                     required
@@ -401,9 +401,6 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                 <p className="text-sm text-muted-foreground">
                   We sent a confirmation code to {formData.email}
                 </p>
-                <p className="text-xs text-muted-foreground mt-2">
-                  For demo purposes, use code: <span className="font-mono text-primary">123456</span>
-                </p>
               </div>
             </div>
             
@@ -414,7 +411,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                   id="confirmationCode"
                   value={confirmationCode}
                   onChange={(e) => setConfirmationCode(e.target.value)}
-                  placeholder="123456"
+                  placeholder=""
                   maxLength={6}
                   className="text-center text-lg tracking-widest"
                   required

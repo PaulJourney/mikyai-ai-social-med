@@ -40,7 +40,7 @@ export function ConversationHistory({
   isAuthenticated,
   onAuthRequest
 }: ConversationHistoryProps) {
-  const { t } = useT()
+  const { t, language } = useT()
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editTitle, setEditTitle] = useState('')
   const [selectedFilter, setSelectedFilter] = useState<Persona | 'all'>('all')
@@ -110,7 +110,12 @@ export function ConversationHistory({
     const diffMs = now.getTime() - new Date(date).getTime()
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
     
-    const timeString = new Intl.DateTimeFormat('en-US', {
+    const locale = language === 'en' ? 'en-US' : 
+                   language === 'it' ? 'it-IT' : 
+                   language === 'es' ? 'es-ES' : 
+                   language === 'de' ? 'de-DE' : 'en-US'
+    
+    const timeString = new Intl.DateTimeFormat(locale, {
       hour: '2-digit',
       minute: '2-digit'
     }).format(new Date(date))
@@ -120,9 +125,9 @@ export function ConversationHistory({
     } else if (diffDays === 1) {
       return `${t('history.yesterday')} ${t('history.at')} ${timeString}`
     } else if (diffDays < 7) {
-      return `${diffDays} days ago ${t('history.at')} ${timeString}`
+      return `${diffDays} ${t('history.daysAgo')} ${t('history.at')} ${timeString}`
     } else {
-      const dateString = new Intl.DateTimeFormat('en-US', {
+      const dateString = new Intl.DateTimeFormat(locale, {
         month: 'short',
         day: 'numeric'
       }).format(new Date(date))
