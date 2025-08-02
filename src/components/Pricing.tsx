@@ -160,7 +160,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
   return (
     <div className="space-y-12">
       <div className="text-center space-y-4">
-        <h1 className="text-4xl md:text-4xl font-bold text-foreground text-2xl md:text-4xl">
+        <h1 className="text-2xl md:text-4xl font-bold text-foreground pricing-title-mobile">
           {t('pricing.title')}
         </h1>
       </div>
@@ -212,7 +212,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
           return (
             <Card 
               key={plan.id} 
-              className={`relative transition-all duration-300 hover:shadow-lg ${
+              className={`relative transition-all duration-300 hover:shadow-lg pricing-card-mobile ${
                 plan.popular 
                   ? 'border-primary shadow-lg scale-105' 
                   : 'border-border hover:border-primary/50'
@@ -242,7 +242,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
                 </CardDescription>
               </CardHeader>
 
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 pricing-card-content-mobile">
                 <div className="space-y-3 hidden md:block">
                   {plan.features.map((feature, index) => (
                     <div key={index} className="flex items-start gap-3">
@@ -253,7 +253,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
                 </div>
               </CardContent>
 
-              <CardFooter className="pt-6">
+              <CardFooter className="pt-1 md:pt-6 pricing-card-footer-mobile">
                 <Button
                   className={`w-full ${
                     (!plan.popular && !isCurrentPlan) || isDowngrade() 

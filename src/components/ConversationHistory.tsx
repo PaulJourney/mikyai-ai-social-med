@@ -226,8 +226,8 @@ export function ConversationHistory({
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-foreground mb-2">{t('history.title')}</h1>
-        <p className="text-sm text-muted-foreground">{t('history.title')}</p>
+        <h1 className="text-2xl font-bold text-foreground mb-2 conversations-title-mobile">{t('history.title')}</h1>
+        <p className="text-sm text-muted-foreground conversations-subtitle-mobile">{t('history.title')}</p>
       </div>
 
       {/* Search Bar */}

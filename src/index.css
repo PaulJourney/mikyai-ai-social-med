@@ -150,6 +150,29 @@
   .conversation-filter-badge {
     font-size: 9px !important;
   }
+  
+  /* Mobile-specific pricing page adjustments */
+  .pricing-title-mobile {
+    font-size: 1.5rem !important; /* Reduced from default size */
+  }
+  
+  /* Reduce spacing between credits and button on mobile */
+  .pricing-card-content-mobile {
+    padding-bottom: 0 !important;
+  }
+  
+  .pricing-card-footer-mobile {
+    padding-top: 0.25rem !important; /* Reduced spacing above button on mobile */
+  }
+  
+  /* Mobile-specific conversations page adjustments */
+  .conversations-title-mobile {
+    text-align: center !important;
+  }
+  
+  .conversations-subtitle-mobile {
+    display: none !important;
+  }
 }
 
 @media (min-width: 769px) {
