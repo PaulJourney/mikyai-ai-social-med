@@ -238,7 +238,7 @@ export function ChatModal({
                     {getPersonaName(selectedPersona)}
                   </span>
                   {selectedPersona && (
-                    <Badge variant="outline" className="text-xs">
+                    <Badge variant="outline" className="text-xs hidden md:inline-flex">
                       {getPersonaDisplayName(selectedPersona)}
                     </Badge>
                   )}

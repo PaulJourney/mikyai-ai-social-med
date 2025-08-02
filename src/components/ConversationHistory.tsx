@@ -238,7 +238,7 @@ export function ConversationHistory({
             placeholder={t('history.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
-            className="pl-10 text-sm md:text-base"
+            className="pl-10 text-xs md:text-base"
           />
         </div>
       </div>
@@ -308,7 +308,7 @@ export function ConversationHistory({
                             <Input
                               value={editTitle}
                               onChange={(e) => setEditTitle(e.target.value)}
-                              className="text-sm"
+                              className="text-xs"
                               onKeyDown={(e) => {
                                 if (e.key === 'Enter') saveRename()
                                 if (e.key === 'Escape') cancelRename()
@@ -323,7 +323,7 @@ export function ConversationHistory({
                             </Button>
                           </div>
                         ) : (
-                          <h3 className="font-medium text-foreground truncate">
+                          <h3 className="text-sm font-medium text-foreground truncate">
                             {conversation.title}
                           </h3>
                         )}
@@ -334,18 +334,11 @@ export function ConversationHistory({
                           variant="outline"
                           size="sm"
                           onClick={() => onContinueConversation ? onContinueConversation(conversation) : onSelectConversation(conversation)}
-                          className="text-xs"
+                          className="text-xs group"
                         >
-                          {t('history.continue')}
-                        </Button>
-                        
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleRename(conversation.id, conversation.title)}
-                          className="text-xs p-2"
-                        >
-                          <PencilSimple className="w-4 h-4" />
+                          <span className="group-hover:text-primary transition-colors duration-200">
+                            {t('history.continue')}
+                          </span>
                         </Button>
 
                         <Dialog>

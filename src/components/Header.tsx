@@ -542,7 +542,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
 
       {/* Mobile Menu Overlay */}
       {showMobileMenu && (
-        <div className="md:hidden fixed inset-0 z-50 bg-black mobile-menu-overlay-enter" onClick={closeMobileMenu}>
+        <div className="md:hidden fixed inset-0 z-[9999] bg-black/80 mobile-menu-overlay-enter" onClick={closeMobileMenu}>
           <div 
             className="fixed right-0 top-0 h-full w-80 max-w-[85vw] bg-card border-l border-border mobile-menu-enter"
             onClick={(e) => e.stopPropagation()}
