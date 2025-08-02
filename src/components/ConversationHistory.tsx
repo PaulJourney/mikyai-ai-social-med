@@ -19,6 +19,7 @@ import {
   CaretRight
 } from '@phosphor-icons/react'
 import type { Conversation, Persona } from '../App'
+import { useT } from '../contexts/TranslationContext'
 
 interface ConversationHistoryProps {
   conversations: Conversation[]
@@ -39,6 +40,7 @@ export function ConversationHistory({
   isAuthenticated,
   onAuthRequest
 }: ConversationHistoryProps) {
+  const { t } = useT()
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editTitle, setEditTitle] = useState('')
   const [selectedFilter, setSelectedFilter] = useState<Persona | 'all'>('all')
@@ -77,22 +79,22 @@ export function ConversationHistory({
 
   const getPersonaDisplayName = (persona: string) => {
     const names = {
-      lawyer: 'Lawyer',
-      engineer: 'Engineer', 
-      marketer: 'Marketer',
-      coach: 'Coach',
-      medical: 'Medical',
-      'god-mode': 'God Mode',
-      general: 'General'
+      lawyer: t('history.filters.lawyer'),
+      engineer: t('history.filters.engineer'),
+      marketer: t('history.filters.marketer'),
+      coach: t('history.filters.coach'),
+      medical: t('history.filters.medical'),
+      'god-mode': t('history.filters.godMode'),
+      general: t('history.filters.general')
     }
-    return names[persona as keyof typeof names] || 'General'
+    return names[persona as keyof typeof names] || t('history.filters.general')
   }
 
   const getAllPersonas = (): Array<{ key: Persona | 'all', label: string, icon: React.ElementType }> => {
     const uniquePersonas = Array.from(new Set(conversations.map(c => c.persona)))
     
     const allPersonas = [
-      { key: 'all' as const, label: 'All', icon: MagnifyingGlass },
+      { key: 'all' as const, label: t('history.filters.all'), icon: MagnifyingGlass },
       ...uniquePersonas.map(persona => ({
         key: persona,
         label: getPersonaDisplayName(persona),
@@ -150,20 +152,20 @@ export function ConversationHistory({
     return (
       <div className="text-center py-12">
         <ChatCircle className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-        <h2 className="text-xl font-medium text-foreground mb-2">Sign in to view your conversations</h2>
-        <p className="text-muted-foreground mb-6">Sign or Log in to see all your conversations with Miky</p>
+        <h2 className="text-xl font-medium text-foreground mb-2">{t('history.title')}</h2>
+        <p className="text-muted-foreground mb-6">{t('history.signInPrompt')}</p>
         <div className="flex gap-3 justify-center">
           <Button 
             onClick={() => onAuthRequest('signin')}
             variant="outline"
             className="hover:text-primary"
           >
-            Sign In
+            {t('history.signIn')}
           </Button>
           <Button 
             onClick={() => onAuthRequest('signup')}
           >
-            Sign Up
+            {t('auth.signUp')}
           </Button>
         </div>
       </div>
@@ -174,8 +176,8 @@ export function ConversationHistory({
     return (
       <div className="text-center py-12">
         <ChatCircle className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-        <h2 className="text-xl font-medium text-foreground mb-2">No conversations yet</h2>
-        <p className="text-muted-foreground">Start a conversation with any persona to see your history here</p>
+        <h2 className="text-xl font-medium text-foreground mb-2">{t('history.empty')}</h2>
+        <p className="text-muted-foreground">{t('history.empty')}</p>
       </div>
     )
   }
@@ -183,8 +185,8 @@ export function ConversationHistory({
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-foreground mb-2">Conversation History</h1>
-        <p className="text-muted-foreground">Manage and continue your previous conversations</p>
+        <h1 className="text-2xl font-bold text-foreground mb-2">{t('history.title')}</h1>
+        <p className="text-muted-foreground">{t('history.title')}</p>
       </div>
 
       {/* Persona Filters */}
@@ -275,10 +277,10 @@ export function ConversationHistory({
                         autoFocus
                       />
                       <Button size="sm" onClick={saveRename} className="text-xs">
-                        Save
+                        {t('modals.save')}
                       </Button>
                       <Button size="sm" variant="ghost" onClick={cancelRename} className="text-xs">
-                        Cancel
+                        {t('modals.cancel')}
                       </Button>
                     </div>
                   ) : (
@@ -299,7 +301,7 @@ export function ConversationHistory({
                     onClick={() => onContinueConversation ? onContinueConversation(conversation) : onSelectConversation(conversation)}
                     className="text-xs"
                   >
-                    Continue
+                    {t('history.continue')}
                   </Button>
                   
                   <Button
@@ -319,20 +321,20 @@ export function ConversationHistory({
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
-                        <DialogTitle>Delete Conversation</DialogTitle>
+                        <DialogTitle>{t('history.delete')}</DialogTitle>
                       </DialogHeader>
                       <div className="space-y-4">
                         <p className="text-sm text-muted-foreground">
                           Are you sure you want to delete "{conversation.title}"? This action cannot be undone.
                         </p>
                         <div className="flex justify-end gap-2">
-                          <Button variant="outline" size="sm">Cancel</Button>
+                          <Button variant="outline" size="sm">{t('modals.cancel')}</Button>
                           <Button 
                             variant="destructive" 
                             size="sm"
                             onClick={() => onDeleteConversation(conversation.id)}
                           >
-                            Delete
+                            {t('modals.delete')}
                           </Button>
                         </div>
                       </div>

@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
 import { PaperPlane } from '@phosphor-icons/react'
+import { useT } from '../contexts/TranslationContext'
 
 interface ContactModalProps {
   isOpen: boolean
@@ -12,6 +13,7 @@ interface ContactModalProps {
 }
 
 export function ContactModal({ isOpen, onClose }: ContactModalProps) {
+  const { t } = useT()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -27,7 +29,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
     e.preventDefault()
     
     if (!formData.name || !formData.email || !formData.message) {
-      toast.error('Please fill in all fields')
+      toast.error(t('contact.processing'))
       return
     }
 
@@ -47,7 +49,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
       onClose()
       
       // Show success message
-      toast.success('Message sent successfully! Our team will get back to you soon.')
+      toast.success(t('contact.success'))
       
     } catch (error) {
       toast.error('Failed to send message. Please try again.')
@@ -60,12 +62,12 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md mx-auto">
         <DialogHeader>
-          <DialogTitle className="text-lg font-semibold">Contact Us</DialogTitle>
+          <DialogTitle className="text-lg font-semibold">{t('contact.title')}</DialogTitle>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
-            <label className="text-sm font-medium">Name *</label>
+            <label className="text-sm font-medium">{t('contact.name')} *</label>
             <Input
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
@@ -76,7 +78,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
           </div>
           
           <div className="space-y-4">
-            <label className="text-sm font-medium">Email *</label>
+            <label className="text-sm font-medium">{t('contact.email')} *</label>
             <Input
               type="email"
               value={formData.email}
@@ -88,7 +90,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
           </div>
           
           <div className="space-y-4">
-            <label className="text-sm font-medium">Message *</label>
+            <label className="text-sm font-medium">{t('contact.message')} *</label>
             <Textarea
               value={formData.message}
               onChange={(e) => handleInputChange('message', e.target.value)}
@@ -106,7 +108,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               onClick={onClose}
               disabled={isSubmitting}
             >
-              Cancel
+              {t('modals.cancel')}
             </Button>
             <Button
               type="submit"
@@ -115,12 +117,12 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               {isSubmitting ? (
                 <>
                   <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin mr-2" />
-                  Sending...
+                  {t('contact.processing')}
                 </>
               ) : (
                 <>
                   <PaperPlane className="w-4 h-4 mr-2" />
-                  Send Message
+                  {t('contact.send')}
                 </>
               )}
             </Button>

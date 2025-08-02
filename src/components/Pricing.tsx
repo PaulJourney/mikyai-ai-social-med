@@ -7,6 +7,7 @@ import { CheckCircle, Lightning, Crown, Coins, CreditCard } from '@phosphor-icon
 import type { User } from '../App'
 import { toast } from 'sonner'
 import { useState } from 'react'
+import { useT } from '../contexts/TranslationContext'
 
 interface PricingProps {
   user: User | null
@@ -16,6 +17,7 @@ interface PricingProps {
 }
 
 export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }: PricingProps) {
+  const { t } = useT()
   const [showDowngradeDialog, setShowDowngradeDialog] = useState(false)
   const [showBuyCreditsDialog, setShowBuyCreditsDialog] = useState(false)
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false)
@@ -27,44 +29,31 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
   const plans = [
     {
       id: 'free' as const,
-      name: 'Free',
-      price: '$0',
-      period: '/month',
+      name: t('pricing.free.name'),
+      price: t('pricing.free.price'),
+      period: '',
       credits: '100',
       icon: CheckCircle,
-      features: [
-        '100 credits/month',
-        'Basic personas',
-        'Text input'
-      ]
+      features: t('pricing.free.features')
     },
     {
       id: 'plus' as const,
-      name: 'Plus',
-      price: '$19',
-      period: '/month',
+      name: t('pricing.plus.name'),
+      price: t('pricing.plus.price'),
+      period: '',
       credits: '1,000',
       icon: Lightning,
       popular: true,
-      features: [
-        '1,000 credits/month',
-        'All personas + God Mode',
-        'Voice recognition',
-        'File uploads'
-      ]
+      features: t('pricing.plus.features')
     },
     {
       id: 'business' as const,
-      name: 'Business',
-      price: '$49',
-      period: '/month',
+      name: t('pricing.business.name'),
+      price: t('pricing.business.price'),
+      period: '',
       credits: '5,000',
       icon: Crown,
-      features: [
-        '5,000 credits/month',
-        'All Plus features',
-        'Priority support'
-      ]
+      features: t('pricing.business.features')
     }
   ]
 
@@ -129,7 +118,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
     const price = calculateCreditPrice(credits)
     
     // Mock payment processing
-    toast.success('Processing payment...')
+    toast.success(t('modals.paymentProcessing'))
     
     setTimeout(() => {
       setPurchasedCredits(credits)
@@ -145,7 +134,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
     <div className="space-y-12">
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold text-foreground">
-          Choose Your <span className="text-primary">Plan</span>
+          {t('pricing.title')}
         </h1>
       </div>
 
@@ -156,27 +145,27 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
           
           // Determine button text based on current plan and target plan
           const getButtonText = () => {
-            if (!user) return 'Subscribe'
-            if (isCurrentPlan) return 'Current Plan'
+            if (!user) return t('pricing.selectPlan', { plan: plan.name })
+            if (isCurrentPlan) return t('pricing.currentPlan')
             
             // Check for upgrades
             if (user.plan === 'free' && (plan.id === 'plus' || plan.id === 'business')) {
-              return `Upgrade to ${plan.name}`
+              return t('pricing.upgradeTo', { plan: plan.name })
             }
             if (user.plan === 'plus' && plan.id === 'business') {
-              return `Upgrade to ${plan.name}`
+              return t('pricing.upgradeTo', { plan: plan.name })
             }
             
             // Check for downgrades
             if (plan.id === 'free') {
-              return 'Downgrade to Free'
+              return t('pricing.downgradeTo', { plan: plan.name })
             }
             if (plan.id === 'plus' && user.plan === 'business') {
-              return 'Downgrade to Plus'
+              return t('pricing.downgradeTo', { plan: plan.name })
             }
             
             // Default fallback
-            return `Select ${plan.name}`
+            return t('pricing.selectPlan', { plan: plan.name })
           }
           
           // Determine if this is a downgrade action
@@ -204,7 +193,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
             >
               {plan.popular && (
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-primary text-primary-foreground">Most Popular</Badge>
+                  <Badge className="bg-primary text-primary-foreground">{t('pricing.plus.popular')}</Badge>
                 </div>
               )}
 
@@ -271,16 +260,16 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
               <div className="flex justify-center">
                 <Coins className="w-8 h-8 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold">Need More Credits?</h3>
+              <h3 className="text-xl font-semibold">{t('pricing.needMoreCredits')}</h3>
               <p className="text-muted-foreground mb-6">
-                Buy additional credits anytime — they never expire.
+                {t('pricing.buyAdditional')}
               </p>
               <Button 
                 onClick={() => user ? setShowBuyCreditsDialog(true) : onAuthRequest('signup')}
                 className="bg-primary hover:bg-primary/90"
               >
                 <CreditCard className="w-4 h-4 mr-2" />
-                Buy Credits
+                {t('pricing.buyCredits')}
               </Button>
             </div>
           </CardContent>
@@ -291,11 +280,11 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
       <Dialog open={showDowngradeDialog} onOpenChange={setShowDowngradeDialog}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Confirm Downgrade</DialogTitle>
+            <DialogTitle>{t('modals.confirmDowngrade')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <p className="text-muted-foreground">
-              Are you sure you want to downgrade to the {plans.find(p => p.id === targetPlan)?.name} plan? You'll lose access to premium features.
+              {t('modals.downgradeConfirmation')}
             </p>
             <div className="bg-muted/50 p-4 rounded-lg space-y-2">
               <div className="font-medium">Billing Information:</div>
@@ -307,10 +296,10 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowDowngradeDialog(false)}>
-              Cancel
+              {t('modals.cancel')}
             </Button>
             <Button variant="destructive" onClick={handleDowngradeConfirm}>
-              Confirm Downgrade
+              {t('modals.confirmDowngrade')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -321,7 +310,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-center">
-              Buy Additional Credits
+              {t('pricing.buyCredits')}
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-8">
@@ -386,11 +375,11 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
           </div>
           <DialogFooter className="gap-3">
             <Button variant="outline" onClick={() => setShowBuyCreditsDialog(false)} className="hover:text-primary">
-              Cancel
+              {t('modals.cancel')}
             </Button>
             <Button onClick={handleBuyCredits} className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90">
               <CreditCard className="w-4 h-4 mr-2" />
-              Purchase Credits
+              {t('pricing.buyCredits')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -400,7 +389,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
       <Dialog open={showPaymentSuccess} onOpenChange={setShowPaymentSuccess}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-center">Payment Successful!</DialogTitle>
+            <DialogTitle className="text-center">{t('modals.paymentSuccess')}</DialogTitle>
           </DialogHeader>
           <div className="text-center space-y-4">
             <div className="flex justify-center">
@@ -410,16 +399,16 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
             </div>
             <div className="space-y-2">
               <div className="text-lg font-semibold">
-                {purchasedCredits.toLocaleString()} credits added!
+                {purchasedCredits.toLocaleString()} {t('modals.creditsAdded')}
               </div>
               <div className="text-muted-foreground">
-                Your credits have been successfully added to your account and are ready to use.
+                {t('modals.creditsPurchaseSuccess')}
               </div>
             </div>
           </div>
           <DialogFooter className="flex justify-center">
             <Button onClick={() => setShowPaymentSuccess(false)} className="w-auto">
-              Close
+              {t('modals.close')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -429,7 +418,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
       <Dialog open={showUpgradeSuccess} onOpenChange={setShowUpgradeSuccess}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-center">Upgrade Successful!</DialogTitle>
+            <DialogTitle className="text-center">{t('modals.planUpgraded')}</DialogTitle>
           </DialogHeader>
           <div className="text-center space-y-4">
             <div className="flex justify-center">
@@ -442,13 +431,13 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
                 Welcome to {upgradedPlan}!
               </div>
               <div className="text-muted-foreground">
-                Your plan has been upgraded successfully. All premium features are now available.
+                {t('modals.planUpgraded')}
               </div>
             </div>
           </div>
           <DialogFooter className="flex justify-center">
             <Button onClick={() => setShowUpgradeSuccess(false)} className="w-auto">
-              Close
+              {t('modals.close')}
             </Button>
           </DialogFooter>
         </DialogContent>

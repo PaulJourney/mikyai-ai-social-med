@@ -164,6 +164,20 @@ export interface Translations {
     planUpgraded: string
     upgradeRequired: string
     upgradePlan: string
+    confirmDowngrade: string
+    downgradeConfirmation: string
+    paymentProcessing: string
+    creditsPurchased: string
+    creditsPurchaseSuccess: string
+    planChanged: string
+    emailVerification: string
+    passwordReset: string
+    accountCreated: string
+    welcomeBack: string
+    lowCredits: string
+    insufficientCredits: string
+    fileUploadError: string
+    voiceInputError: string
   }
   
   // Referral
@@ -396,7 +410,21 @@ const translations: Record<Language, Translations> = {
       creditsAdded: 'Credits have been added to your account.',
       planUpgraded: 'Your plan has been upgraded successfully.',
       upgradeRequired: 'Upgrade Required',
-      upgradePlan: 'Upgrade your Plan'
+      upgradePlan: 'Upgrade your Plan',
+      confirmDowngrade: 'Confirm Downgrade',
+      downgradeConfirmation: 'Are you sure you want to downgrade? You will be charged from the end date of your current plan.',
+      paymentProcessing: 'Payment Processing',
+      creditsPurchased: 'Credits Purchased',
+      creditsPurchaseSuccess: 'Credits have been successfully added to your account!',
+      planChanged: 'Plan Changed',
+      emailVerification: 'Email Verification Required',
+      passwordReset: 'Password Reset',
+      accountCreated: 'Account Created Successfully',
+      welcomeBack: 'Welcome Back',
+      lowCredits: 'Low Credits Warning',
+      insufficientCredits: 'Insufficient Credits',
+      fileUploadError: 'File Upload Error',
+      voiceInputError: 'Voice Input Error'
     },
     referral: {
       title: 'Referral Program',
@@ -617,7 +645,21 @@ const translations: Record<Language, Translations> = {
       creditsAdded: 'I crediti sono stati aggiunti al tuo account.',
       planUpgraded: 'Il tuo piano è stato aggiornato con successo.',
       upgradeRequired: 'Upgrade Richiesto',
-      upgradePlan: 'Aggiorna il tuo Piano'
+      upgradePlan: 'Aggiorna il tuo Piano',
+      confirmDowngrade: 'Conferma Downgrade',
+      downgradeConfirmation: 'Sei sicuro di voler fare il downgrade? Verrai addebitato dalla data di fine del tuo piano attuale.',
+      paymentProcessing: 'Elaborazione Pagamento',
+      creditsPurchased: 'Crediti Acquistati',
+      creditsPurchaseSuccess: 'I crediti sono stati aggiunti con successo al tuo account!',
+      planChanged: 'Piano Modificato',
+      emailVerification: 'Verifica Email Richiesta',
+      passwordReset: 'Reset Password',
+      accountCreated: 'Account Creato con Successo',
+      welcomeBack: 'Bentornato',
+      lowCredits: 'Avviso Crediti Bassi',
+      insufficientCredits: 'Crediti Insufficienti',
+      fileUploadError: 'Errore Upload File',
+      voiceInputError: 'Errore Input Vocale'
     },
     referral: {
       title: 'Programma Referral',
@@ -837,7 +879,21 @@ const translations: Record<Language, Translations> = {
       creditsAdded: 'Los créditos han sido añadidos a tu cuenta.',
       planUpgraded: 'Tu plan ha sido actualizado exitosamente.',
       upgradeRequired: 'Actualización Requerida',
-      upgradePlan: 'Actualiza tu Plan'
+      upgradePlan: 'Actualiza tu Plan',
+      confirmDowngrade: 'Confirmar Bajada de Plan',
+      downgradeConfirmation: '¿Estás seguro de que quieres bajar de plan? Se te cobrará desde la fecha de finalización de tu plan actual.',
+      paymentProcessing: 'Procesando Pago',
+      creditsPurchased: 'Créditos Comprados',
+      creditsPurchaseSuccess: '¡Los créditos han sido añadidos exitosamente a tu cuenta!',
+      planChanged: 'Plan Cambiado',
+      emailVerification: 'Verificación de Email Requerida',
+      passwordReset: 'Restablecer Contraseña',
+      accountCreated: 'Cuenta Creada Exitosamente',
+      welcomeBack: 'Bienvenido de Vuelta',
+      lowCredits: 'Advertencia Créditos Bajos',
+      insufficientCredits: 'Créditos Insuficientes',
+      fileUploadError: 'Error de Subida de Archivo',
+      voiceInputError: 'Error de Entrada de Voz'
     },
     referral: {
       title: 'Programa de Referidos',
@@ -1057,7 +1113,21 @@ const translations: Record<Language, Translations> = {
       creditsAdded: 'Credits wurden zu deinem Account hinzugefügt.',
       planUpgraded: 'Dein Plan wurde erfolgreich aktualisiert.',
       upgradeRequired: 'Upgrade Erforderlich',
-      upgradePlan: 'Upgrade deinen Plan'
+      upgradePlan: 'Upgrade deinen Plan',
+      confirmDowngrade: 'Downgrade Bestätigen',
+      downgradeConfirmation: 'Bist du sicher, dass du ein Downgrade machen möchtest? Du wirst ab dem Enddatum deines aktuellen Plans berechnet.',
+      paymentProcessing: 'Zahlung Wird Verarbeitet',
+      creditsPurchased: 'Credits Gekauft',
+      creditsPurchaseSuccess: 'Credits wurden erfolgreich zu deinem Account hinzugefügt!',
+      planChanged: 'Plan Geändert',
+      emailVerification: 'E-Mail-Verifizierung Erforderlich',
+      passwordReset: 'Passwort Zurücksetzen',
+      accountCreated: 'Account Erfolgreich Erstellt',
+      welcomeBack: 'Willkommen Zurück',
+      lowCredits: 'Niedrige Credits Warnung',
+      insufficientCredits: 'Unzureichende Credits',
+      fileUploadError: 'Datei-Upload Fehler',
+      voiceInputError: 'Spracheingabe Fehler'
     },
     referral: {
       title: 'Empfehlungsprogramm',

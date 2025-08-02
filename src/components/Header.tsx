@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Badge } from '@/components/ui/badge'
-import { User, Globe, ShareNetwork, ClockCounterClockwise, CreditCard, SignOut, DollarSign, Copy, WhatsappLogo, Link } from '@phosphor-icons/react'
+import { User, Globe, ShareNetwork, ClockCounterClockwise, CreditCard, SignOut, DollarSign, Copy, WhatsappLogo, Link, ChatCircle } from '@phosphor-icons/react'
 import type { User as UserType } from '../App'
 import { toast } from 'sonner'
 import { CashoutModal } from './CashoutModal'
@@ -98,6 +98,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
               onClick={() => onViewChange('chat')}
               className="text-xs"
             >
+              <ChatCircle className="w-4 h-4 mr-1" />
               Chat
             </Button>
             <Button
@@ -121,6 +122,31 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
           </div>
 
           <div className="flex items-center gap-3">
+            {/* Language Selector - Available for all users */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost" size="sm" className="text-xs">
+                  <Globe className="w-4 h-4 mr-1" />
+                  {getCurrentLanguageDisplay()}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-40 p-2">
+                <div className="space-y-1">
+                  {availableLanguages.map((lang) => (
+                    <Button 
+                      key={lang.code}
+                      variant={language === lang.code ? "default" : "ghost"} 
+                      size="sm" 
+                      className="w-full justify-start text-xs"
+                      onClick={() => setLanguage(lang.code as any)}
+                    >
+                      {lang.flag} {lang.name}
+                    </Button>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
+
             {user ? (
               <>
                 {/* Credits Badge */}
@@ -213,31 +239,6 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                           <div>{t('referral.successful')}: {user.referralsCount}</div>
                         </div>
                       </div>
-                    </div>
-                  </PopoverContent>
-                </Popover>
-
-                {/* Language Selector */}
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="ghost" size="sm" className="text-xs">
-                      <Globe className="w-4 h-4 mr-1" />
-                      {getCurrentLanguageDisplay()}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-40 p-2">
-                    <div className="space-y-1">
-                      {availableLanguages.map((lang) => (
-                        <Button 
-                          key={lang.code}
-                          variant={language === lang.code ? "default" : "ghost"} 
-                          size="sm" 
-                          className="w-full justify-start text-xs"
-                          onClick={() => setLanguage(lang.code as any)}
-                        >
-                          {lang.flag} {lang.name}
-                        </Button>
-                      ))}
                     </div>
                   </PopoverContent>
                 </Popover>
