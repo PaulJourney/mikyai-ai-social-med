@@ -360,9 +360,14 @@ function App() {
           {currentView === 'chat' && (
             <div className="space-y-8">
               <div className="text-center space-y-6">
-                <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-8">
-                  Ask to <span className="text-primary">Miky</span>
-                </h1>
+                <div className="space-y-4">
+                  <h1 className="text-4xl md:text-5xl font-bold text-foreground">
+                    Ask to <span className="text-primary">Miky</span>
+                  </h1>
+                  <p className="text-lg text-muted-foreground font-medium">
+                    Ultra-skilled AI personas ready to act as your advisors in life, work, and achievement.
+                  </p>
+                </div>
                 
                 <MainInput 
                   onSendMessage={handleSendMessage}
@@ -375,12 +380,14 @@ function App() {
                   isAuthenticated={!!user}
                 />
                 
-                <PersonaSelector 
-                  selectedPersona={selectedPersona}
-                  onPersonaSelect={handlePersonaSelect}
-                  userPlan={user?.plan || 'free'}
-                  onUpgradeToPlusRequest={() => setCurrentView('pricing')}
-                />
+                <div className="pt-4">
+                  <PersonaSelector 
+                    selectedPersona={selectedPersona}
+                    onPersonaSelect={handlePersonaSelect}
+                    userPlan={user?.plan || 'free'}
+                    onUpgradeToPlusRequest={() => setCurrentView('pricing')}
+                  />
+                </div>
                 
                 {!user && (
                   <p className="text-sm text-muted-foreground">
