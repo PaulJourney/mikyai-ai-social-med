@@ -111,13 +111,14 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full max-w-6xl mx-auto">
       <div className="text-center mb-6">
         <h2 className="text-base font-medium text-muted-foreground mb-2">Choose Your Ultra‑Skilled AI Persona:</h2>
       </div>
       
       <div className="space-y-4">
-        <div className="flex flex-wrap justify-center gap-3">
+        {/* Desktop: 2 rows of 3 columns, Mobile: stacked */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
           {personas.map((persona) => {
           const isSelected = selectedPersona === persona.id
           const canUse = canUsePersona(persona)
@@ -128,7 +129,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
               key={persona.id}
               variant={isSelected ? 'default' : 'outline'}
               className={`
-                h-auto p-4 flex-shrink-0 flex items-center gap-3 text-left transition-all duration-200 group min-w-fit
+                h-auto p-4 w-full flex items-center gap-3 text-left transition-all duration-200 group
                 ${isSelected ? 'glow-effect ring-2 ring-primary/50' : ''}
                 ${!canUse ? 'opacity-50' : 'hover:glow-effect'}
               `}
@@ -137,18 +138,18 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
             >
               <IconComponent 
                 size={20} 
-                className={`${isSelected ? 'text-black' : 'text-foreground group-hover:text-primary'} transition-colors duration-200`} 
+                className={`${isSelected ? 'text-black' : 'text-foreground group-hover:text-primary'} transition-colors duration-200 flex-shrink-0`} 
               />
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <span className={`font-medium text-sm transition-colors duration-200 ${isSelected ? 'text-black' : 'group-hover:text-primary'}`}>{persona.name}</span>
                   {persona.requiresPaid && (
-                    <Badge variant="secondary" className="text-xs px-1 py-0">
+                    <Badge variant="secondary" className="text-xs px-1 py-0 flex-shrink-0">
                       Plus
                     </Badge>
                   )}
                 </div>
-                <p className={`text-xs mt-1 whitespace-nowrap transition-colors duration-200 ${isSelected ? 'text-black font-normal' : 'text-muted-foreground'}`}>
+                <p className={`text-xs mt-1 transition-colors duration-200 ${isSelected ? 'text-black font-normal' : 'text-muted-foreground'} leading-tight`}>
                   {persona.description}
                 </p>
               </div>
