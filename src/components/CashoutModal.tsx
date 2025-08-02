@@ -84,6 +84,7 @@ export function CashoutModal({ isOpen, onClose, availableCash, onCashoutSuccess 
                 id="paypal-email"
                 type="email"
                 placeholder={t('referral.paypalEmailPlaceholder')}
+                className="md:placeholder:text-sm placeholder:text-xs"
                 value={paypalEmail}
                 onChange={(e) => setPaypalEmail(e.target.value)}
                 required

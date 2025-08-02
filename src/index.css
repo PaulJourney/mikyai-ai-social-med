@@ -178,6 +178,11 @@
   .pricing-buy-credits-text-mobile {
     font-size: 0.75rem !important; /* Smaller font for "Buy additional credits anytime..." text */
   }
+  
+  /* Mobile-specific modal placeholder text adjustments */
+  .mobile-modal-placeholder::placeholder {
+    font-size: 0.75rem !important; /* Smaller font for modal placeholders on mobile */
+  }
 }
 
 @media (min-width: 769px) {

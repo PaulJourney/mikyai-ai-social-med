@@ -72,6 +72,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
               placeholder={t('contact.namePlaceholder')}
+              className="md:placeholder:text-sm placeholder:text-xs"
               disabled={isSubmitting}
               required
             />
@@ -84,6 +85,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
               placeholder={t('contact.emailPlaceholder')}
+              className="md:placeholder:text-sm placeholder:text-xs"
               disabled={isSubmitting}
               required
             />
@@ -95,6 +97,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               value={formData.message}
               onChange={(e) => handleInputChange('message', e.target.value)}
               placeholder={t('contact.messagePlaceholder')}
+              className="md:placeholder:text-sm placeholder:text-xs"
               rows={4}
               disabled={isSubmitting}
               required

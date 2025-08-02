@@ -411,7 +411,7 @@ const translations: Record<Language, Translations> = {
       signUpPrompt: 'to start chatting with AI personas',
       generalMode: 'Switch to general chat mode',
       generalChatMode: 'General chat mode',
-      upgradeToUnlock: 'Upgrade to unlock All personas'
+      upgradeToUnlock: 'to unlock All personas'
     },
     personas: {
       academic: {
@@ -776,7 +776,7 @@ const translations: Record<Language, Translations> = {
       signUpPrompt: 'per iniziare a chattare con le personalità AI',
       generalMode: 'Passa alla modalità chat generale',
       generalChatMode: 'Modalità chat generale',
-      upgradeToUnlock: 'Aggiorna per sbloccare Tutte le personalità'
+      upgradeToUnlock: 'per sbloccare Tutte le personalità'
     },
     personas: {
       academic: {
@@ -1141,7 +1141,7 @@ const translations: Record<Language, Translations> = {
       signUpPrompt: 'para empezar a chatear con personalidades AI',
       generalMode: 'Cambiar a modo chat general',
       generalChatMode: 'Modo chat general',
-      upgradeToUnlock: 'Actualiza para desbloquear Todas las personalidades'
+      upgradeToUnlock: 'para desbloquear Todas las personalidades'
     },
     personas: {
       academic: {
@@ -1506,7 +1506,7 @@ const translations: Record<Language, Translations> = {
       signUpPrompt: 'um mit AI-Personas zu chatten',
       generalMode: 'Zu allgemeinem Chat-Modus wechseln',
       generalChatMode: 'Allgemeiner Chat-Modus',
-      upgradeToUnlock: 'Upgrade um Alle Personas freizuschalten'
+      upgradeToUnlock: 'um Alle Personas freizuschalten'
     },
     personas: {
       academic: {

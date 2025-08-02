@@ -335,6 +335,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder={t('auth.newPasswordPlaceholder')}
+                    className="md:placeholder:text-sm placeholder:text-xs"
                     required
                     minLength={6}
                   />
@@ -348,6 +349,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                     value={confirmNewPassword}
                     onChange={(e) => setConfirmNewPassword(e.target.value)}
                     placeholder={t('auth.confirmPasswordPlaceholder')}
+                    className="md:placeholder:text-sm placeholder:text-xs"
                     required
                     minLength={6}
                   />
@@ -406,6 +408,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                     value={formData.email}
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                     placeholder={t('auth.emailPlaceholder')}
+                    className="md:placeholder:text-sm placeholder:text-xs"
                     required
                   />
                 </div>
@@ -500,6 +503,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                     value={formData.firstName}
                     onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
                     placeholder={t('auth.firstNamePlaceholder')}
+                    className="md:placeholder:text-sm placeholder:text-xs"
                     required
                   />
                 </div>
@@ -510,6 +514,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                     value={formData.lastName}
                     onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
                     placeholder={t('auth.lastNamePlaceholder')}
+                    className="md:placeholder:text-sm placeholder:text-xs"
                     required
                   />
                 </div>
@@ -524,6 +529,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                 value={formData.email}
                 onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                 placeholder={t('auth.emailPlaceholder')}
+                className="md:placeholder:text-sm placeholder:text-xs"
                 required
               />
             </div>
@@ -538,7 +544,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                   onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
                   placeholder={t('auth.passwordPlaceholder')}
                   required
-                  className="pr-10"
+                  className="pr-10 md:placeholder:text-sm placeholder:text-xs"
                 />
                 <Button
                   type="button"
@@ -562,6 +568,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                     value={formData.confirmPassword}
                     onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
                     placeholder={t('auth.confirmPasswordPlaceholder')}
+                    className="md:placeholder:text-sm placeholder:text-xs"
                     required
                   />
                 </div>
@@ -577,7 +584,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                       onChange={(e) => setFormData(prev => ({ ...prev, referralCode: e.target.value }))}
                       placeholder={t('auth.referralCodePlaceholder')}
                       disabled={referralVerified}
-                      className={referralVerified ? 'bg-primary/10 border-primary' : ''}
+                      className={`${referralVerified ? 'bg-primary/10 border-primary' : ''} md:placeholder:text-sm placeholder:text-xs`}
                     />
                     {formData.referralCode && !referralVerified && (
                       <Button
