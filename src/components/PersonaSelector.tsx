@@ -179,9 +179,11 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
               <Button 
                 variant="outline" 
                 onClick={() => setShowUpgradeModal(false)}
-                className="flex-1"
+                className="flex-1 group"
               >
-                Cancel
+                <span className="group-hover:text-primary transition-colors duration-200">
+                  Cancel
+                </span>
               </Button>
               <Button 
                 onClick={handleUpgradeClick}
