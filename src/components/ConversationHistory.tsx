@@ -325,10 +325,14 @@ export function ConversationHistory({
                       </DialogHeader>
                       <div className="space-y-4">
                         <p className="text-sm text-muted-foreground">
-                          Are you sure you want to delete "{conversation.title}"? This action cannot be undone.
+                          {t('history.deleteConfirmation', { title: conversation.title })}
                         </p>
                         <div className="flex justify-end gap-2">
-                          <Button variant="outline" size="sm">{t('modals.cancel')}</Button>
+                          <Button variant="outline" size="sm" className="group">
+                            <span className="group-hover:text-primary transition-colors duration-200">
+                              {t('modals.cancel')}
+                            </span>
+                          </Button>
                           <Button 
                             variant="destructive" 
                             size="sm"
@@ -387,7 +391,11 @@ export function ConversationHistory({
 
           {/* Results info */}
           <div className="text-center text-xs text-muted-foreground">
-            Showing {startIndex + 1}-{Math.min(endIndex, filteredConversations.length)} of {filteredConversations.length} conversations
+            {t('history.showingConversations', { 
+              start: startIndex + 1, 
+              end: Math.min(endIndex, filteredConversations.length), 
+              total: filteredConversations.length 
+            })}
           </div>
         </div>
       )}

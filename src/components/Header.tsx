@@ -254,10 +254,10 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                     <div className="space-y-3">
                       <div className="text-sm font-medium">Account</div>
                       <div className="space-y-2 text-xs text-muted-foreground">
-                        <div>Plan: <span className="text-foreground font-medium capitalize">{user.plan}</span></div>
-                        <div>{t('header.credits')}: <span className="text-foreground font-medium">{user.credits}</span></div>
-                        <div>Referrals: <span className="text-foreground font-medium">{user.referralsCount}</span></div>
-                        <div>Credits Earned: <span className="text-foreground font-medium">{user.creditsEarned}</span></div>
+                        <div>{t('profile.plan')}: <span className="text-foreground font-medium capitalize">{user.plan}</span></div>
+                        <div>{t('profile.credits')}: <span className="text-foreground font-medium">{user.credits}</span></div>
+                        <div>{t('profile.referrals')}: <span className="text-foreground font-medium">{user.referralsCount}</span></div>
+                        <div>{t('profile.earned')}: <span className="text-foreground font-medium">${((user.cashEarned || 0) + (user.referralsCount * 2)).toFixed(2)}</span></div>
                       </div>
                       <div className="pt-2 border-t space-y-2">
                         {user.plan !== 'business' ? (

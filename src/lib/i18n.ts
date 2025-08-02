@@ -100,6 +100,9 @@ export interface Translations {
     at: string
     messages: string
     message: string
+    // Conversation management
+    showingConversations: string
+    deleteConfirmation: string
   }
   
   // Pricing
@@ -126,6 +129,7 @@ export interface Translations {
     downgradeTo: string
     buyAdditional: string
     creditInfo: string
+    creditsMonth: string
     // Buy Credits Modal
     buyCreditsModal: {
       title: string
@@ -135,6 +139,9 @@ export interface Translations {
       credits2000: string
       purchase: string
       cancel: string
+      totalCost: string
+      creditsNeverExpire: string
+      useAnytime: string
     }
     // Billing
     billingInformation: string
@@ -172,6 +179,16 @@ export interface Translations {
     confirmPasswordPlaceholder: string
     referralCodePlaceholder: string
     newPasswordPlaceholder: string
+    // Auth Lost Password Modal
+    lostPasswordTitle: string
+    lostPasswordMessage: string
+    sendResetCode: string
+    sending: string
+    backToSignIn: string
+    // Reset Password Modal  
+    resetPasswordTitle: string
+    resetCodeMessage: string
+    resetPasswordButton: string
     // Messages
     emailSentMessage: string
     emailNotFoundMessage: string
@@ -200,6 +217,7 @@ export interface Translations {
     upgradePlan: string
     confirmDowngrade: string
     downgradeConfirmation: string
+    downgradeMessage: string
     paymentProcessing: string
     creditsPurchased: string
     creditsPurchaseSuccess: string
@@ -292,6 +310,14 @@ export interface Translations {
     next: string
     skip: string
     finish: string
+  }
+  
+  // Profile dropdown
+  profile: {
+    plan: string
+    credits: string
+    referrals: string
+    earned: string
   }
   
   // Plans
@@ -390,7 +416,10 @@ const translations: Record<Language, Translations> = {
       yesterday: 'Yesterday',
       at: 'at',
       messages: 'messages',
-      message: 'message'
+      message: 'message',
+      // Conversation management
+      showingConversations: 'Showing {{start}}-{{end}} of {{total}} conversations',
+      deleteConfirmation: 'Are you sure you want to delete "{{title}}"? This action cannot be undone.'
     },
     pricing: {
       title: 'Choose your plan',
@@ -415,6 +444,7 @@ const translations: Record<Language, Translations> = {
       downgradeTo: 'Downgrade to {{plan}}',
       buyAdditional: 'Buy additional credits anytime — they never expire.',
       creditInfo: 'Credits are consumed per message based on persona complexity.',
+      creditsMonth: 'credits/month',
       // Buy Credits Modal
       buyCreditsModal: {
         title: 'Buy Additional Credits',
@@ -423,7 +453,10 @@ const translations: Record<Language, Translations> = {
         credits1000: '1,000 Credits',
         credits2000: '2,000 Credits',
         purchase: 'Purchase Credits',
-        cancel: 'Cancel'
+        cancel: 'Cancel',
+        totalCost: 'Total Cost',
+        creditsNeverExpire: 'Credits never expire',
+        useAnytime: 'Use them anytime with any plan. Perfect for heavy usage periods.'
       },
       // Billing
       billingInformation: 'Billing Information',
@@ -485,6 +518,7 @@ const translations: Record<Language, Translations> = {
       upgradePlan: 'Upgrade your Plan',
       confirmDowngrade: 'Confirm Downgrade',
       downgradeConfirmation: 'Are you sure you want to downgrade? You will be charged from the end date of your current plan.',
+      downgradeMessage: 'Your current plan will remain active until {{date}}. After this date, you\'ll be charged {{price}} for the {{plan}} plan.',
       paymentProcessing: 'Payment Processing',
       creditsPurchased: 'Credits Purchased',
       creditsPurchaseSuccess: 'Credits have been successfully added to your account!',
@@ -568,6 +602,14 @@ const translations: Record<Language, Translations> = {
       skip: 'Skip',
       finish: 'Get Started'
     },
+    // Profile dropdown
+    profile: {
+      plan: 'Plan',
+      credits: 'Credits',
+      referrals: 'Referrals',
+      earned: 'Earned'
+    },
+    
     plans: {
       free: 'Free',
       plus: 'Plus',
@@ -663,7 +705,10 @@ const translations: Record<Language, Translations> = {
       yesterday: 'Ieri',
       at: 'alle',
       messages: 'messaggi',
-      message: 'messaggio'
+      message: 'messaggio',
+      // Conversation management
+      showingConversations: 'Visualizzazione {{start}}-{{end}} di {{total}} conversazioni',
+      deleteConfirmation: 'Sei sicuro di voler eliminare "{{title}}"? Questa azione non può essere annullata.'
     },
     pricing: {
       title: 'Scegli il tuo piano',
@@ -688,6 +733,7 @@ const translations: Record<Language, Translations> = {
       downgradeTo: 'Downgrade a {{plan}}',
       buyAdditional: 'Acquista crediti aggiuntivi in qualsiasi momento — non scadono mai.',
       creditInfo: 'I crediti vengono consumati per messaggio in base alla complessità della personalità.',
+      creditsMonth: 'crediti/mese',
       // Buy Credits Modal
       buyCreditsModal: {
         title: 'Acquista Crediti Aggiuntivi',
@@ -696,7 +742,10 @@ const translations: Record<Language, Translations> = {
         credits1000: '1.000 Crediti',
         credits2000: '2.000 Crediti',
         purchase: 'Acquista Crediti',
-        cancel: 'Annulla'
+        cancel: 'Annulla',
+        totalCost: 'Costo Totale',
+        creditsNeverExpire: 'I crediti non scadono mai',
+        useAnytime: 'Usali quando vuoi con qualsiasi piano. Perfetti per periodi di uso intensivo.'
       },
       // Billing
       billingInformation: 'Informazioni Fatturazione',
@@ -731,7 +780,18 @@ const translations: Record<Language, Translations> = {
       lastNamePlaceholder: 'Il tuo cognome',
       confirmPasswordPlaceholder: 'Conferma la password',
       referralCodePlaceholder: 'Codice referral (opzionale)',
-      newPasswordPlaceholder: 'Nuova password',
+      // Auth Lost Password Modal
+      lostPasswordTitle: 'Reimposta la password',
+      lostPasswordMessage: 'Inserisci il tuo indirizzo email e ti invieremo un codice di reset.',
+      sendResetCode: 'Invia Codice Reset',
+      sending: 'Invio...',
+      backToSignIn: 'Torna al login',
+      // Reset Password Modal  
+      resetPasswordTitle: 'Inserisci codice reset',
+      resetCodeMessage: 'Abbiamo inviato un codice reset a',
+      resetPasswordButton: 'Reimposta Password',
+      // Messages
+      emailSentMessage: 'Link di reset inviato alla tua email.',
       // Messages
       emailSentMessage: 'Link di reset inviato alla tua email.',
       emailNotFoundMessage: 'Indirizzo email non trovato.',
@@ -758,6 +818,7 @@ const translations: Record<Language, Translations> = {
       upgradePlan: 'Aggiorna il tuo Piano',
       confirmDowngrade: 'Conferma Downgrade',
       downgradeConfirmation: 'Sei sicuro di voler fare il downgrade? Verrai addebitato dalla data di fine del tuo piano attuale.',
+      downgradeMessage: 'Il tuo piano attuale rimarrà attivo fino al {{date}}. Dopo questa data, ti verrà addebitato {{price}} per il piano {{plan}}.',
       paymentProcessing: 'Elaborazione Pagamento',
       creditsPurchased: 'Crediti Acquistati',
       creditsPurchaseSuccess: 'I crediti sono stati aggiunti con successo al tuo account!',
@@ -773,10 +834,10 @@ const translations: Record<Language, Translations> = {
     },
     referral: {
       title: 'Programma Referral',
-      howItWorks: 'Invita amici e guadagna €2 per ogni iscrizione riuscita al piano Plus.',
+      howItWorks: 'Invita amici e guadagna $2 per ogni iscrizione riuscita al piano Plus.',
       earnings: 'Guadagni Totali',
       cashOut: 'Incassa',
-      minimum: 'Minimo €10 per incassare',
+      minimum: 'Minimo $10 per incassare',
       successful: 'Referral Riusciti',
       pending: 'Guadagni in Sospeso',
       shareOptions: 'Condividi',
@@ -841,6 +902,15 @@ const translations: Record<Language, Translations> = {
       skip: 'Salta',
       finish: 'Inizia'
     },
+    
+    // Profile dropdown
+    profile: {
+      plan: 'Piano',
+      credits: 'Crediti',
+      referrals: 'Referral',
+      earned: 'Guadagnato'
+    },
+    
     plans: {
       free: 'Gratuito',
       plus: 'Plus',
@@ -935,7 +1005,10 @@ const translations: Record<Language, Translations> = {
       yesterday: 'Ayer',
       at: 'a las',
       messages: 'mensajes',
-      message: 'mensaje'
+      message: 'mensaje',
+      // Conversation management
+      showingConversations: 'Mostrando {{start}}-{{end}} de {{total}} conversaciones',
+      deleteConfirmation: '¿Estás seguro de que quieres eliminar "{{title}}"? Esta acción no se puede deshacer.'
     },
     pricing: {
       title: 'Elige tu plan',
@@ -960,6 +1033,7 @@ const translations: Record<Language, Translations> = {
       downgradeTo: 'Bajar a {{plan}}',
       buyAdditional: 'Compra créditos adicionales cuando quieras — nunca expiran.',
       creditInfo: 'Los créditos se consumen por mensaje según la complejidad de la personalidad.',
+      creditsMonth: 'créditos/mes',
       // Buy Credits Modal
       buyCreditsModal: {
         title: 'Comprar Créditos Adicionales',
@@ -968,7 +1042,10 @@ const translations: Record<Language, Translations> = {
         credits1000: '1.000 Créditos',
         credits2000: '2.000 Créditos',
         purchase: 'Comprar Créditos',
-        cancel: 'Cancelar'
+        cancel: 'Cancelar',
+        totalCost: 'Costo Total',
+        creditsNeverExpire: 'Los créditos nunca expiran',
+        useAnytime: 'Úsalos cuando quieras con cualquier plan. Perfecto para períodos de uso intensivo.'
       },
       // Billing
       billingInformation: 'Información de Facturación',
@@ -1003,7 +1080,18 @@ const translations: Record<Language, Translations> = {
       lastNamePlaceholder: 'Tu apellido',
       confirmPasswordPlaceholder: 'Confirma tu contraseña',
       referralCodePlaceholder: 'Código de referido (opcional)',
-      newPasswordPlaceholder: 'Nueva contraseña',
+      // Auth Lost Password Modal
+      lostPasswordTitle: 'Restablecer contraseña',
+      lostPasswordMessage: 'Ingresa tu dirección de email y te enviaremos un código de reset.',
+      sendResetCode: 'Enviar Código Reset',
+      sending: 'Enviando...',
+      backToSignIn: 'Volver al login',
+      // Reset Password Modal  
+      resetPasswordTitle: 'Ingresar código reset',
+      resetCodeMessage: 'Enviamos un código reset a',
+      resetPasswordButton: 'Restablecer Contraseña',
+      // Messages
+      emailSentMessage: 'Enlace de restablecimiento enviado a tu email.',
       // Messages
       emailSentMessage: 'Enlace de restablecimiento enviado a tu email.',
       emailNotFoundMessage: 'Dirección de email no encontrada.',
@@ -1030,6 +1118,7 @@ const translations: Record<Language, Translations> = {
       upgradePlan: 'Actualiza tu Plan',
       confirmDowngrade: 'Confirmar Bajada de Plan',
       downgradeConfirmation: '¿Estás seguro de que quieres bajar de plan? Se te cobrará desde la fecha de finalización de tu plan actual.',
+      downgradeMessage: 'Tu plan actual permanecerá activo hasta el {{date}}. Después de esta fecha, se te cobrará {{price}} por el plan {{plan}}.',
       paymentProcessing: 'Procesando Pago',
       creditsPurchased: 'Créditos Comprados',
       creditsPurchaseSuccess: '¡Los créditos han sido añadidos exitosamente a tu cuenta!',
@@ -1113,6 +1202,15 @@ const translations: Record<Language, Translations> = {
       skip: 'Saltar',
       finish: 'Comenzar'
     },
+    
+    // Profile dropdown
+    profile: {
+      plan: 'Plan',
+      credits: 'Créditos',
+      referrals: 'Referidos',
+      earned: 'Ganado'
+    },
+    
     plans: {
       free: 'Gratuito',
       plus: 'Plus',
@@ -1207,7 +1305,10 @@ const translations: Record<Language, Translations> = {
       yesterday: 'Gestern',
       at: 'um',
       messages: 'Nachrichten',
-      message: 'Nachricht'
+      message: 'Nachricht',
+      // Conversation management
+      showingConversations: 'Zeige {{start}}-{{end}} von {{total}} Gesprächen',
+      deleteConfirmation: 'Bist du sicher, dass du "{{title}}" löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.'
     },
     pricing: {
       title: 'Wähle deinen Plan',
@@ -1232,6 +1333,7 @@ const translations: Record<Language, Translations> = {
       downgradeTo: 'Downgrade zu {{plan}}',
       buyAdditional: 'Kaufe zusätzliche Credits jederzeit — sie verfallen nie.',
       creditInfo: 'Credits werden pro Nachricht basierend auf Persona-Komplexität verbraucht.',
+      creditsMonth: 'Credits/Monat',
       // Buy Credits Modal
       buyCreditsModal: {
         title: 'Zusätzliche Credits Kaufen',
@@ -1240,7 +1342,10 @@ const translations: Record<Language, Translations> = {
         credits1000: '1.000 Credits',
         credits2000: '2.000 Credits',
         purchase: 'Credits Kaufen',
-        cancel: 'Abbrechen'
+        cancel: 'Abbrechen',
+        totalCost: 'Gesamtkosten',
+        creditsNeverExpire: 'Credits verfallen nie',
+        useAnytime: 'Nutze sie jederzeit mit jedem Plan. Perfekt für intensive Nutzungsperioden.'
       },
       // Billing
       billingInformation: 'Rechnungsinformationen',
@@ -1275,7 +1380,18 @@ const translations: Record<Language, Translations> = {
       lastNamePlaceholder: 'Dein Nachname',
       confirmPasswordPlaceholder: 'Passwort bestätigen',
       referralCodePlaceholder: 'Empfehlungscode (optional)',
-      newPasswordPlaceholder: 'Neues Passwort',
+      // Auth Lost Password Modal
+      lostPasswordTitle: 'Passwort zurücksetzen',
+      lostPasswordMessage: 'Gib deine E-Mail-Adresse ein und wir senden dir einen Reset-Code.',
+      sendResetCode: 'Reset-Code Senden',
+      sending: 'Sende...',
+      backToSignIn: 'Zurück zum Login',
+      // Reset Password Modal  
+      resetPasswordTitle: 'Reset-Code eingeben',
+      resetCodeMessage: 'Wir haben einen Reset-Code gesendet an',
+      resetPasswordButton: 'Passwort Zurücksetzen',
+      // Messages
+      emailSentMessage: 'Reset-Link an deine E-Mail gesendet.',
       // Messages
       emailSentMessage: 'Reset-Link an deine E-Mail gesendet.',
       emailNotFoundMessage: 'E-Mail-Adresse nicht gefunden.',
@@ -1302,6 +1418,7 @@ const translations: Record<Language, Translations> = {
       upgradePlan: 'Upgrade deinen Plan',
       confirmDowngrade: 'Downgrade Bestätigen',
       downgradeConfirmation: 'Bist du sicher, dass du ein Downgrade machen möchtest? Du wirst ab dem Enddatum deines aktuellen Plans berechnet.',
+      downgradeMessage: 'Dein aktueller Plan bleibt bis zum {{date}} aktiv. Nach diesem Datum wird dir {{price}} für den {{plan}} Plan berechnet.',
       paymentProcessing: 'Zahlung Wird Verarbeitet',
       creditsPurchased: 'Credits Gekauft',
       creditsPurchaseSuccess: 'Credits wurden erfolgreich zu deinem Account hinzugefügt!',
@@ -1317,10 +1434,10 @@ const translations: Record<Language, Translations> = {
     },
     referral: {
       title: 'Empfehlungsprogramm',
-      howItWorks: 'Lade Freunde ein und verdiene €2 für jede erfolgreiche Anmeldung zum Plus-Plan.',
+      howItWorks: 'Lade Freunde ein und verdiene $2 für jede erfolgreiche Anmeldung zum Plus-Plan.',
       earnings: 'Gesamteinnahmen',
       cashOut: 'Auszahlen',
-      minimum: 'Mindestens €10 für Auszahlung',
+      minimum: 'Mindestens $10 für Auszahlung',
       successful: 'Erfolgreiche Empfehlungen',
       pending: 'Ausstehende Einnahmen',
       shareOptions: 'Teilen',
@@ -1385,6 +1502,15 @@ const translations: Record<Language, Translations> = {
       skip: 'Überspringen',
       finish: 'Loslegen'
     },
+    
+    // Profile dropdown
+    profile: {
+      plan: 'Plan',
+      credits: 'Credits',
+      referrals: 'Empfehlungen',
+      earned: 'Verdient'
+    },
+    
     plans: {
       free: 'Kostenlos',
       plus: 'Plus',

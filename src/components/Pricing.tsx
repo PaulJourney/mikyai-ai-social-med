@@ -238,7 +238,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
                   <span className="text-muted-foreground text-sm">{plan.period}</span>
                 </div>
                 <CardDescription className="text-primary font-medium">
-                  {plan.credits} credits/month
+                  {plan.credits} {t('pricing.creditsMonth')}
                 </CardDescription>
               </CardHeader>
 
@@ -316,8 +316,11 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
             <div className="bg-muted/50 p-4 rounded-lg space-y-2">
               <div className="font-medium">{t('pricing.billingInformation')}:</div>
               <div className="text-sm text-muted-foreground">
-                Your current plan will remain active until {formatNextBillingDate()}.
-                After this date, you'll be charged {plans.find(p => p.id === targetPlan)?.price}/month for the {plans.find(p => p.id === targetPlan)?.name} plan.
+                {t('modals.downgradeMessage', {
+                  date: formatNextBillingDate(),
+                  price: plans.find(p => p.id === targetPlan)?.price,
+                  plan: plans.find(p => p.id === targetPlan)?.name
+                })}
               </div>
             </div>
           </div>
@@ -343,7 +346,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
           <div className="space-y-8">
             <div className="bg-card/50 rounded-xl p-6 space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-lg font-medium">Total Cost</span>
+                <span className="text-lg font-medium">{t('pricing.buyCreditsModal.totalCost')}</span>
                 <div className="text-right">
                   <div className="text-3xl font-bold text-primary">
                     ${calculateCreditPrice(creditsToBuy[0])}
@@ -405,9 +408,9 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
               <div className="flex items-start gap-3">
                 <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                 <div className="space-y-1">
-                  <div className="font-medium text-sm">Credits never expire</div>
+                  <div className="font-medium text-sm">{t('pricing.buyCreditsModal.creditsNeverExpire')}</div>
                   <div className="text-xs text-muted-foreground">
-                    Use them anytime with any plan. Perfect for heavy usage periods.
+                    {t('pricing.buyCreditsModal.useAnytime')}
                   </div>
                 </div>
               </div>

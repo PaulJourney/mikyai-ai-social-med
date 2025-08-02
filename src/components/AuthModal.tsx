@@ -261,12 +261,9 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-medium mb-2">Enter reset code</h3>
+                  <h3 className="font-medium mb-2">{t('auth.resetPasswordTitle')}</h3>
                   <p className="text-sm text-muted-foreground">
-                    We sent a reset code to {formData.email}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-2">
-                    For demo purposes, use code: <span className="font-mono text-primary">123456</span>
+                    {t('auth.resetCodeMessage')} {formData.email}
                   </p>
                 </div>
               </div>
@@ -316,7 +313,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                   className="w-full" 
                   disabled={isLoading || resetCode.length !== 6 || !newPassword || !confirmNewPassword}
                 >
-                  {isLoading ? 'Resetting...' : 'Reset Password'}
+                  {isLoading ? 'Resetting...' : t('auth.resetPasswordButton')}
                 </Button>
                 
                 <div className="text-center">
@@ -333,7 +330,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                     }}
                     className="text-muted-foreground"
                   >
-                    ← Back to sign in
+                    ← {t('auth.backToSignIn')}
                   </Button>
                 </div>
               </form>
@@ -348,9 +345,9 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-medium mb-2">Reset your password</h3>
+                  <h3 className="font-medium mb-2">{t('auth.lostPasswordTitle')}</h3>
                   <p className="text-sm text-muted-foreground">
-                    Enter your email address and we'll send you a reset code.
+                    {t('auth.lostPasswordMessage')}
                   </p>
                 </div>
               </div>
@@ -373,7 +370,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                   className="w-full" 
                   disabled={isLoading || !formData.email}
                 >
-                  {isLoading ? 'Sending...' : 'Send Reset Code'}
+                  {isLoading ? t('auth.sending') : t('auth.sendResetCode')}
                 </Button>
                 
                 <div className="text-center">
@@ -384,7 +381,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                     onClick={() => setShowForgotPassword(false)}
                     className="text-muted-foreground"
                   >
-                    ← Back to sign in
+                    ← {t('auth.backToSignIn')}
                   </Button>
                 </div>
               </form>
