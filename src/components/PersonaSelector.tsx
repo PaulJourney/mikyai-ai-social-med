@@ -113,7 +113,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
   return (
     <div className="w-full max-w-5xl mx-auto px-6">
       <div className="text-center mb-6">
-        <h2 className="text-base font-normal text-muted-foreground mb-2">Choose Your Ultra‑Skilled AI Persona:</h2>
+        <h2 className="text-sm font-medium text-muted-foreground mb-2">Choose your personalized AI specialist</h2>
       </div>
       
       <div className="space-y-4">
