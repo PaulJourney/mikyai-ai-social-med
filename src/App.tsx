@@ -356,7 +356,7 @@ function App() {
           onUpdateUser={handleUpdateUser}
         />
         
-        <main className="flex-1 container mx-auto px-4 py-8 max-w-6xl">
+        <main className="flex-1 container mx-auto px-4 py-12 max-w-6xl">
           {currentView === 'chat' && (
             <div className="space-y-8">
               <div className="text-center space-y-6">

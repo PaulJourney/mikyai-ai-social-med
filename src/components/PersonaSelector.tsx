@@ -144,7 +144,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
                 <div className="flex items-center gap-2">
                   <span className={`font-medium text-sm transition-colors duration-200 ${isSelected ? 'text-black' : 'group-hover:text-primary'}`}>{persona.name}</span>
                   {persona.requiresPaid && (
-                    <Badge variant="secondary" className="text-xs px-1 py-0 flex-shrink-0">
+                    <Badge variant="secondary" className="text-xs px-2 py-0 flex-shrink-0 font-normal">
                       Plus
                     </Badge>
                   )}
