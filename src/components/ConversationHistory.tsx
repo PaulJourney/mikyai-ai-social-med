@@ -384,10 +384,10 @@ export function ConversationHistory({
                         })()}
                         {getPersonaDisplayName(conversation.persona)}
                       </Badge>
-                      <div className="text-sm text-muted-foreground">
+                      <div className="text-xs text-muted-foreground">
                         {formatDate(conversation.lastUpdated)}
                       </div>
-                      <div className="text-sm text-muted-foreground">
+                      <div className="text-xs text-muted-foreground">
                         {conversation.messages.length} {conversation.messages.length === 1 ? t('history.message') : t('history.messages')}
                       </div>
                     </div>

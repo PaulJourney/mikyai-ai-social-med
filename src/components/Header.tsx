@@ -542,7 +542,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
 
       {/* Mobile Menu Full Page Overlay */}
       {showMobileMenu && (
-        <div className="md:hidden fixed inset-0 z-[99999] bg-black mobile-menu-overlay-enter">
+        <div className="md:hidden fixed inset-0 z-[9999] bg-black mobile-menu-overlay-enter">
           <div className="h-full w-full flex flex-col">
             {/* Menu Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-800">
