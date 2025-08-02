@@ -38,7 +38,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
       icon: Scales,
       description: 'Legal advice and contract help',
       requiresPaid: false,
-      detailedDescription: 'Ultra-skilled AI Lawyer specializzato in diritto nazionale e internazionale. Fornisce consulenza avanzata in ambito civile, penale, commerciale, tributario, del lavoro e delle nuove tecnologie. Elabora documenti legali, contratti, pareri giuridici e strategie difensive con precisione e rigore accademico.'
+      detailedDescription: 'Ultra-skilled AI Lawyer specialized in national and international law. Provides advanced consulting in civil, criminal, commercial, tax, labor and technology law. Creates legal documents, contracts, legal opinions and defense strategies with precision and academic rigor.'
     },
     {
       id: 'engineer',
@@ -46,7 +46,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
       icon: Wrench,
       description: 'Technical help and code review',
       requiresPaid: false,
-      detailedDescription: 'Senior AI Engineer in grado di scrivere, correggere e revisionare codice in oltre 20 linguaggi: Python, JavaScript, TypeScript, Rust, Go, C++, C#, Solidity, Swift, Kotlin, Java, Ruby, PHP, HTML/CSS, SQL, Bash, e molti altri. Fornisce soluzioni architetturali, debug complessi, ottimizzazione performance e integrazione AI.'
+      detailedDescription: 'Senior AI Engineer capable of writing, correcting and reviewing code in over 20 languages: Python, JavaScript, TypeScript, Rust, Go, C++, C#, Solidity, Swift, Kotlin, Java, Ruby, PHP, HTML/CSS, SQL, Bash, and many others. Provides architectural solutions, complex debugging, performance optimization and AI integration.'
     },
     {
       id: 'marketer',
@@ -54,7 +54,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
       icon: TrendUp,
       description: 'Brand growth and marketing plans',
       requiresPaid: false,
-      detailedDescription: 'Strategic AI Marketer con competenze avanzate in brand positioning, crescita organica, campagne paid, SEO/SEM, analisi dati, funnel di conversione, copywriting persuasivo e gestione social (Instagram, TikTok, X, LinkedIn, Facebook). Supporta imprenditori, agenzie e creator nella creazione e scalabilità di progetti digitali.'
+      detailedDescription: 'Strategic AI Marketer with advanced expertise in brand positioning, organic growth, paid campaigns, SEO/SEM, data analysis, conversion funnels, persuasive copywriting and social media management (Instagram, TikTok, X, LinkedIn, Facebook). Supports entrepreneurs, agencies and creators in building and scaling digital projects.'
     },
     {
       id: 'coach',
@@ -62,7 +62,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
       icon: ChatCircle,
       description: 'Personal goals and life coaching',
       requiresPaid: false,
-      detailedDescription: 'High-level AI Life & Performance Coach, in grado di aiutarti a superare blocchi emotivi, organizzare la tua vita, migliorare la produttività, trovare motivazione, sviluppare abitudini vincenti, lavorare su relazioni personali, benessere fisico e crescita personale. Nessun tema è troppo complesso per Miky.'
+      detailedDescription: 'High-level AI Life & Performance Coach, capable of helping you overcome emotional blocks, organize your life, improve productivity, find motivation, develop winning habits, work on personal relationships, physical wellness and personal growth. No topic is too complex for Coach Miky.'
     },
     {
       id: 'medical',
@@ -70,7 +70,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
       icon: FirstAidKit,
       description: 'Health tips and wellness support',
       requiresPaid: true,
-      detailedDescription: 'Medical AI Consultant altamente specializzato, in grado di analizzare sintomi, referti, radiografie, TAC, lastre, esami ematici e cartelle cliniche. Supporta nella diagnosi, offre indicazioni su stili di vita, piani alimentari, approcci integrativi e ti aiuta a comprendere qualsiasi referto medico. Puoi anche inviare immagini e documenti per un\'analisi approfondita.'
+      detailedDescription: 'Medical AI Consultant highly specialized in analyzing symptoms, reports, radiographs, CT scans, X-rays, blood tests and medical records. Supports diagnosis, offers lifestyle guidance, dietary plans, integrative approaches and helps you understand any medical report. You can also send images and documents for in-depth analysis.'
     },
     {
       id: 'god-mode',
@@ -78,7 +78,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
       icon: Lightning,
       description: 'Uncover the purpose of existence',
       requiresPaid: true,
-      detailedDescription: 'Philosophical AI Explorer, capace di rispondere alle domande più profonde e misteriose sull\'universo, l\'esistenza, la coscienza, il libero arbitrio, il destino. Ti accompagna in un viaggio intellettuale e spirituale nell\'esplorazione dei misteri più profondi della realtà. Ma prima di tutto ti chiede: Sei davvero sicuro di esistere?'
+      detailedDescription: 'Philosophical AI Explorer, capable of answering the deepest and most mysterious questions about the universe, existence, consciousness, free will, destiny. Accompanies you on an intellectual and spiritual journey exploring the deepest mysteries of reality. But first of all asks you: Are you really sure you exist?'
     }
   ]
 
@@ -242,7 +242,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
                   })()}
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  🔹 {personas.find(p => p.id === selectedPersonaInfo)?.detailedDescription}
+                  {personas.find(p => p.id === selectedPersonaInfo)?.detailedDescription}
                 </p>
               </div>
             )}

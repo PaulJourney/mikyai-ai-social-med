@@ -384,7 +384,12 @@ function App() {
                 
                 {!user && (
                   <p className="text-sm text-muted-foreground">
-                    Sign in to start chatting with AI personas
+                    <button 
+                      onClick={() => handleAuthRequest('signup')}
+                      className="text-primary hover:text-primary/80 transition-colors duration-200"
+                    >
+                      Sign up
+                    </button> to start chatting with AI personas
                   </p>
                 )}
               </div>
