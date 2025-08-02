@@ -40,11 +40,14 @@ export function ChatModal({
   const [animatedPlaceholder, setAnimatedPlaceholder] = useState('')
   const [isAnimating, setIsAnimating] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const messagesContainerRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight
+    }
   }
 
   useEffect(() => {
@@ -168,7 +171,7 @@ export function ChatModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
-        className="chat-modal p-0 bg-background border-border overflow-hidden [&>button]:hidden w-[90vw] max-w-4xl h-[85vh] max-h-[85vh]"
+        className="chat-modal p-0 bg-background border-border overflow-hidden [&>button]:hidden w-[95vw] max-w-6xl h-[90vh] max-h-[90vh] md:w-[85vw] md:h-[85vh]"
       >
         <div className="flex flex-col h-full">
           {/* Header */}
@@ -211,8 +214,16 @@ export function ChatModal({
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-hidden">
-            <div className="h-full overflow-y-auto p-4 space-y-4 scroll-smooth chat-messages">
+          <div className="flex-1 relative overflow-hidden">
+            <div 
+              ref={messagesContainerRef}
+              className="absolute inset-0 overflow-y-auto p-4 space-y-4"
+              style={{ 
+                height: '100%', 
+                overflowY: 'auto',
+                overscrollBehavior: 'contain'
+              }}
+            >
               {conversation?.messages.length === 0 && (
                 <div className="flex items-center justify-center h-32 text-muted-foreground text-sm">
                   Start a conversation with {getPersonaName(selectedPersona)}
