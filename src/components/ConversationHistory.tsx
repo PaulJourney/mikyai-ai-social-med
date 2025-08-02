@@ -182,7 +182,6 @@ export function ConversationHistory({
             )
           })}
         </div>
-        </div>
       </div>
 
       {filteredConversations.length === 0 ? (
