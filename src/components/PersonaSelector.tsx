@@ -184,7 +184,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
               onClick={() => onPersonaSelect(null)}
               className="text-xs text-muted-foreground hover:text-foreground"
             >
-              {t('homepage.generalMode')}
+              {t('homepage.generalChatMode')}
             </Button>
           </div>
         )}
@@ -198,7 +198,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
               className="text-primary hover:text-primary/80 transition-colors duration-200"
             >
               {t('modals.upgrade')}
-            </button> to unlock Medical and God Mode personas
+            </button> {t('homepage.upgradeToUnlock')}
           </p>
         </div>
       )}

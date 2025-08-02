@@ -73,7 +73,7 @@ export function MainInput({
   }
 
   const getPlaceholder = () => {
-    if (disabled) return 'Not enough credits to continue...'
+    if (disabled) return t('chat.notEnoughCredits')
     if (!selectedPersona) {
       // Return animated placeholder for general mode
       if (isAnimating && !isFocused) {
@@ -248,7 +248,7 @@ export function MainInput({
                     </span>
                   </span>
                 ) : (
-                  <span>General chat mode</span>
+                  <span>{t('homepage.generalChatMode')}</span>
                 )}
               </div>
               <Button 

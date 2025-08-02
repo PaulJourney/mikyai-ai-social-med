@@ -42,13 +42,36 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Basic form validation
+    if (mode === 'signup') {
+      if (!formData.firstName.trim()) {
+        toast.error(t('auth.pleaseFieldRequired'))
+        return
+      }
+      if (!formData.lastName.trim()) {
+        toast.error(t('auth.pleaseFieldRequired'))
+        return
+      }
+    }
+    
+    if (!formData.email.trim()) {
+      toast.error(t('auth.pleaseFieldRequired'))
+      return
+    }
+    
+    if (!formData.password.trim()) {
+      toast.error(t('auth.pleaseFieldRequired'))
+      return
+    }
+    
     setIsLoading(true)
 
     // Simulate API call
     setTimeout(() => {
       if (mode === 'signup' && !emailSent) {
         if (formData.password !== formData.confirmPassword) {
-          toast.error('Passwords do not match')
+          toast.error(t('auth.passwordsDoNotMatch'))
           setIsLoading(false)
           return
         }
@@ -56,14 +79,14 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
         // Send confirmation email
         setEmailSent(true)
         setIsLoading(false)
-        toast.success('Confirmation email sent! Check your inbox.')
+        toast.success(t('auth.confirmationEmailSent'))
         return
       }
       
       if (mode === 'signup' && emailSent) {
         // Verify confirmation code
         if (confirmationCode !== verificationCode) {
-          toast.error('Invalid confirmation code')
+          toast.error(t('auth.invalidConfirmationCode'))
           setIsLoading(false)
           return
         }
@@ -84,7 +107,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
         }
         
         onAuthSuccess(newUser, true) // Mark as new user
-        toast.success(referralVerified ? 'Account created! You received 300 bonus credits!' : 'Account created successfully!')
+        toast.success(referralVerified ? t('auth.accountCreatedBonus') : t('auth.accountCreatedSuccess'))
         setIsLoading(false)
         onClose()
         return
@@ -108,7 +131,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
           }
           
           onAuthSuccess(testUser, false)
-          toast.success('Welcome back, Support Team!')
+          toast.success(t('auth.welcomeBackSupport'))
           setIsLoading(false)
           onClose()
           return
@@ -130,7 +153,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
         }
         
         onAuthSuccess(existingUser, false)
-        toast.success('Welcome back!')
+        toast.success(t('auth.welcomeBack'))
         setIsLoading(false)
         onClose()
       }
@@ -139,41 +162,63 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!formData.email.trim()) {
+      toast.error(t('auth.pleaseFieldRequired'))
+      return
+    }
+    
     setIsLoading(true)
     
     // Simulate password reset email sending
     setTimeout(() => {
       setResetEmailSent(true)
       setIsLoading(false)
-      toast.success('Password reset code sent! Check your inbox.')
+      toast.success(t('auth.passwordResetCodeSent'))
     }, 1000)
   }
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!resetCode.trim()) {
+      toast.error(t('auth.pleaseFieldRequired'))
+      return
+    }
+    
+    if (!newPassword.trim()) {
+      toast.error(t('auth.pleaseFieldRequired'))
+      return
+    }
+    
+    if (!confirmNewPassword.trim()) {
+      toast.error(t('auth.pleaseFieldRequired'))
+      return
+    }
+    
     setIsLoading(true)
     
     if (resetCode !== '123456') {
-      toast.error('Invalid reset code')
+      toast.error(t('auth.invalidResetCode'))
       setIsLoading(false)
       return
     }
     
     if (newPassword !== confirmNewPassword) {
-      toast.error('Passwords do not match')
+      toast.error(t('auth.passwordsDoNotMatch'))
       setIsLoading(false)
       return
     }
     
     if (newPassword.length < 6) {
-      toast.error('Password must be at least 6 characters')
+      toast.error(t('auth.passwordMinLength'))
       setIsLoading(false)
       return
     }
     
     // Simulate password reset
     setTimeout(() => {
-      toast.success('Password reset successfully! You can now sign in with your new password.')
+      toast.success(t('auth.passwordResetSuccess'))
       setShowForgotPassword(false)
       setResetEmailSent(false)
       setResetCode('')
@@ -197,7 +242,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
         setReferrerName(mockReferrerName)
         toast.success(t('referral.referralVerified', { name: mockReferrerName }))
       } else {
-        toast.error('Invalid referral code')
+        toast.error(t('auth.invalidReferralCode'))
       }
       setIsVerifyingReferral(false)
     }, 1000)
@@ -270,7 +315,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
               
               <form onSubmit={handleResetPassword} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="resetCode">Reset Code</Label>
+                  <Label htmlFor="resetCode">{t('auth.resetCode')}</Label>
                   <Input
                     id="resetCode"
                     value={resetCode}
@@ -313,7 +358,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                   className="w-full" 
                   disabled={isLoading || resetCode.length !== 6 || !newPassword || !confirmNewPassword}
                 >
-                  {isLoading ? 'Resetting...' : t('auth.resetPasswordButton')}
+                  {isLoading ? t('auth.resetting') : t('auth.resetPasswordButton')}
                 </Button>
                 
                 <div className="text-center">
@@ -397,16 +442,16 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                 </div>
               </div>
               <div>
-                <h3 className="font-medium mb-2">Check your email</h3>
+                <h3 className="font-medium mb-2">{t('auth.checkEmailMessage')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  We sent a confirmation code to {formData.email}
+                  {t('auth.emailConfirmationSent')} {formData.email}
                 </p>
               </div>
             </div>
             
             <form onSubmit={handleConfirmEmail} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="confirmationCode">Confirmation Code</Label>
+                <Label htmlFor="confirmationCode">{t('auth.confirmationCode')}</Label>
                 <Input
                   id="confirmationCode"
                   value={confirmationCode}
@@ -423,7 +468,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                 className="w-full" 
                 disabled={isLoading || confirmationCode.length !== 6}
               >
-                {isLoading ? 'Verifying...' : 'Confirm Email'}
+                {isLoading ? t('auth.verifying') : t('auth.confirmEmailButton')}
               </Button>
               
               <div className="text-center">
@@ -437,7 +482,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                   }}
                   className="text-muted-foreground"
                 >
-                  ← Back to signup
+                  ← {t('auth.backToSignup')}
                 </Button>
               </div>
             </form>
@@ -540,9 +585,11 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                         size="sm"
                         onClick={handleVerifyReferral}
                         disabled={isVerifyingReferral}
-                        className="px-3 whitespace-nowrap"
+                        className="px-3 whitespace-nowrap group hover:text-primary transition-colors duration-200"
                       >
-                        {isVerifyingReferral ? 'Verifying...' : t('referral.verifyReferral')}
+                        <span className="group-hover:text-primary transition-colors duration-200">
+                          {isVerifyingReferral ? t('auth.verifying') : t('referral.verifyReferral')}
+                        </span>
                       </Button>
                     )}
                     {referralVerified && (
@@ -552,7 +599,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
                     )}
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Get 300 free credits if you were invited by someone
+                    {t('auth.signUpReferralBonus')}
                   </p>
                   {referralVerified && (
                     <div className="p-2 bg-primary/10 border border-primary/20 rounded-lg">

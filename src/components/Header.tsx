@@ -52,19 +52,25 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
   }
 
   const createReferralMessage = (userName: string, referralCode: string) => {
+    const referralLink = `https://miky.ai/ref/${referralCode}`
     return t('referral.shareMessage', { 
       name: userName, 
       code: referralCode, 
-      link: 'https://miky.ai' 
+      link: referralLink 
     })
   }
 
   const handleWhatsAppShare = () => {
     if (!user) return
-    const userName = user.firstName || user.email?.split('@')[0] || 'Un amico'
-    const message = createReferralMessage(userName, user.referralCode)
-    const url = `https://wa.me/?text=${encodeURIComponent(message)}`
-    window.open(url, '_blank')
+    try {
+      const userName = user.firstName || user.email?.split('@')[0] || 'Un amico'
+      const message = createReferralMessage(userName, user.referralCode)
+      const url = `https://wa.me/?text=${encodeURIComponent(message)}`
+      window.open(url, '_blank')
+    } catch (error) {
+      console.error('WhatsApp share error:', error)
+      toast.error(t('referral.whatsappShareError'))
+    }
   }
 
   const handleCopyReferralMessage = () => {
@@ -178,7 +184,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                       <div className="space-y-3">
                         <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                           <div>
-                            <div className="text-xs text-muted-foreground">Your referral code</div>
+                            <div className="text-xs text-muted-foreground">{t('referral.yourReferralCode')}</div>
                             <div className="font-mono text-sm">{user.referralCode}</div>
                           </div>
                           <Button
@@ -232,7 +238,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                           disabled={(user.cashEarned || 0) < 10}
                           onClick={() => setShowCashoutModal(true)}
                         >
-                          {t('referral.cashOut')} ({t('referral.minimum')})
+                          {t('referral.cashOutMinimum')}
                         </Button>
 
                         <div className="text-xs text-muted-foreground pt-2 border-t">

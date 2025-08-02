@@ -22,6 +22,8 @@ export interface Translations {
     choosePersona: string
     signUpPrompt: string
     generalMode: string
+    generalChatMode: string
+    upgradeToUnlock: string
   }
   
   // Personas
@@ -67,6 +69,7 @@ export interface Translations {
     voiceInput: string
     history: string
     askAnything: string
+    notEnoughCredits: string
   }
   
   // History
@@ -190,6 +193,7 @@ export interface Translations {
     resetPasswordTitle: string
     resetCodeMessage: string
     resetPasswordButton: string
+    resetCode: string
     // Messages
     emailSentMessage: string
     emailNotFoundMessage: string
@@ -197,6 +201,34 @@ export interface Translations {
     accountActivated: string
     verificationEmailSent: string
     signUpSuccess: string
+    // Form validation
+    pleaseFieldRequired: string
+    // Referral signup bonus
+    signUpReferralBonus: string
+    // Email confirmation
+    emailConfirmation: string
+    confirmEmailButton: string
+    verifyButton: string
+    verifying: string
+    // Code for email confirmation
+    confirmationCode: string
+    checkEmailMessage: string
+    emailConfirmationSent: string
+    backToSignup: string
+    // Loading states
+    resetting: string
+    // Toast messages
+    passwordsDoNotMatch: string
+    confirmationEmailSent: string
+    invalidConfirmationCode: string
+    accountCreatedBonus: string
+    accountCreatedSuccess: string
+    welcomeBackSupport: string
+    welcomeBack: string
+    passwordResetCodeSent: string
+    invalidResetCode: string
+    passwordMinLength: string
+    invalidReferralCode: string
   }
   
   // Modals
@@ -258,6 +290,9 @@ export interface Translations {
     paypalEmailPlaceholder: string
     paypalEmailNote: string
     cashOutProcessingNote: string
+    yourReferralCode: string
+    cashOutMinimum: string
+    whatsappShareError: string
   }
   
   // Contact
@@ -345,7 +380,9 @@ const translations: Record<Language, Translations> = {
       subtitle: 'Ultra-skilled AI personas ready to act as your advisors in life, work, and achievement.',
       choosePersona: 'Choose your personalized AI specialist:',
       signUpPrompt: 'to start chatting with AI personas',
-      generalMode: 'Switch to general chat mode'
+      generalMode: 'Switch to general chat mode',
+      generalChatMode: 'General chat mode',
+      upgradeToUnlock: 'Upgrade to unlock Medical and God Mode personas'
     },
     personas: {
       lawyer: {
@@ -386,7 +423,8 @@ const translations: Record<Language, Translations> = {
       attach: 'Attach',
       voiceInput: 'Voice input',
       history: 'History',
-      askAnything: 'Ask anything - or choose an ultra-skilled version of Miky...'
+      askAnything: 'Ask anything - or choose an ultra-skilled version of Miky...',
+      notEnoughCredits: 'Not enough credits to continue...'
     },
     history: {
       title: 'Conversations',
@@ -504,13 +542,42 @@ const translations: Record<Language, Translations> = {
       resetPasswordTitle: 'Enter reset code',
       resetCodeMessage: 'We sent a reset code to',
       resetPasswordButton: 'Reset Password',
+      resetCode: 'Reset Code',
       // Messages
       emailSentMessage: 'Reset link sent to your email.',
       emailNotFoundMessage: 'Email address not found.',
-      passwordResetSuccess: 'Password reset successfully.',
+      passwordResetSuccess: 'Password reset successfully! You can now sign in with your new password.',
       accountActivated: 'Account activated successfully!',
       verificationEmailSent: 'Verification email sent. Please check your inbox.',
-      signUpSuccess: 'Account created successfully! Please verify your email.'
+      signUpSuccess: 'Account created successfully! Please verify your email.',
+      // Form validation
+      pleaseFieldRequired: 'Please fill this field',
+      // Referral signup bonus
+      signUpReferralBonus: 'Get 300 free credits if you were invited by someone',
+      // Email confirmation
+      emailConfirmation: 'Email Confirmation',
+      confirmEmailButton: 'Confirm Email',
+      verifyButton: 'Verify',
+      verifying: 'Verifying...',
+      // Code for email confirmation
+      confirmationCode: 'Confirmation Code',
+      checkEmailMessage: 'Check your email',
+      emailConfirmationSent: 'We sent a confirmation code to',
+      backToSignup: 'Back to signup',
+      // Loading states
+      resetting: 'Resetting...',
+      // Toast messages
+      passwordsDoNotMatch: 'Passwords do not match',
+      confirmationEmailSent: 'Confirmation email sent! Check your inbox.',
+      invalidConfirmationCode: 'Invalid confirmation code',
+      accountCreatedBonus: 'Account created! You received 300 bonus credits!',
+      accountCreatedSuccess: 'Account created successfully!',
+      welcomeBackSupport: 'Welcome back, Support Team!',
+      welcomeBack: 'Welcome back!',
+      passwordResetCodeSent: 'Password reset code sent! Check your inbox.',
+      invalidResetCode: 'Invalid reset code',
+      passwordMinLength: 'Password must be at least 6 characters',
+      invalidReferralCode: 'Invalid referral code'
     },
     modals: {
       close: 'Close',
@@ -567,7 +634,10 @@ const translations: Record<Language, Translations> = {
       paypalEmail: 'PayPal Email Address',
       paypalEmailPlaceholder: 'your-email@example.com',
       paypalEmailNote: 'Make sure this email is associated with your PayPal account',
-      cashOutProcessingNote: 'We have received your cashout request and it will be processed as soon as possible.'
+      cashOutProcessingNote: 'We have received your cashout request and it will be processed as soon as possible.',
+      yourReferralCode: 'Your referral code',
+      cashOutMinimum: 'Cash Out (Min $10)',
+      whatsappShareError: 'Error sharing to WhatsApp. Please try again.'
     },
     contact: {
       title: 'Contact Us',
@@ -645,7 +715,9 @@ const translations: Record<Language, Translations> = {
       subtitle: 'Personalità AI ultra-qualificate pronte ad essere i tuoi consulenti nella vita, lavoro e successo.',
       choosePersona: 'Scegli il tuo specialista AI personalizzato:',
       signUpPrompt: 'per iniziare a chattare con le personalità AI',
-      generalMode: 'Passa alla modalità chat generale'
+      generalMode: 'Passa alla modalità chat generale',
+      generalChatMode: 'Modalità chat generale',
+      upgradeToUnlock: 'Aggiorna per sbloccare le personalità Medico e God Mode'
     },
     personas: {
       lawyer: {
@@ -686,7 +758,8 @@ const translations: Record<Language, Translations> = {
       attach: 'Allega',
       voiceInput: 'Input vocale',
       history: 'Cronologia',
-      askAnything: 'Chiedi qualsiasi cosa - o scegli una versione ultra-qualificata di Miky...'
+      askAnything: 'Chiedi qualsiasi cosa - o scegli una versione ultra-qualificata di Miky...',
+      notEnoughCredits: 'Crediti insufficienti per continuare...'
     },
     history: {
       title: 'Conversazioni',
@@ -793,6 +866,7 @@ const translations: Record<Language, Translations> = {
       lastNamePlaceholder: 'Il tuo cognome',
       confirmPasswordPlaceholder: 'Conferma la password',
       referralCodePlaceholder: 'Codice referral (opzionale)',
+      newPasswordPlaceholder: 'Inserisci nuova password',
       // Auth Lost Password Modal
       lostPasswordTitle: 'Reimposta la password',
       lostPasswordMessage: 'Inserisci il tuo indirizzo email e ti invieremo un codice di reset.',
@@ -803,15 +877,42 @@ const translations: Record<Language, Translations> = {
       resetPasswordTitle: 'Inserisci codice reset',
       resetCodeMessage: 'Abbiamo inviato un codice reset a',
       resetPasswordButton: 'Reimposta Password',
-      // Messages
-      emailSentMessage: 'Link di reset inviato alla tua email.',
+      resetCode: 'Codice Reset',
       // Messages
       emailSentMessage: 'Link di reset inviato alla tua email.',
       emailNotFoundMessage: 'Indirizzo email non trovato.',
-      passwordResetSuccess: 'Password reimpostata con successo.',
+      passwordResetSuccess: 'Password reimpostata con successo! Ora puoi accedere con la tua nuova password.',
       accountActivated: 'Account attivato con successo!',
       verificationEmailSent: 'Email di verifica inviata. Controlla la tua casella.',
-      signUpSuccess: 'Account creato con successo! Verifica la tua email.'
+      signUpSuccess: 'Account creato con successo! Verifica la tua email.',
+      // Form validation
+      pleaseFieldRequired: 'Compila questo campo',
+      // Referral signup bonus
+      signUpReferralBonus: 'Ottieni 300 crediti gratuiti se sei stato invitato da qualcuno',
+      // Email confirmation
+      emailConfirmation: 'Conferma Email',
+      confirmEmailButton: 'Conferma Email',
+      verifyButton: 'Verifica',
+      verifying: 'Verifica...',
+      // Code for email confirmation
+      confirmationCode: 'Codice di Conferma',
+      checkEmailMessage: 'Controlla la tua email',
+      emailConfirmationSent: 'Abbiamo inviato un codice di conferma a',
+      backToSignup: 'Torna alla registrazione',
+      // Loading states
+      resetting: 'Reimpostazione...',
+      // Toast messages
+      passwordsDoNotMatch: 'Le password non corrispondono',
+      confirmationEmailSent: 'Email di conferma inviata! Controlla la tua casella.',
+      invalidConfirmationCode: 'Codice di conferma non valido',
+      accountCreatedBonus: 'Account creato! Hai ricevuto 300 crediti bonus!',
+      accountCreatedSuccess: 'Account creato con successo!',
+      welcomeBackSupport: 'Bentornato, Team di Supporto!',
+      welcomeBack: 'Bentornato!',
+      passwordResetCodeSent: 'Codice di reset password inviato! Controlla la tua casella.',
+      invalidResetCode: 'Codice di reset non valido',
+      passwordMinLength: 'La password deve essere di almeno 6 caratteri',
+      invalidReferralCode: 'Codice referral non valido'
     },
     modals: {
       close: 'Chiudi',
@@ -868,7 +969,10 @@ const translations: Record<Language, Translations> = {
       paypalEmail: 'Email PayPal',
       paypalEmailPlaceholder: 'tua-email@esempio.com',
       paypalEmailNote: 'Assicurati che questa email sia associata al tuo account PayPal',
-      cashOutProcessingNote: 'Abbiamo ricevuto la tua richiesta di incasso e sarà elaborata al più presto.'
+      cashOutProcessingNote: 'Abbiamo ricevuto la tua richiesta di incasso e sarà elaborata al più presto.',
+      yourReferralCode: 'Il tuo codice referral',
+      cashOutMinimum: 'Incassa (Min $10)',
+      whatsappShareError: 'Errore nella condivisione su WhatsApp. Riprova.'
     },
     contact: {
       title: 'Contattaci',
@@ -946,7 +1050,9 @@ const translations: Record<Language, Translations> = {
       subtitle: 'Personalidades AI ultra-capacitadas listas para actuar como tus asesores en vida, trabajo y logros.',
       choosePersona: 'Elige tu especialista AI personalizado:',
       signUpPrompt: 'para empezar a chatear con personalidades AI',
-      generalMode: 'Cambiar a modo chat general'
+      generalMode: 'Cambiar a modo chat general',
+      generalChatMode: 'Modo chat general',
+      upgradeToUnlock: 'Actualiza para desbloquear las personalidades Médico y God Mode'
     },
     personas: {
       lawyer: {
@@ -987,7 +1093,8 @@ const translations: Record<Language, Translations> = {
       attach: 'Adjuntar',
       voiceInput: 'Entrada de voz',
       history: 'Historial',
-      askAnything: 'Pregunta cualquier cosa - o elige una versión ultra-capacitada de Miky...'
+      askAnything: 'Pregunta cualquier cosa - o elige una versión ultra-capacitada de Miky...',
+      notEnoughCredits: 'Créditos insuficientes para continuar...'
     },
     history: {
       title: 'Conversaciones',
@@ -1094,6 +1201,7 @@ const translations: Record<Language, Translations> = {
       lastNamePlaceholder: 'Tu apellido',
       confirmPasswordPlaceholder: 'Confirma tu contraseña',
       referralCodePlaceholder: 'Código de referido (opcional)',
+      newPasswordPlaceholder: 'Ingresa nueva contraseña',
       // Auth Lost Password Modal
       lostPasswordTitle: 'Restablecer contraseña',
       lostPasswordMessage: 'Ingresa tu dirección de email y te enviaremos un código de reset.',
@@ -1104,15 +1212,42 @@ const translations: Record<Language, Translations> = {
       resetPasswordTitle: 'Ingresar código reset',
       resetCodeMessage: 'Enviamos un código reset a',
       resetPasswordButton: 'Restablecer Contraseña',
-      // Messages
-      emailSentMessage: 'Enlace de restablecimiento enviado a tu email.',
+      resetCode: 'Código Reset',
       // Messages
       emailSentMessage: 'Enlace de restablecimiento enviado a tu email.',
       emailNotFoundMessage: 'Dirección de email no encontrada.',
-      passwordResetSuccess: 'Contraseña restablecida exitosamente.',
+      passwordResetSuccess: 'Contraseña restablecida exitosamente! Ahora puedes iniciar sesión con tu nueva contraseña.',
       accountActivated: '¡Cuenta activada exitosamente!',
       verificationEmailSent: 'Email de verificación enviado. Revisa tu bandeja.',
-      signUpSuccess: '¡Cuenta creada exitosamente! Por favor verifica tu email.'
+      signUpSuccess: '¡Cuenta creada exitosamente! Por favor verifica tu email.',
+      // Form validation
+      pleaseFieldRequired: 'Por favor completa este campo',
+      // Referral signup bonus
+      signUpReferralBonus: 'Obtén 300 créditos gratis si fuiste invitado por alguien',
+      // Email confirmation
+      emailConfirmation: 'Confirmación de Email',
+      confirmEmailButton: 'Confirmar Email',
+      verifyButton: 'Verificar',
+      verifying: 'Verificando...',
+      // Code for email confirmation
+      confirmationCode: 'Código de Confirmación',
+      checkEmailMessage: 'Revisa tu email',
+      emailConfirmationSent: 'Enviamos un código de confirmación a',
+      backToSignup: 'Volver al registro',
+      // Loading states
+      resetting: 'Restableciendo...',
+      // Toast messages
+      passwordsDoNotMatch: 'Las contraseñas no coinciden',
+      confirmationEmailSent: '¡Email de confirmación enviado! Revisa tu bandeja.',
+      invalidConfirmationCode: 'Código de confirmación inválido',
+      accountCreatedBonus: '¡Cuenta creada! ¡Recibiste 300 créditos bonus!',
+      accountCreatedSuccess: '¡Cuenta creada exitosamente!',
+      welcomeBackSupport: '¡Bienvenido de vuelta, Equipo de Soporte!',
+      welcomeBack: '¡Bienvenido de vuelta!',
+      passwordResetCodeSent: '¡Código de reset de contraseña enviado! Revisa tu bandeja.',
+      invalidResetCode: 'Código de reset inválido',
+      passwordMinLength: 'La contraseña debe tener al menos 6 caracteres',
+      invalidReferralCode: 'Código de referido inválido'
     },
     modals: {
       close: 'Cerrar',
@@ -1169,7 +1304,10 @@ const translations: Record<Language, Translations> = {
       paypalEmail: 'Email de PayPal',
       paypalEmailPlaceholder: 'tu-email@ejemplo.com',
       paypalEmailNote: 'Asegúrate de que este email esté asociado con tu cuenta PayPal',
-      cashOutProcessingNote: 'Hemos recibido tu solicitud de cobro y será procesada lo antes posible.'
+      cashOutProcessingNote: 'Hemos recibido tu solicitud de cobro y será procesada lo antes posible.',
+      yourReferralCode: 'Tu código de referido',
+      cashOutMinimum: 'Cobrar (Min $10)',
+      whatsappShareError: 'Error al compartir en WhatsApp. Por favor intenta de nuevo.'
     },
     contact: {
       title: 'Contáctanos',
@@ -1247,7 +1385,9 @@ const translations: Record<Language, Translations> = {
       subtitle: 'Ultra-qualifizierte AI-Personas bereit, als deine Berater in Leben, Arbeit und Erfolg zu agieren.',
       choosePersona: 'Wähle deinen personalisierten AI-Spezialisten:',
       signUpPrompt: 'um mit AI-Personas zu chatten',
-      generalMode: 'Zu allgemeinem Chat-Modus wechseln'
+      generalMode: 'Zu allgemeinem Chat-Modus wechseln',
+      generalChatMode: 'Allgemeiner Chat-Modus',
+      upgradeToUnlock: 'Upgrade um Arzt und God Mode Personas freizuschalten'
     },
     personas: {
       lawyer: {
@@ -1288,7 +1428,8 @@ const translations: Record<Language, Translations> = {
       attach: 'Anhängen',
       voiceInput: 'Spracheingabe',
       history: 'Verlauf',
-      askAnything: 'Frag alles - oder wähle eine ultra-qualifizierte Version von Miky...'
+      askAnything: 'Frag alles - oder wähle eine ultra-qualifizierte Version von Miky...',
+      notEnoughCredits: 'Nicht genug Credits um fortzufahren...'
     },
     history: {
       title: 'Gespräche',
@@ -1395,6 +1536,7 @@ const translations: Record<Language, Translations> = {
       lastNamePlaceholder: 'Dein Nachname',
       confirmPasswordPlaceholder: 'Passwort bestätigen',
       referralCodePlaceholder: 'Empfehlungscode (optional)',
+      newPasswordPlaceholder: 'Neues Passwort eingeben',
       // Auth Lost Password Modal
       lostPasswordTitle: 'Passwort zurücksetzen',
       lostPasswordMessage: 'Gib deine E-Mail-Adresse ein und wir senden dir einen Reset-Code.',
@@ -1405,15 +1547,42 @@ const translations: Record<Language, Translations> = {
       resetPasswordTitle: 'Reset-Code eingeben',
       resetCodeMessage: 'Wir haben einen Reset-Code gesendet an',
       resetPasswordButton: 'Passwort Zurücksetzen',
-      // Messages
-      emailSentMessage: 'Reset-Link an deine E-Mail gesendet.',
+      resetCode: 'Reset-Code',
       // Messages
       emailSentMessage: 'Reset-Link an deine E-Mail gesendet.',
       emailNotFoundMessage: 'E-Mail-Adresse nicht gefunden.',
-      passwordResetSuccess: 'Passwort erfolgreich zurückgesetzt.',
+      passwordResetSuccess: 'Passwort erfolgreich zurückgesetzt! Du kannst dich jetzt mit deinem neuen Passwort anmelden.',
       accountActivated: 'Account erfolgreich aktiviert!',
       verificationEmailSent: 'Bestätigungs-E-Mail gesendet. Überprüfe deinen Posteingang.',
-      signUpSuccess: 'Account erfolgreich erstellt! Bitte bestätige deine E-Mail.'
+      signUpSuccess: 'Account erfolgreich erstellt! Bitte bestätige deine E-Mail.',
+      // Form validation
+      pleaseFieldRequired: 'Bitte fülle dieses Feld aus',
+      // Referral signup bonus
+      signUpReferralBonus: 'Erhalte 300 gratis Credits wenn du von jemandem eingeladen wurdest',
+      // Email confirmation
+      emailConfirmation: 'E-Mail-Bestätigung',
+      confirmEmailButton: 'E-Mail Bestätigen',
+      verifyButton: 'Verifizieren',
+      verifying: 'Verifiziere...',
+      // Code for email confirmation
+      confirmationCode: 'Bestätigungscode',
+      checkEmailMessage: 'Überprüfe deine E-Mail',
+      emailConfirmationSent: 'Wir haben einen Bestätigungscode gesendet an',
+      backToSignup: 'Zurück zur Registrierung',
+      // Loading states
+      resetting: 'Zurücksetzen...',
+      // Toast messages
+      passwordsDoNotMatch: 'Passwörter stimmen nicht überein',
+      confirmationEmailSent: 'Bestätigungs-E-Mail gesendet! Überprüfe deinen Posteingang.',
+      invalidConfirmationCode: 'Ungültiger Bestätigungscode',
+      accountCreatedBonus: 'Account erstellt! Du hast 300 Bonus-Credits erhalten!',
+      accountCreatedSuccess: 'Account erfolgreich erstellt!',
+      welcomeBackSupport: 'Willkommen zurück, Support-Team!',
+      welcomeBack: 'Willkommen zurück!',
+      passwordResetCodeSent: 'Passwort-Reset-Code gesendet! Überprüfe deinen Posteingang.',
+      invalidResetCode: 'Ungültiger Reset-Code',
+      passwordMinLength: 'Passwort muss mindestens 6 Zeichen haben',
+      invalidReferralCode: 'Ungültiger Empfehlungscode'
     },
     modals: {
       close: 'Schließen',
@@ -1470,7 +1639,10 @@ const translations: Record<Language, Translations> = {
       paypalEmail: 'PayPal E-Mail-Adresse',
       paypalEmailPlaceholder: 'deine-email@beispiel.com',
       paypalEmailNote: 'Stelle sicher, dass diese E-Mail mit deinem PayPal-Konto verknüpft ist',
-      cashOutProcessingNote: 'Wir haben deine Auszahlungsanfrage erhalten und werden sie so schnell wie möglich bearbeiten.'
+      cashOutProcessingNote: 'Wir haben deine Auszahlungsanfrage erhalten und werden sie so schnell wie möglich bearbeiten.',
+      yourReferralCode: 'Dein Empfehlungscode',
+      cashOutMinimum: 'Auszahlen (Min $10)',
+      whatsappShareError: 'Fehler beim Teilen auf WhatsApp. Bitte versuche es erneut.'
     },
     contact: {
       title: 'Kontaktiere Uns',
