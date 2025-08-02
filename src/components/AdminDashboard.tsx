@@ -90,6 +90,13 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
   } | null>(null)
   const [tempPersonaText, setTempPersonaText] = useState('')
   
+  // Homepage text state
+  const [homepageTexts, setHomepageTexts] = useState({
+    subtitle: 'Ultra-skilled AI personas ready to act as your advisors in life, work, and achievement.',
+    selectorTitle: 'Choose your personalized AI specialist:'
+  })
+  const [showHomepageTextModal, setShowHomepageTextModal] = useState(false)
+  
   // Feature toggles state
   const [featureToggles, setFeatureToggles] = useState({
     voiceInput: true,
@@ -353,6 +360,12 @@ Generated on: ${new Date().toISOString()}`
     console.log('Updated persona texts:', personaTexts)
     toast.success('Persona texts updated successfully')
     setShowPersonaTextModal(false)
+  }
+
+  const handleUpdateHomepageTexts = () => {
+    // In a real app, this would update the database
+    // For now we just show success message
+    toast.success('Homepage content updated successfully')
   }
 
   const handleEditPersonaText = (persona: string, field: 'description' | 'detailedDescription') => {
@@ -1144,14 +1157,30 @@ Generated on: ${new Date().toISOString()}`
                   <Input defaultValue="Ask to Miky" className="mt-1" />
                 </div>
                 <div>
+                  <label className="text-sm font-medium">Subtitle</label>
+                  <Input 
+                    value={homepageTexts.subtitle}
+                    onChange={(e) => setHomepageTexts(prev => ({ ...prev, subtitle: e.target.value }))}
+                    className="mt-1" 
+                  />
+                </div>
+                <div>
                   <label className="text-sm font-medium">Persona Section Title</label>
-                  <Input defaultValue="Choose Your Ultra‑Skilled AI Persona:" className="mt-1" />
+                  <Input 
+                    value={homepageTexts.selectorTitle}
+                    onChange={(e) => setHomepageTexts(prev => ({ ...prev, selectorTitle: e.target.value }))}
+                    className="mt-1" 
+                  />
                 </div>
                 <div>
                   <label className="text-sm font-medium">Upgrade Message</label>
-                  <Input defaultValue="Upgrade to unlock Medical Advisor and God Mode personas" className="mt-1" />
+                  <Input defaultValue="Upgrade to unlock Medical and God Mode personas" className="mt-1" />
                 </div>
-                <Button>Save Changes</Button>
+                <Button 
+                  onClick={handleUpdateHomepageTexts}
+                >
+                  Save Changes
+                </Button>
               </div>
             </Card>
 
