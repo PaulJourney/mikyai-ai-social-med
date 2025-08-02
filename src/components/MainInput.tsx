@@ -88,6 +88,7 @@ export function MainInput({
     }
     
     const getPersonaName = (persona: Persona) => {
+      if (persona === 'academic') return 'Professor'
       if (persona === 'medical') return t('personas.medical.name')
       if (persona === 'god-mode') return 'God'
       return t(`personas.${persona}.name`)
@@ -148,6 +149,7 @@ export function MainInput({
     }
 
     const getPersonaName = (persona: Persona) => {
+      if (persona === 'academic') return 'Professor'
       if (persona === 'medical') return t('personas.medical.name')
       if (persona === 'god-mode') return 'God'
       return t(`personas.${persona}.name`)

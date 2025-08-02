@@ -71,20 +71,20 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
       detailedDescription: t('personas.coach.fullDescription')
     },
     {
-      id: 'sensei',
-      name: t('personas.sensei.name'),
-      icon: Heart,
-      description: t('personas.sensei.description'),
-      requiresPaid: false,
-      detailedDescription: t('personas.sensei.fullDescription')
-    },
-    {
       id: 'richman',
       name: t('personas.richman.name'),
       icon: CurrencyDollar,
       description: t('personas.richman.description'),
       requiresPaid: false,
       detailedDescription: t('personas.richman.fullDescription')
+    },
+    {
+      id: 'sensei',
+      name: t('personas.sensei.name'),
+      icon: Heart,
+      description: t('personas.sensei.description'),
+      requiresPaid: false,
+      detailedDescription: t('personas.sensei.fullDescription')
     },
     {
       id: 'lawyer',

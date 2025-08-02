@@ -154,7 +154,7 @@ export function ChatModal({
     if (!persona) return 'Miky'
     
     const names = {
-      academic: t('chat.chatWith', { persona: t('personas.academic.name') }),
+      academic: t('chat.chatWith', { persona: 'Professor' }),
       marketer: t('chat.chatWith', { persona: t('personas.marketer.name') }),
       engineer: t('chat.chatWith', { persona: t('personas.engineer.name') }),
       coach: t('chat.chatWith', { persona: t('personas.coach.name') }),
@@ -198,7 +198,7 @@ export function ChatModal({
     if (!selectedPersona) return t('chat.placeholderGeneral')
     
     const placeholders = {
-      academic: t('chat.placeholderPersona', { persona: t('personas.academic.name') }),
+      academic: t('chat.placeholderPersona', { persona: 'Professor' }),
       marketer: t('chat.placeholderPersona', { persona: t('personas.marketer.name') }),
       engineer: t('chat.placeholderPersona', { persona: t('personas.engineer.name') }),
       coach: t('chat.placeholderPersona', { persona: t('personas.coach.name') }),

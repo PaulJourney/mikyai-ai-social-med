@@ -417,7 +417,7 @@ const translations: Record<Language, Translations> = {
       academic: {
         name: 'Academic',
         description: 'Top-tier AI for academic support',
-        fullDescription: 'Highly qualified AI Academic specializing in advanced research and academic writing. Offers professional support for theses, dissertations, university exams, scientific papers, and complex assignments across all disciplines. Produces top-tier academic content aligned with global standards like MIT and Cambridge.'
+        fullDescription: 'Highly qualified AI Academic specializing in advanced research and academic writing. Offers professional support for theses, dissertations, high school and university exams, scientific papers, and complex assignments across all disciplines. Produces top-tier academic content aligned with global standards like MIT and Cambridge.'
       },
       marketer: {
         name: 'Marketer',
@@ -782,7 +782,7 @@ const translations: Record<Language, Translations> = {
       academic: {
         name: 'Accademico',
         description: 'Supporto AI di alto livello per studi',
-        fullDescription: 'Accademico AI altamente qualificato specializzato in ricerca avanzata e scrittura accademica. Offre supporto professionale per tesi, dissertazioni, esami universitari, articoli scientifici e compiti complessi in tutte le discipline. Produce contenuti accademici di alto livello allineati agli standard globali come MIT e Cambridge.'
+        fullDescription: 'Accademico AI altamente qualificato specializzato in ricerca avanzata e scrittura accademica. Offre supporto professionale per tesi, dissertazioni, esami delle scuole superiori e universitari, articoli scientifici e compiti complessi in tutte le discipline. Produce contenuti accademici di alto livello allineati agli standard globali come MIT e Cambridge.'
       },
       marketer: {
         name: 'Marketer',
@@ -1147,7 +1147,7 @@ const translations: Record<Language, Translations> = {
       academic: {
         name: 'Académico',
         description: 'AI de alto nivel para apoyo académico',
-        fullDescription: 'Académico AI altamente cualificado especializado en investigación avanzada y escritura académica. Ofrece apoyo profesional para tesis, disertaciones, exámenes universitarios, artículos científicos y tareas complejas en todas las disciplinas. Produce contenido académico de primer nivel alineado con estándares globales como MIT y Cambridge.'
+        fullDescription: 'Académico AI altamente cualificado especializado en investigación avanzada y escritura académica. Ofrece apoyo profesional para tesis, disertaciones, exámenes de secundaria y universitarios, artículos científicos y tareas complejas en todas las disciplinas. Produce contenido académico de primer nivel alineado con estándares globales como MIT y Cambridge.'
       },
       marketer: {
         name: 'Marketer',
@@ -1512,7 +1512,7 @@ const translations: Record<Language, Translations> = {
       academic: {
         name: 'Akademiker',
         description: 'Erstklassige AI für akademische Unterstützung',
-        fullDescription: 'Hochqualifizierter AI-Akademiker spezialisiert auf fortgeschrittene Forschung und akademisches Schreiben. Bietet professionelle Unterstützung für Dissertationen, Abschlussarbeiten, Universitätsprüfungen, wissenschaftliche Artikel und komplexe Aufgaben in allen Disziplinen. Produziert erstklassige akademische Inhalte entsprechend globaler Standards wie MIT und Cambridge.'
+        fullDescription: 'Hochqualifizierter AI-Akademiker spezialisiert auf fortgeschrittene Forschung und akademisches Schreiben. Bietet professionelle Unterstützung für Dissertationen, Abschlussarbeiten, Gymnasium- und Universitätsprüfungen, wissenschaftliche Artikel und komplexe Aufgaben in allen Disziplinen. Produziert erstklassige akademische Inhalte entsprechend globaler Standards wie MIT und Cambridge.'
       },
       marketer: {
         name: 'Marketer',
