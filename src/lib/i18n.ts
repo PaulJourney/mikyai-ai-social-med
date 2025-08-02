@@ -102,18 +102,15 @@ export interface Translations {
     free: {
       name: string
       price: string
-      features: string[]
     }
     plus: {
       name: string
       price: string
-      features: string[]
       popular: string
     }
     business: {
       name: string
       price: string
-      features: string[]
     }
     needMoreCredits: string
     buyCredits: string
@@ -352,19 +349,16 @@ const translations: Record<Language, Translations> = {
       title: 'Choose your plan',
       free: {
         name: 'Free',
-        price: '$0/month',
-        features: ['100 credits/month', 'Text input', 'Basic support', 'Conversation history']
+        price: '$0/month'
       },
       plus: {
         name: 'Plus',
         price: '$19/month',
-        features: ['1,000 credits/month', 'Voice input', 'File uploads', 'Priority support'],
         popular: 'Most Popular'
       },
       business: {
         name: 'Business',
-        price: '$49/month',
-        features: ['5,000 credits/month', 'All features', 'Priority support', 'Advanced analytics']
+        price: '$49/month'
       },
       needMoreCredits: 'Need more credits?',
       buyCredits: 'Buy Credits',
@@ -587,19 +581,16 @@ const translations: Record<Language, Translations> = {
       title: 'Scegli il tuo piano',
       free: {
         name: 'Gratuito',
-        price: '€0/mese',
-        features: ['100 crediti/mese', 'Input testo', 'Supporto base', 'Cronologia chat']
+        price: '€0/mese'
       },
       plus: {
         name: 'Plus',
         price: '€19/mese',
-        features: ['1.000 crediti/mese', 'Input vocale', 'Upload file', 'Supporto prioritario'],
         popular: 'Più Popolare'
       },
       business: {
         name: 'Business',
-        price: '€49/mese',
-        features: ['5.000 crediti/mese', 'Tutte le funzioni', 'Supporto prioritario', 'Analisi avanzate']
+        price: '€49/mese'
       },
       needMoreCredits: 'Servono più crediti?',
       buyCredits: 'Acquista Crediti',
@@ -821,19 +812,16 @@ const translations: Record<Language, Translations> = {
       title: 'Elige tu plan',
       free: {
         name: 'Gratuito',
-        price: '$0/mes',
-        features: ['100 créditos/mes', 'Entrada texto', 'Soporte básico', 'Historial chat']
+        price: '$0/mes'
       },
       plus: {
         name: 'Plus',
         price: '$19/mes',
-        features: ['1.000 créditos/mes', 'Entrada voz', 'Subida archivos', 'Soporte prioritario'],
         popular: 'Más Popular'
       },
       business: {
         name: 'Business',
-        price: '$49/mes',
-        features: ['5.000 créditos/mes', 'Todas las funciones', 'Soporte prioritario', 'Análisis avanzados']
+        price: '$49/mes'
       },
       needMoreCredits: '¿Necesitas más créditos?',
       buyCredits: 'Comprar Créditos',
@@ -1055,19 +1043,16 @@ const translations: Record<Language, Translations> = {
       title: 'Wähle deinen Plan',
       free: {
         name: 'Kostenlos',
-        price: '€0/Monat',
-        features: ['100 Credits/Monat', 'Text-Eingabe', 'Basis-Support', 'Chat-Verlauf']
+        price: '€0/Monat'
       },
       plus: {
         name: 'Plus',
         price: '€19/Monat',
-        features: ['1.000 Credits/Monat', 'Sprach-Eingabe', 'Datei-Upload', 'Prioritäts-Support'],
         popular: 'Beliebteste'
       },
       business: {
         name: 'Business',
-        price: '€49/Monat',
-        features: ['5.000 Credits/Monat', 'Alle Funktionen', 'Prioritäts-Support', 'Erweiterte Analysen']
+        price: '€49/Monat'
       },
       needMoreCredits: 'Brauchst du mehr Credits?',
       buyCredits: 'Credits Kaufen',

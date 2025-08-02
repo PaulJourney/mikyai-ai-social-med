@@ -26,6 +26,33 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
   const [purchasedCredits, setPurchasedCredits] = useState(0)
   const [upgradedPlan, setUpgradedPlan] = useState<string>('')
   const [targetPlan, setTargetPlan] = useState<'free' | 'plus' | 'business'>('free')
+  const getFeatures = (planType: 'free' | 'plus' | 'business'): string[] => {
+    const { language } = useT()
+    const translations = {
+      en: {
+        free: ['100 credits/month', 'Text input', 'Basic support', 'Conversation history'],
+        plus: ['1,000 credits/month', 'Voice input', 'File uploads', 'Priority support'],
+        business: ['5,000 credits/month', 'All features', 'Priority support', 'Advanced analytics']
+      },
+      it: {
+        free: ['100 crediti/mese', 'Input testo', 'Supporto base', 'Cronologia chat'],
+        plus: ['1.000 crediti/mese', 'Input vocale', 'Upload file', 'Supporto prioritario'],
+        business: ['5.000 crediti/mese', 'Tutte le funzioni', 'Supporto prioritario', 'Analisi avanzate']
+      },
+      es: {
+        free: ['100 créditos/mes', 'Entrada texto', 'Soporte básico', 'Historial chat'],
+        plus: ['1.000 créditos/mes', 'Entrada voz', 'Subida archivos', 'Soporte prioritario'],
+        business: ['5.000 créditos/mes', 'Todas las funciones', 'Soporte prioritario', 'Análisis avanzados']
+      },
+      de: {
+        free: ['100 Credits/Monat', 'Text-Eingabe', 'Basis-Support', 'Chat-Verlauf'],
+        plus: ['1.000 Credits/Monat', 'Sprach-Eingabe', 'Datei-Upload', 'Prioritäts-Support'],
+        business: ['5.000 Credits/Monat', 'Alle Funktionen', 'Prioritäts-Support', 'Erweiterte Analysen']
+      }
+    }
+    return translations[language]?.[planType] || translations.en[planType]
+  }
+
   const plans = [
     {
       id: 'free' as const,
@@ -34,7 +61,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
       period: '',
       credits: '100',
       icon: CheckCircle,
-      features: t('pricing.free.features')
+      features: getFeatures('free')
     },
     {
       id: 'plus' as const,
@@ -44,7 +71,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
       credits: '1,000',
       icon: Lightning,
       popular: true,
-      features: t('pricing.plus.features')
+      features: getFeatures('plus')
     },
     {
       id: 'business' as const,
@@ -53,7 +80,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
       period: '',
       credits: '5,000',
       icon: Crown,
-      features: t('pricing.business.features')
+      features: getFeatures('business')
     }
   ]
 
