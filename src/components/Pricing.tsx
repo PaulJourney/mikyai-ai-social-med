@@ -160,7 +160,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
   return (
     <div className="space-y-12">
       <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold text-foreground">
+        <h1 className="text-4xl md:text-4xl font-bold text-foreground text-2xl md:text-4xl">
           {t('pricing.title')}
         </h1>
       </div>
@@ -243,7 +243,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
               </CardHeader>
 
               <CardContent className="space-y-4">
-                <div className="space-y-3">
+                <div className="space-y-3 hidden md:block">
                   {plan.features.map((feature, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
