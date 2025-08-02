@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
 import { 
   X, 
@@ -37,6 +38,24 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
   const [activeTab, setActiveTab] = useState('overview')
   const [editingCredits, setEditingCredits] = useState<string | null>(null)
   const [tempCredits, setTempCredits] = useState<{ [key: string]: number }>({})
+  const [showCreditCostModal, setShowCreditCostModal] = useState(false)
+  const [showAddUserModal, setShowAddUserModal] = useState(false)
+  const [userSuspensions, setUserSuspensions] = useState<{ [key: string]: boolean }>({})
+  const [creditCosts, setCreditCosts] = useState({
+    general: 1,
+    lawyer: 3,
+    engineer: 2,
+    marketer: 2,
+    coach: 2,
+    medical: 3,
+    'god-mode': 5
+  })
+  const [newUser, setNewUser] = useState({
+    email: '',
+    firstName: '',
+    lastName: '',
+    plan: 'free'
+  })
   
   // Feature toggles state
   const [featureToggles, setFeatureToggles] = useState({
@@ -172,12 +191,16 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
     a.href = url
     a.download = `miky-users-export-${new Date().toISOString().split('T')[0]}.csv`
     a.click()
+    window.URL.revokeObjectURL(url)
+    toast.success('Users data exported successfully')
   }
 
   const handleExportConversations = () => {
     // Mock conversation export
-    const csvContent = 'Date,User Email,Persona,Messages Count,Credits Used\n' + 
-      'Sample conversation data would be here...'
+    const csvContent = 'Date,User Email,Persona,Messages Count,Credits Used,Language\n' + 
+      mockData.users.map(u => 
+        `${new Date().toISOString().split('T')[0]},${u.email},General,5,5,${u.language}`
+      ).join('\n')
     
     const blob = new Blob([csvContent], { type: 'text/csv' })
     const url = window.URL.createObjectURL(blob)
@@ -185,12 +208,62 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
     a.href = url
     a.download = `miky-conversations-export-${new Date().toISOString().split('T')[0]}.csv`
     a.click()
+    window.URL.revokeObjectURL(url)
+    toast.success('Conversations data exported successfully')
   }
 
-  const handleSuspendUser = (userId: string) => {
-    // Mock user suspension
-    console.log('Suspending user:', userId)
-    toast.success('User suspended successfully')
+  const handleGenerateReport = () => {
+    // Mock report generation
+    const reportContent = `Miky.ai System Report - ${new Date().toLocaleDateString()}
+    
+Total Users: ${mockData.overview.totalUsers}
+Active Users: ${mockData.overview.activeUsers}
+Total Revenue: $${mockData.overview.revenue}
+Credits Used: ${mockData.overview.totalCreditsUsed}
+Conversations: ${mockData.overview.totalConversations}
+
+Subscription Distribution:
+- Free: ${mockData.financials.subscriptions.free} users
+- Plus: ${mockData.financials.subscriptions.plus} users  
+- Business: ${mockData.financials.subscriptions.business} users
+
+Generated on: ${new Date().toISOString()}`
+
+    const blob = new Blob([reportContent], { type: 'text/plain' })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `miky-system-report-${new Date().toISOString().split('T')[0]}.txt`
+    a.click()
+    window.URL.revokeObjectURL(url)
+    toast.success('System report generated and downloaded')
+  }
+
+  const handleSystemSettings = () => {
+    setActiveTab('settings')
+    toast.success('Navigated to system settings')
+  }
+
+  const handleAddUser = () => {
+    if (!newUser.email || !newUser.firstName || !newUser.lastName) {
+      toast.error('Please fill in all required fields')
+      return
+    }
+    
+    // Mock user creation
+    console.log('Creating new user:', newUser)
+    toast.success(`User ${newUser.firstName} ${newUser.lastName} created successfully`)
+    setShowAddUserModal(false)
+    setNewUser({ email: '', firstName: '', lastName: '', plan: 'free' })
+  }
+
+  const handleToggleUserSuspension = (userId: string) => {
+    setUserSuspensions(prev => ({
+      ...prev,
+      [userId]: !prev[userId]
+    }))
+    const isNowSuspended = !userSuspensions[userId]
+    toast.success(`User ${isNowSuspended ? 'suspended' : 'activated'} successfully`)
   }
 
   const handleResetCredits = (userId: string) => {
@@ -226,16 +299,24 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
     switch(action) {
       case 'configure-models':
         toast.success('AI Models configuration opened')
+        // Open AI models configuration panel
         break
       case 'adjust-costs':
-        toast.success('Credit costs adjustment panel opened')
+        setShowCreditCostModal(true)
         break
       case 'manage-restrictions':
         toast.success('Restrictions management panel opened')
+        // Open restrictions management panel
         break
       default:
         break
     }
+  }
+
+  const handleUpdateCreditCosts = () => {
+    console.log('Updated credit costs:', creditCosts)
+    toast.success('Credit costs updated successfully')
+    setShowCreditCostModal(false)
   }
 
   const handleConversationAction = (action: string) => {
@@ -377,19 +458,19 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
             <Card className="p-6">
               <h3 className="text-lg font-medium mb-4">Quick Actions</h3>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <Button variant="outline" className="justify-start" onClick={handleExportUsers}>
+                <Button variant="outline" className="justify-start hover:text-primary" onClick={handleExportUsers}>
                   <Download className="w-4 h-4 mr-2" />
                   Export Users
                 </Button>
-                <Button variant="outline" className="justify-start" onClick={handleExportConversations}>
+                <Button variant="outline" className="justify-start hover:text-primary" onClick={handleExportConversations}>
                   <Download className="w-4 h-4 mr-2" />
                   Export Conversations
                 </Button>
-                <Button variant="outline" className="justify-start">
+                <Button variant="outline" className="justify-start hover:text-primary" onClick={handleGenerateReport}>
                   <ChartLine className="w-4 h-4 mr-2" />
                   Generate Report
                 </Button>
-                <Button variant="outline" className="justify-start">
+                <Button variant="outline" className="justify-start hover:text-primary" onClick={handleSystemSettings}>
                   <Settings className="w-4 h-4 mr-2" />
                   System Settings
                 </Button>
@@ -401,14 +482,72 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
             <div className="flex justify-between items-center">
               <h2 className="text-lg font-medium">User Management</h2>
               <div className="flex gap-2">
-                <Button onClick={handleExportUsers} variant="outline" size="sm">
+                <Button onClick={handleExportUsers} variant="outline" size="sm" className="hover:text-primary">
                   <Download className="w-4 h-4 mr-2" />
                   Export CSV
                 </Button>
-                <Button variant="outline" size="sm">
-                  <Users className="w-4 h-4 mr-2" />
-                  Add User
-                </Button>
+                <Dialog open={showAddUserModal} onOpenChange={setShowAddUserModal}>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" size="sm" className="hover:text-primary">
+                      <Users className="w-4 h-4 mr-2" />
+                      Add User
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Add New User</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="email">Email *</Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          value={newUser.email}
+                          onChange={(e) => setNewUser(prev => ({ ...prev, email: e.target.value }))}
+                          placeholder="user@example.com"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="firstName">First Name *</Label>
+                        <Input
+                          id="firstName"
+                          value={newUser.firstName}
+                          onChange={(e) => setNewUser(prev => ({ ...prev, firstName: e.target.value }))}
+                          placeholder="John"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="lastName">Last Name *</Label>
+                        <Input
+                          id="lastName"
+                          value={newUser.lastName}
+                          onChange={(e) => setNewUser(prev => ({ ...prev, lastName: e.target.value }))}
+                          placeholder="Smith"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="plan">Initial Plan</Label>
+                        <select
+                          id="plan"
+                          value={newUser.plan}
+                          onChange={(e) => setNewUser(prev => ({ ...prev, plan: e.target.value }))}
+                          className="w-full mt-1 px-3 py-2 bg-background border border-input rounded-md"
+                        >
+                          <option value="free">Free</option>
+                          <option value="plus">Plus</option>
+                          <option value="business">Business</option>
+                        </select>
+                      </div>
+                      <div className="flex gap-2 pt-4">
+                        <Button onClick={handleAddUser} className="flex-1">Create User</Button>
+                        <Button variant="outline" onClick={() => setShowAddUserModal(false)} className="flex-1">
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
 
@@ -423,6 +562,7 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
                     <TableHead>Spent</TableHead>
                     <TableHead>Language</TableHead>
                     <TableHead>Joined</TableHead>
+                    <TableHead>Suspended</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -489,19 +629,15 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
                       <TableCell>{user.language}</TableCell>
                       <TableCell>{user.joined}</TableCell>
                       <TableCell>
-                        <div className="flex gap-2">
-                          <Button variant="ghost" size="sm" onClick={() => handleResetCredits(user.id)}>
-                            Reset Credits
-                          </Button>
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="text-destructive"
-                            onClick={() => handleSuspendUser(user.id)}
-                          >
-                            <UserX className="w-4 h-4" />
-                          </Button>
-                        </div>
+                        <Switch
+                          checked={userSuspensions[user.id] || false}
+                          onCheckedChange={() => handleToggleUserSuspension(user.id)}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Button variant="ghost" size="sm" onClick={() => handleResetCredits(user.id)}>
+                          Reset Credits
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -609,14 +745,58 @@ export function AdminDashboard({ onClose }: AdminDashboardProps) {
                       <Robot className="w-4 h-4 mr-2" />
                       Configure AI Models
                     </Button>
-                    <Button 
-                      variant="outline" 
-                      className="w-full justify-start hover:text-primary"
-                      onClick={() => handlePersonaAction('adjust-costs')}
-                    >
-                      <Coins className="w-4 h-4 mr-2" />
-                      Adjust Credit Costs
-                    </Button>
+                    <Dialog open={showCreditCostModal} onOpenChange={setShowCreditCostModal}>
+                      <DialogTrigger asChild>
+                        <Button 
+                          variant="outline" 
+                          className="w-full justify-start hover:text-primary"
+                          onClick={() => handlePersonaAction('adjust-costs')}
+                        >
+                          <Coins className="w-4 h-4 mr-2" />
+                          Adjust Credit Costs
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-md">
+                        <DialogHeader>
+                          <DialogTitle>Adjust Credit Costs per Persona</DialogTitle>
+                        </DialogHeader>
+                        <div className="space-y-4">
+                          {Object.entries(creditCosts).map(([persona, cost]) => (
+                            <div key={persona} className="flex items-center justify-between">
+                              <Label className="capitalize">
+                                {persona === 'god-mode' ? 'God Mode' : persona}
+                              </Label>
+                              <div className="flex items-center gap-2">
+                                <Input
+                                  type="number"
+                                  value={cost}
+                                  onChange={(e) => setCreditCosts(prev => ({
+                                    ...prev,
+                                    [persona]: parseInt(e.target.value) || 1
+                                  }))}
+                                  className="w-20"
+                                  min="1"
+                                  max="10"
+                                />
+                                <span className="text-sm text-muted-foreground">credits</span>
+                              </div>
+                            </div>
+                          ))}
+                          <div className="flex gap-2 pt-4">
+                            <Button onClick={handleUpdateCreditCosts} className="flex-1">
+                              Update Costs
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              onClick={() => setShowCreditCostModal(false)} 
+                              className="flex-1"
+                            >
+                              Cancel
+                            </Button>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
                     <Button 
                       variant="outline" 
                       className="w-full justify-start hover:text-primary"
