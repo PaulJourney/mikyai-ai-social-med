@@ -363,7 +363,7 @@ export function ChatModal({
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder={getPlaceholder()}
                   disabled={disabled}
-                  className="pr-12 h-12 text-base italic placeholder:italic"
+                  className="pr-12 h-12 text-sm md:text-base italic placeholder:italic"
                 />
                 <Button
                   type="button"

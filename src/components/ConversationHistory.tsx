@@ -323,7 +323,7 @@ export function ConversationHistory({
                             </Button>
                           </div>
                         ) : (
-                          <h3 className="text-sm font-medium text-foreground truncate">
+                          <h3 className="text-xs font-medium text-foreground truncate">
                             {conversation.title}
                           </h3>
                         )}
@@ -334,16 +334,14 @@ export function ConversationHistory({
                           variant="outline"
                           size="sm"
                           onClick={() => onContinueConversation ? onContinueConversation(conversation) : onSelectConversation(conversation)}
-                          className="text-xs group"
+                          className="p-2 group"
                         >
-                          <span className="group-hover:text-primary transition-colors duration-200">
-                            {t('history.continue')}
-                          </span>
+                          <ChatCircle className="w-4 h-4 group-hover:text-primary transition-colors duration-200" />
                         </Button>
 
                         <Dialog>
                           <DialogTrigger asChild>
-                            <Button variant="ghost" size="sm" className="text-xs p-2 text-destructive hover:text-destructive">
+                            <Button variant="ghost" size="sm" className="p-2 text-destructive hover:text-destructive">
                               <Trash className="w-4 h-4" />
                             </Button>
                           </DialogTrigger>

@@ -540,36 +540,33 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Full Page Overlay */}
       {showMobileMenu && (
-        <div className="md:hidden fixed inset-0 z-[9999] bg-black/80 mobile-menu-overlay-enter" onClick={closeMobileMenu}>
-          <div 
-            className="fixed right-0 top-0 h-full w-80 max-w-[85vw] bg-card border-l border-border mobile-menu-enter"
-            onClick={(e) => e.stopPropagation()}
-          >
+        <div className="md:hidden fixed inset-0 z-[99999] bg-black mobile-menu-overlay-enter">
+          <div className="h-full w-full flex flex-col">
             {/* Menu Header */}
-            <div className="flex items-center justify-between p-4 border-b border-border">
-              <div className="text-lg font-semibold">Menu</div>
+            <div className="flex items-center justify-between p-4 border-b border-gray-800">
+              <div className="text-lg font-semibold text-white">Menu</div>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={closeMobileMenu}
-                className="p-1"
+                className="p-1 text-white hover:text-primary"
               >
                 <X className="w-5 h-5" />
               </Button>
             </div>
 
             {/* Menu Content */}
-            <div className="p-4 space-y-6">
+            <div className="flex-1 p-4 space-y-6 overflow-y-auto">
               {/* Navigation Links */}
               <div className="space-y-3">
-                <div className="text-sm font-medium text-muted-foreground mb-3">Navigation</div>
+                <div className="text-sm font-medium text-gray-400 mb-3">Navigation</div>
                 <Button
                   variant={currentView === 'chat' ? 'default' : 'ghost'}
                   size="sm"
                   onClick={() => handleMobileNavigation('chat')}
-                  className="w-full justify-start"
+                  className="w-full justify-start text-white hover:text-primary"
                 >
                   <ChatCircle className="w-4 h-4 mr-3" />
                   Chat
@@ -578,7 +575,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                   variant={currentView === 'history' ? 'default' : 'ghost'}
                   size="sm"
                   onClick={() => handleMobileNavigation('history')}
-                  className="w-full justify-start"
+                  className="w-full justify-start text-white hover:text-primary"
                 >
                   <ClockCounterClockwise className="w-4 h-4 mr-3" />
                   {t('header.conversations')}
@@ -587,7 +584,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                   variant={currentView === 'pricing' ? 'default' : 'ghost'}
                   size="sm"
                   onClick={() => handleMobileNavigation('pricing')}
-                  className="w-full justify-start"
+                  className="w-full justify-start text-white hover:text-primary"
                 >
                   <CreditCard className="w-4 h-4 mr-3" />
                   {t('header.pricing')}
@@ -598,7 +595,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                 <>
                   {/* Credits */}
                   <div className="space-y-3">
-                    <div className="text-sm font-medium text-muted-foreground">Credits</div>
+                    <div className="text-sm font-medium text-gray-400">Credits</div>
                     <div className="flex items-center gap-3">
                       <Badge variant={getCreditsBadgeColor()} className="text-sm font-medium px-3 py-1">
                         {user.credits} {t('header.credits').toLowerCase()}
@@ -608,7 +605,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
 
                   {/* User Actions */}
                   <div className="space-y-3">
-                    <div className="text-sm font-medium text-muted-foreground">Account</div>
+                    <div className="text-sm font-medium text-gray-400">Account</div>
                     <Button
                       variant="ghost"
                       size="sm"
@@ -616,7 +613,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                         setShowAccountModal(true)
                         closeMobileMenu()
                       }}
-                      className="w-full justify-start"
+                      className="w-full justify-start text-white hover:text-primary"
                     >
                       <User className="w-4 h-4 mr-3" />
                       Account Details
@@ -628,7 +625,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                         setShowReferralModal(true)
                         closeMobileMenu()
                       }}
-                      className="w-full justify-start group"
+                      className="w-full justify-start group text-white hover:text-primary"
                     >
                       <ShareNetwork className="w-4 h-4 mr-3 group-hover:text-primary transition-colors duration-200" />
                       <span className="group-hover:text-primary transition-colors duration-200">{t('header.refer')}</span>
@@ -637,12 +634,12 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
 
                   {/* Plan Management */}
                   <div className="space-y-3">
-                    <div className="text-sm font-medium text-muted-foreground">Plan</div>
+                    <div className="text-sm font-medium text-gray-400">Plan</div>
                     {user.plan !== 'business' ? (
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="w-full group"
+                        className="w-full group text-white border-gray-600 hover:border-primary"
                         onClick={() => handleMobileNavigation('pricing')}
                       >
                         <span className="group-hover:text-primary transition-colors duration-200">
@@ -653,7 +650,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="w-full group"
+                        className="w-full group text-white border-gray-600 hover:border-primary"
                         onClick={() => handleMobileNavigation('pricing')}
                       >
                         <span className="group-hover:text-primary transition-colors duration-200">
@@ -664,11 +661,11 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                   </div>
 
                   {/* Sign Out */}
-                  <div className="pt-4 border-t border-border">
+                  <div className="pt-4 border-t border-gray-800">
                     <Button 
                       variant="ghost" 
                       size="sm" 
-                      className="w-full text-destructive hover:text-destructive justify-start"
+                      className="w-full text-red-400 hover:text-red-300 justify-start"
                       onClick={() => {
                         onSignOut()
                         closeMobileMenu()
@@ -682,7 +679,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
               ) : (
                 /* Auth Buttons */
                 <div className="space-y-3">
-                  <div className="text-sm font-medium text-muted-foreground">Account</div>
+                  <div className="text-sm font-medium text-gray-400">Account</div>
                   <Button 
                     variant="ghost" 
                     size="sm" 
