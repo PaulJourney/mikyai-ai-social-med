@@ -16,7 +16,7 @@ import { ThemeProvider } from './components/ThemeProvider'
 import { TranslationProvider, useT } from './contexts/TranslationContext'
 import { Toaster } from 'sonner'
 
-export type Persona = 'lawyer' | 'engineer' | 'marketer' | 'coach' | 'medical' | 'god-mode' | 'general'
+export type Persona = 'academic' | 'marketer' | 'engineer' | 'coach' | 'sensei' | 'lawyer' | 'medical' | 'god-mode' | 'richman' | 'general'
 
 export interface Message {
   id: string
@@ -97,12 +97,15 @@ function AppContent() {
   const generateConversationTitle = (content: string, persona: Persona): string => {
     // Generate more descriptive titles based on content and persona
     const titlePrompts = {
-      lawyer: ['Legal advice about', 'Contract help for', 'Legal question on'],
-      engineer: ['Technical help with', 'Engineering problem:', 'Code review for'],
+      academic: ['Academic research on', 'Study help with', 'Academic question:'],
       marketer: ['Marketing strategy for', 'Brand advice on', 'Campaign planning:'],
+      engineer: ['Technical help with', 'Engineering problem:', 'Code review for'],
       coach: ['Life coaching on', 'Personal goal:', 'Coaching session:'],
+      sensei: ['Relationship advice on', 'Personal dynamics:', 'Social guidance:'],
+      lawyer: ['Legal advice about', 'Contract help for', 'Legal question on'],
       medical: ['Health question about', 'Medical advice on', 'Wellness guidance:'],
       'god-mode': ['Philosophical inquiry:', 'Deep question about', 'Existential topic:'],
+      richman: ['Business idea about', 'Monetization strategy:', 'Wealth building:'],
       general: ['General question about', 'Help with', 'Discussion on']
     }
 
@@ -271,12 +274,15 @@ function AppContent() {
 
   const generatePersonaResponse = (persona: Persona, input: string): string => {
     const responses = {
-      lawyer: `As your legal advisor, I need to analyze this matter carefully. ${input.includes('contract') ? 'Contract law requires specific attention to terms and conditions.' : 'This requires legal interpretation and risk assessment.'} Please note this is general guidance, not formal legal advice.`,
-      engineer: `From an engineering perspective, let me break this down systematically. ${input.includes('code') ? 'The technical implementation should consider scalability and maintainability.' : 'We need to approach this with solid engineering principles.'} Would you like me to elaborate on specific technical aspects?`,
+      academic: `As your academic specialist, I'll provide scholarly assistance with this matter. ${input.includes('research') ? 'Academic research requires rigorous methodology and critical analysis.' : 'Let me help you achieve academic excellence with proven strategies.'} I can support you with writing, analysis, and research across all disciplines.`,
       marketer: `Great question! From a marketing standpoint, this presents interesting opportunities. ${input.includes('brand') ? 'Brand positioning is crucial here.' : 'We should consider your target audience and value proposition.'} Let's discuss strategy and execution tactics.`,
+      engineer: `From an engineering perspective, let me break this down systematically. ${input.includes('code') ? 'The technical implementation should consider scalability and maintainability.' : 'We need to approach this with solid engineering principles.'} Would you like me to elaborate on specific technical aspects?`,
       coach: `I appreciate you sharing this with me. ${input.includes('goal') ? 'Setting clear goals is the foundation of success.' : 'Personal growth often starts with honest self-reflection.'} What specific outcome are you hoping to achieve? Let's work together on a practical approach.`,
+      sensei: `I understand your relationship concern. ${input.includes('relationship') ? 'Strong relationships require emotional intelligence and empathy.' : 'Interpersonal dynamics are complex but manageable with the right approach.'} Let me guide you toward healthier connections and better communication.`,
+      lawyer: `As your legal advisor, I need to analyze this matter carefully. ${input.includes('contract') ? 'Contract law requires specific attention to terms and conditions.' : 'This requires legal interpretation and risk assessment.'} Please note this is general guidance, not formal legal advice.`,
       medical: `Thank you for your health-related question. ${input.includes('symptom') ? 'Symptoms should always be evaluated in context.' : 'Health matters require careful consideration.'} Please remember that this is educational information only - always consult with healthcare professionals for medical advice.`,
       'god-mode': `*ACCESSING UNIVERSAL KNOWLEDGE MATRIX* Your question touches on fundamental aspects of existence and reality. ${input.includes('meaning') ? 'The search for meaning is perhaps the most human of all endeavors.' : 'Let me process this through multiple dimensional frameworks.'} Prepare for deep insights that transcend conventional thinking...`,
+      richman: `Excellent! Let's explore wealth-building opportunities here. ${input.includes('business') ? 'Business success requires strategic thinking and market awareness.' : 'Every challenge can become a profitable opportunity with the right mindset.'} I'll help you identify monetization strategies and market gaps.`,
       general: `Hello! I'm Miky, your AI assistant. I'd be happy to help you with your question. ${input.includes('?') ? 'Let me provide you with a comprehensive answer.' : 'I can assist you with various topics and tasks.'} For specialized expertise, consider selecting one of my ultra-skilled personas above for more targeted assistance.`
     }
     return responses[persona] || 'I understand your request and will provide a comprehensive response.'
@@ -284,12 +290,15 @@ function AppContent() {
 
   const getPersonaCost = (persona: Persona): number => {
     const costs = {
-      lawyer: 3,
-      engineer: 2,
+      academic: 2,
       marketer: 2,
+      engineer: 2,
       coach: 2,
+      sensei: 2,
+      lawyer: 3,
       medical: 3,
       'god-mode': 5,
+      richman: 2,
       general: 1
     }
     return costs[persona] || 1
@@ -380,9 +389,6 @@ function AppContent() {
                       )
                     )}
                   </h1>
-                  <p className="text-base text-muted-foreground font-normal">
-                    {t('homepage.subtitle')}
-                  </p>
                 </div>
                 
                 <MainInput 

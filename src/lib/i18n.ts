@@ -18,7 +18,6 @@ export interface Translations {
   // Homepage
   homepage: {
     title: string
-    subtitle: string
     choosePersona: string
     signUpPrompt: string
     generalMode: string
@@ -28,12 +27,7 @@ export interface Translations {
   
   // Personas
   personas: {
-    lawyer: {
-      name: string
-      description: string
-      fullDescription: string
-    }
-    engineer: {
+    academic: {
       name: string
       description: string
       fullDescription: string
@@ -43,7 +37,27 @@ export interface Translations {
       description: string
       fullDescription: string
     }
+    engineer: {
+      name: string
+      description: string
+      fullDescription: string
+    }
     coach: {
+      name: string
+      description: string
+      fullDescription: string
+    }
+    sensei: {
+      name: string
+      description: string
+      fullDescription: string
+    }
+    richman: {
+      name: string
+      description: string
+      fullDescription: string
+    }
+    lawyer: {
       name: string
       description: string
       fullDescription: string
@@ -90,13 +104,17 @@ export interface Translations {
     continue: string
     delete: string
     rename: string
+    searchPlaceholder: string
     filters: {
       all: string
       general: string
-      lawyer: string
-      engineer: string
+      academic: string
       marketer: string
+      engineer: string
       coach: string
+      sensei: string
+      richman: string
+      lawyer: string
       medical: string
       godMode: string
     }
@@ -389,7 +407,6 @@ const translations: Record<Language, Translations> = {
     },
     homepage: {
       title: 'Ask to Miky',
-      subtitle: 'Ultra-skilled AI personas ready to act as your advisors in life, work, and achievement.',
       choosePersona: 'Choose your personalized AI specialist:',
       signUpPrompt: 'to start chatting with AI personas',
       generalMode: 'Switch to general chat mode',
@@ -397,25 +414,40 @@ const translations: Record<Language, Translations> = {
       upgradeToUnlock: 'Upgrade to unlock Medical and God Mode personas'
     },
     personas: {
-      lawyer: {
-        name: 'Lawyer',
-        description: 'Legal advice and contract help',
-        fullDescription: 'Ultra-skilled AI Lawyer specialized in national and international law. Provides advanced consulting in civil, criminal, commercial, tax, labor, administrative, and technology law. Drafts legal documents, contracts, opinions, defenses, exposés, complaints, and preventive filings with precision and academic rigor.'
-      },
-      engineer: {
-        name: 'Engineer',
-        description: 'Technical help and code review',
-        fullDescription: 'Senior AI Engineer capable of writing, correcting, and reviewing code in over 20 languages: Python, JavaScript, TypeScript, Rust, Go, C++, C#, Solidity, Swift, Kotlin, Java, Ruby, PHP, HTML/CSS, SQL, Bash, and many others. Provides architectural solutions, complex debugging, performance optimization, and AI integration.'
+      academic: {
+        name: 'Academic',
+        description: 'Top-tier AI for academic support',
+        fullDescription: 'Highly qualified AI Academic specializing in advanced research and academic writing. Offers professional support for theses, dissertations, university exams, scientific papers, and complex assignments across all disciplines. Produces top-tier academic content aligned with global standards like MIT and Cambridge.'
       },
       marketer: {
         name: 'Marketer',
         description: 'Brand growth and marketing plans',
         fullDescription: 'Strategic AI Marketer with advanced skills in brand positioning, organic growth, paid campaigns, SEO/SEM, data analysis, conversion funnels, persuasive copywriting, and social media management (Instagram, TikTok, X, LinkedIn, Facebook). Supports entrepreneurs, agencies, and creators in creating and scaling digital projects.'
       },
+      engineer: {
+        name: 'Engineer',
+        description: 'Technical help and code review',
+        fullDescription: 'Senior AI Engineer capable of writing, correcting, and reviewing code in over 20 languages: Python, JavaScript, TypeScript, Rust, Go, C++, C#, Solidity, Swift, Kotlin, Java, Ruby, PHP, HTML/CSS, SQL, Bash, and many others. Provides architectural solutions, complex debugging, performance optimization, and AI integration.'
+      },
       coach: {
         name: 'Coach',
         description: 'Personal goals and life coaching',
         fullDescription: 'High-level AI Life & Performance Coach, able to help you overcome emotional blocks, organize your life, improve productivity, find motivation, develop winning habits, work on personal relationships, physical wellness, and personal growth. No topic is too complex for Miky.'
+      },
+      sensei: {
+        name: 'Sensei',
+        description: 'Master your personal relationships',
+        fullDescription: 'Expert AI Relationship Strategist focused on emotional intelligence and interpersonal dynamics. Offers advice on love, family, parenting, social and workplace relationships. Delivers tailored solutions to manage conflict, foster harmony, and strengthen connections with empathy and insight.'
+      },
+      richman: {
+        name: 'Richman',
+        description: 'Business ideas to grow your wealth',
+        fullDescription: 'Elite AI Business Expert focused on fast-track monetization strategies. Generates custom business ideas, identifies market gaps, and shapes revenue plans aligned with world-class entrepreneurial tactics. Guides you efficiently toward building wealth using proven strategies.'
+      },
+      lawyer: {
+        name: 'Lawyer',
+        description: 'Legal advice and contract help',
+        fullDescription: 'Ultra-skilled AI Lawyer specialized in national and international law. Provides advanced consulting in civil, criminal, commercial, tax, labor, administrative, and technology law. Drafts legal documents, contracts, opinions, defenses, exposés, complaints, and preventive filings with precision and academic rigor.'
       },
       medical: {
         name: 'Medical',
@@ -455,13 +487,17 @@ const translations: Record<Language, Translations> = {
       continue: 'Continue',
       delete: 'Delete',
       rename: 'Rename',
+      searchPlaceholder: 'Search conversations and messages...',
       filters: {
         all: 'All',
         general: 'General',
-        lawyer: 'Lawyer',
-        engineer: 'Engineer',
+        academic: 'Academic',
         marketer: 'Marketer',
+        engineer: 'Engineer',
         coach: 'Coach',
+        sensei: 'Sensei',
+        richman: 'Richman',
+        lawyer: 'Lawyer',
         medical: 'Medical',
         godMode: 'God Mode'
       },
@@ -736,7 +772,6 @@ const translations: Record<Language, Translations> = {
     },
     homepage: {
       title: 'Chiedi a Miky',
-      subtitle: 'Personalità AI ultra-qualificate pronte ad essere i tuoi consulenti nella vita, lavoro e successo.',
       choosePersona: 'Scegli il tuo specialista AI personalizzato:',
       signUpPrompt: 'per iniziare a chattare con le personalità AI',
       generalMode: 'Passa alla modalità chat generale',
@@ -744,25 +779,40 @@ const translations: Record<Language, Translations> = {
       upgradeToUnlock: 'Aggiorna per sbloccare le personalità Medico e God Mode'
     },
     personas: {
-      lawyer: {
-        name: 'Avvocato',
-        description: 'Consulenza legale e contratti',
-        fullDescription: 'Avvocato AI ultra-qualificato specializzato in diritto nazionale e internazionale. Fornisce consulenza avanzata in ambito civile, penale, commerciale, tributario, del lavoro, amministrativo e tecnologico. Redige documenti legali, contratti, pareri, difese, esposti, ricorsi e istanze preventive con precisione e rigore accademico.'
-      },
-      engineer: {
-        name: 'Ingegnere',
-        description: 'Assistenza tecnica e revisione codice',
-        fullDescription: 'Ingegnere AI Senior capace di scrivere, correggere e revisionare codice in oltre 20 linguaggi: Python, JavaScript, TypeScript, Rust, Go, C++, C#, Solidity, Swift, Kotlin, Java, Ruby, PHP, HTML/CSS, SQL, Bash e molti altri. Fornisce soluzioni architetturali, debug complessi, ottimizzazione performance e integrazione AI.'
+      academic: {
+        name: 'Accademico',
+        description: 'Supporto AI di alto livello per studi',
+        fullDescription: 'Accademico AI altamente qualificato specializzato in ricerca avanzata e scrittura accademica. Offre supporto professionale per tesi, dissertazioni, esami universitari, articoli scientifici e compiti complessi in tutte le discipline. Produce contenuti accademici di alto livello allineati agli standard globali come MIT e Cambridge.'
       },
       marketer: {
         name: 'Marketer',
         description: 'Crescita brand e piani marketing',
         fullDescription: 'Marketer AI Strategico con competenze avanzate in posizionamento brand, crescita organica, campagne a pagamento, SEO/SEM, analisi dati, funnel di conversione, copywriting persuasivo e gestione social (Instagram, TikTok, X, LinkedIn, Facebook). Supporta imprenditori, agenzie e creator nella creazione e scalabilità di progetti digitali.'
       },
+      engineer: {
+        name: 'Ingegnere',
+        description: 'Assistenza tecnica e revisione codice',
+        fullDescription: 'Ingegnere AI Senior capace di scrivere, correggere e revisionare codice in oltre 20 linguaggi: Python, JavaScript, TypeScript, Rust, Go, C++, C#, Solidity, Swift, Kotlin, Java, Ruby, PHP, HTML/CSS, SQL, Bash e molti altri. Fornisce soluzioni architetturali, debug complessi, ottimizzazione performance e integrazione AI.'
+      },
       coach: {
         name: 'Coach',
         description: 'Obiettivi personali e life coaching',
         fullDescription: 'Life & Performance Coach AI di alto livello, in grado di aiutarti a superare blocchi emotivi, organizzare la vita, migliorare la produttività, trovare motivazione, sviluppare abitudini vincenti, lavorare su relazioni personali, benessere fisico e crescita personale. Nessun argomento è troppo complesso per Miky.'
+      },
+      sensei: {
+        name: 'Sensei',
+        description: 'Gestisci le tue relazioni personali',
+        fullDescription: 'Stratega AI Relazionale esperto focalizzato su intelligenza emotiva e dinamiche interpersonali. Offre consigli su amore, famiglia, genitorialità, relazioni sociali e lavorative. Fornisce soluzioni su misura per gestire conflitti, favorire armonia e rafforzare connessioni con empatia e intuizione.'
+      },
+      richman: {
+        name: 'Richman',
+        description: 'Idee business per far crescere ricchezza',
+        fullDescription: 'Esperto AI Business Elite focalizzato su strategie di monetizzazione rapida. Genera idee business personalizzate, identifica gap di mercato e modella piani di ricavo allineati con tattiche imprenditoriali di classe mondiale. Ti guida efficacemente verso la costruzione di ricchezza usando strategie comprovate.'
+      },
+      lawyer: {
+        name: 'Avvocato',
+        description: 'Consulenza legale e contratti',
+        fullDescription: 'Avvocato AI ultra-qualificato specializzato in diritto nazionale e internazionale. Fornisce consulenza avanzata in ambito civile, penale, commerciale, tributario, del lavoro, amministrativo e tecnologico. Redige documenti legali, contratti, pareri, difese, esposti, ricorsi e istanze preventive con precisione e rigore accademico.'
       },
       medical: {
         name: 'Medico',
@@ -802,13 +852,17 @@ const translations: Record<Language, Translations> = {
       continue: 'Continua',
       delete: 'Elimina',
       rename: 'Rinomina',
+      searchPlaceholder: 'Cerca conversazioni e messaggi...',
       filters: {
         all: 'Tutte',
         general: 'Generale',
-        lawyer: 'Avvocato',
-        engineer: 'Ingegnere',
+        academic: 'Accademico',
         marketer: 'Marketer',
+        engineer: 'Ingegnere',
         coach: 'Coach',
+        sensei: 'Sensei',
+        richman: 'Richman',
+        lawyer: 'Avvocato',
         medical: 'Medico',
         godMode: 'God Mode'
       },
@@ -1083,7 +1137,6 @@ const translations: Record<Language, Translations> = {
     },
     homepage: {
       title: 'Pregunta a Miky',
-      subtitle: 'Personalidades AI ultra-capacitadas listas para actuar como tus asesores en vida, trabajo y logros.',
       choosePersona: 'Elige tu especialista AI personalizado:',
       signUpPrompt: 'para empezar a chatear con personalidades AI',
       generalMode: 'Cambiar a modo chat general',
@@ -1091,25 +1144,40 @@ const translations: Record<Language, Translations> = {
       upgradeToUnlock: 'Actualiza para desbloquear las personalidades Médico y God Mode'
     },
     personas: {
-      lawyer: {
-        name: 'Abogado',
-        description: 'Asesoría legal y ayuda contractual',
-        fullDescription: 'Abogado AI ultra-capacitado especializado en derecho nacional e internacional. Proporciona consultoría avanzada en ámbito civil, penal, comercial, tributario, laboral, administrativo y tecnológico. Redacta documentos legales, contratos, dictámenes, defensas, exposiciones, demandas y escritos preventivos con precisión y rigor académico.'
-      },
-      engineer: {
-        name: 'Ingeniero',
-        description: 'Ayuda técnica y revisión de código',
-        fullDescription: 'Ingeniero AI Senior capaz de escribir, corregir y revisar código en más de 20 lenguajes: Python, JavaScript, TypeScript, Rust, Go, C++, C#, Solidity, Swift, Kotlin, Java, Ruby, PHP, HTML/CSS, SQL, Bash y muchos otros. Proporciona soluciones arquitectónicas, depuración compleja, optimización de rendimiento e integración AI.'
+      academic: {
+        name: 'Académico',
+        description: 'AI de alto nivel para apoyo académico',
+        fullDescription: 'Académico AI altamente cualificado especializado en investigación avanzada y escritura académica. Ofrece apoyo profesional para tesis, disertaciones, exámenes universitarios, artículos científicos y tareas complejas en todas las disciplinas. Produce contenido académico de primer nivel alineado con estándares globales como MIT y Cambridge.'
       },
       marketer: {
         name: 'Marketer',
         description: 'Crecimiento de marca y planes marketing',
         fullDescription: 'Marketer AI Estratégico con habilidades avanzadas en posicionamiento de marca, crecimiento orgánico, campañas pagadas, SEO/SEM, análisis de datos, embudos de conversión, copywriting persuasivo y gestión de redes sociales (Instagram, TikTok, X, LinkedIn, Facebook). Apoya emprendedores, agencias y creadores en crear y escalar proyectos digitales.'
       },
+      engineer: {
+        name: 'Ingeniero',
+        description: 'Ayuda técnica y revisión de código',
+        fullDescription: 'Ingeniero AI Senior capaz de escribir, corregir y revisar código en más de 20 lenguajes: Python, JavaScript, TypeScript, Rust, Go, C++, C#, Solidity, Swift, Kotlin, Java, Ruby, PHP, HTML/CSS, SQL, Bash y muchos otros. Proporciona soluciones arquitectónicas, depuración compleja, optimización de rendimiento e integración AI.'
+      },
       coach: {
         name: 'Coach',
         description: 'Metas personales y life coaching',
         fullDescription: 'Life & Performance Coach AI de alto nivel, capaz de ayudarte a superar bloqueos emocionales, organizar tu vida, mejorar productividad, encontrar motivación, desarrollar hábitos ganadores, trabajar en relaciones personales, bienestar físico y crecimiento personal. Ningún tema es demasiado complejo para Miky.'
+      },
+      sensei: {
+        name: 'Sensei',
+        description: 'Domina tus relaciones personales',
+        fullDescription: 'Estratega AI de Relaciones experto enfocado en inteligencia emocional y dinámicas interpersonales. Ofrece consejos sobre amor, familia, crianza, relaciones sociales y laborales. Entrega soluciones adaptadas para manejar conflictos, fomentar armonía y fortalecer conexiones con empatía e insight.'
+      },
+      richman: {
+        name: 'Richman',
+        description: 'Ideas de negocio para hacer crecer riqueza',
+        fullDescription: 'Experto AI Business Elite enfocado en estrategias de monetización acelerada. Genera ideas de negocio personalizadas, identifica brechas de mercado y diseña planes de ingresos alineados con tácticas empresariales de clase mundial. Te guía eficientemente hacia la construcción de riqueza usando estrategias probadas.'
+      },
+      lawyer: {
+        name: 'Abogado',
+        description: 'Asesoría legal y ayuda contractual',
+        fullDescription: 'Abogado AI ultra-capacitado especializado en derecho nacional e internacional. Proporciona consultoría avanzada en ámbito civil, penal, comercial, tributario, laboral, administrativo y tecnológico. Redacta documentos legales, contratos, dictámenes, defensas, exposiciones, demandas y escritos preventivos con precisión y rigor académico.'
       },
       medical: {
         name: 'Médico',
@@ -1149,13 +1217,17 @@ const translations: Record<Language, Translations> = {
       continue: 'Continuar',
       delete: 'Eliminar',
       rename: 'Renombrar',
+      searchPlaceholder: 'Buscar conversaciones y mensajes...',
       filters: {
         all: 'Todas',
         general: 'General',
-        lawyer: 'Abogado',
-        engineer: 'Ingeniero',
+        academic: 'Académico',
         marketer: 'Marketer',
+        engineer: 'Ingeniero',
         coach: 'Coach',
+        sensei: 'Sensei',
+        richman: 'Richman',
+        lawyer: 'Abogado',
         medical: 'Médico',
         godMode: 'God Mode'
       },
@@ -1430,7 +1502,6 @@ const translations: Record<Language, Translations> = {
     },
     homepage: {
       title: 'Frag Miky',
-      subtitle: 'Ultra-qualifizierte AI-Personas bereit, als deine Berater in Leben, Arbeit und Erfolg zu agieren.',
       choosePersona: 'Wähle deinen personalisierten AI-Spezialisten:',
       signUpPrompt: 'um mit AI-Personas zu chatten',
       generalMode: 'Zu allgemeinem Chat-Modus wechseln',
@@ -1438,25 +1509,40 @@ const translations: Record<Language, Translations> = {
       upgradeToUnlock: 'Upgrade um Arzt und God Mode Personas freizuschalten'
     },
     personas: {
-      lawyer: {
-        name: 'Anwalt',
-        description: 'Rechtsberatung und Vertragshilfe',
-        fullDescription: 'Ultra-qualifizierter AI-Anwalt spezialisiert auf nationales und internationales Recht. Bietet erweiterte Beratung in Zivil-, Straf-, Handels-, Steuer-, Arbeits-, Verwaltungs- und Technologierecht. Erstellt Rechtsdokumente, Verträge, Gutachten, Verteidigungen, Darstellungen, Klagen und präventive Einreichungen mit Präzision und akademischer Strenge.'
-      },
-      engineer: {
-        name: 'Ingenieur',
-        description: 'Technische Hilfe und Code-Review',
-        fullDescription: 'Senior AI-Ingenieur fähig, Code in über 20 Sprachen zu schreiben, korrigieren und reviewen: Python, JavaScript, TypeScript, Rust, Go, C++, C#, Solidity, Swift, Kotlin, Java, Ruby, PHP, HTML/CSS, SQL, Bash und viele andere. Bietet architektonische Lösungen, komplexes Debugging, Performance-Optimierung und AI-Integration.'
+      academic: {
+        name: 'Akademiker',
+        description: 'Erstklassige AI für akademische Unterstützung',
+        fullDescription: 'Hochqualifizierter AI-Akademiker spezialisiert auf fortgeschrittene Forschung und akademisches Schreiben. Bietet professionelle Unterstützung für Dissertationen, Abschlussarbeiten, Universitätsprüfungen, wissenschaftliche Artikel und komplexe Aufgaben in allen Disziplinen. Produziert erstklassige akademische Inhalte entsprechend globaler Standards wie MIT und Cambridge.'
       },
       marketer: {
         name: 'Marketer',
         description: 'Markenwachstum und Marketing-Pläne',
         fullDescription: 'Strategischer AI-Marketer mit erweiterten Fähigkeiten in Markenpositionierung, organischem Wachstum, bezahlten Kampagnen, SEO/SEM, Datenanalyse, Conversion-Funnels, überzeugender Werbetexte und Social Media Management (Instagram, TikTok, X, LinkedIn, Facebook). Unterstützt Unternehmer, Agenturen und Creator beim Erstellen und Skalieren digitaler Projekte.'
       },
+      engineer: {
+        name: 'Ingenieur',
+        description: 'Technische Hilfe und Code-Review',
+        fullDescription: 'Senior AI-Ingenieur fähig, Code in über 20 Sprachen zu schreiben, korrigieren und reviewen: Python, JavaScript, TypeScript, Rust, Go, C++, C#, Solidity, Swift, Kotlin, Java, Ruby, PHP, HTML/CSS, SQL, Bash und viele andere. Bietet architektonische Lösungen, komplexes Debugging, Performance-Optimierung und AI-Integration.'
+      },
       coach: {
         name: 'Coach',
         description: 'Persönliche Ziele und Life Coaching',
         fullDescription: 'High-Level AI Life & Performance Coach, fähig dir zu helfen emotionale Blockaden zu überwinden, dein Leben zu organisieren, Produktivität zu verbessern, Motivation zu finden, Gewinnergewohnheiten zu entwickeln, an persönlichen Beziehungen zu arbeiten, körperliche Wellness und persönliches Wachstum. Kein Thema ist zu komplex für Miky.'
+      },
+      sensei: {
+        name: 'Sensei',
+        description: 'Meistere deine persönlichen Beziehungen',
+        fullDescription: 'Experte AI-Beziehungsstratege fokussiert auf emotionale Intelligenz und zwischenmenschliche Dynamiken. Bietet Rat zu Liebe, Familie, Elternschaft, sozialen und beruflichen Beziehungen. Liefert maßgeschneiderte Lösungen zur Konfliktbearbeitung, Förderung von Harmonie und Stärkung von Verbindungen mit Empathie und Einsicht.'
+      },
+      richman: {
+        name: 'Richman',
+        description: 'Geschäftsideen für Vermögensaufbau',
+        fullDescription: 'Elite AI-Business-Experte fokussiert auf beschleunigte Monetarisierungsstrategien. Generiert maßgeschneiderte Geschäftsideen, identifiziert Marktlücken und gestaltet Umsatzpläne ausgerichtet auf weltklasse unternehmerische Taktiken. Führt dich effizient zum Vermögensaufbau mit bewährten Strategien.'
+      },
+      lawyer: {
+        name: 'Anwalt',
+        description: 'Rechtsberatung und Vertragshilfe',
+        fullDescription: 'Ultra-qualifizierter AI-Anwalt spezialisiert auf nationales und internationales Recht. Bietet erweiterte Beratung in Zivil-, Straf-, Handels-, Steuer-, Arbeits-, Verwaltungs- und Technologierecht. Erstellt Rechtsdokumente, Verträge, Gutachten, Verteidigungen, Darstellungen, Klagen und präventive Einreichungen mit Präzision und akademischer Strenge.'
       },
       medical: {
         name: 'Arzt',
@@ -1496,13 +1582,17 @@ const translations: Record<Language, Translations> = {
       continue: 'Fortfahren',
       delete: 'Löschen',
       rename: 'Umbenennen',
+      searchPlaceholder: 'Gespräche und Nachrichten durchsuchen...',
       filters: {
         all: 'Alle',
         general: 'Allgemein',
-        lawyer: 'Anwalt',
-        engineer: 'Ingenieur',
+        academic: 'Akademiker',
         marketer: 'Marketer',
+        engineer: 'Ingenieur',
         coach: 'Coach',
+        sensei: 'Sensei',
+        richman: 'Richman',
+        lawyer: 'Anwalt',
         medical: 'Arzt',
         godMode: 'God Mode'
       },

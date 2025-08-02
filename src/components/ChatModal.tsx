@@ -17,7 +17,10 @@ import {
   TrendUp, 
   ChatCircle, 
   FirstAidKit, 
-  Lightning 
+  Lightning,
+  GraduationCap,
+  CurrencyDollar,
+  Heart
 } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useT } from '../contexts/TranslationContext'
@@ -134,10 +137,13 @@ export function ChatModal({
 
   const getPersonaIcon = (persona: string) => {
     const iconMap = {
-      lawyer: Scales,
-      engineer: Wrench,
+      academic: GraduationCap,
       marketer: TrendUp,
+      engineer: Wrench,
       coach: ChatCircle,
+      sensei: Heart,
+      richman: CurrencyDollar,
+      lawyer: Scales,
       medical: FirstAidKit,
       'god-mode': Lightning
     }
@@ -148,10 +154,13 @@ export function ChatModal({
     if (!persona) return 'Miky'
     
     const names = {
-      lawyer: t('chat.chatWith', { persona: t('personas.lawyer.name') }),
+      academic: t('chat.chatWith', { persona: t('personas.academic.name') }),
+      marketer: t('chat.chatWith', { persona: t('personas.marketer.name') }),
       engineer: t('chat.chatWith', { persona: t('personas.engineer.name') }),
-      marketer: t('chat.chatWith', { persona: t('personas.marketer.name') }), 
       coach: t('chat.chatWith', { persona: t('personas.coach.name') }),
+      sensei: t('chat.chatWith', { persona: t('personas.sensei.name') }),
+      richman: t('chat.chatWith', { persona: t('personas.richman.name') }),
+      lawyer: t('chat.chatWith', { persona: t('personas.lawyer.name') }),
       medical: t('chat.chatWith', { persona: t('personas.medical.name') }),
       'god-mode': t('chat.chatWith', { persona: t('personas.godMode.name') })
     }
@@ -160,10 +169,13 @@ export function ChatModal({
 
   const getPersonaDisplayName = (persona: string) => {
     const names = {
-      lawyer: t('chat.legal'),
-      engineer: t('chat.technical'),
+      academic: t('chat.technical'), // Using existing technical label for academic
       marketer: t('chat.marketing'),
+      engineer: t('chat.technical'),
       coach: t('chat.coaching'),
+      sensei: t('chat.coaching'), // Using existing coaching label for relationships
+      richman: t('chat.marketing'), // Using existing marketing label for business
+      lawyer: t('chat.legal'),
       medical: t('chat.medical'),
       'god-mode': t('chat.philosophical')
     }
@@ -186,10 +198,13 @@ export function ChatModal({
     if (!selectedPersona) return t('chat.placeholderGeneral')
     
     const placeholders = {
-      lawyer: t('chat.placeholderPersona', { persona: t('personas.lawyer.name') }),
-      engineer: t('chat.placeholderPersona', { persona: t('personas.engineer.name') }),
+      academic: t('chat.placeholderPersona', { persona: t('personas.academic.name') }),
       marketer: t('chat.placeholderPersona', { persona: t('personas.marketer.name') }),
+      engineer: t('chat.placeholderPersona', { persona: t('personas.engineer.name') }),
       coach: t('chat.placeholderPersona', { persona: t('personas.coach.name') }),
+      sensei: t('chat.placeholderPersona', { persona: t('personas.sensei.name') }),
+      richman: t('chat.placeholderPersona', { persona: t('personas.richman.name') }),
+      lawyer: t('chat.placeholderPersona', { persona: t('personas.lawyer.name') }),
       medical: t('chat.placeholderPersona', { persona: t('personas.medical.name') }),
       'god-mode': t('chat.placeholderPersona', { persona: t('personas.godMode.name') })
     }

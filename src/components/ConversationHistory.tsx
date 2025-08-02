@@ -16,7 +16,10 @@ import {
   Robot,
   MagnifyingGlass,
   CaretLeft,
-  CaretRight
+  CaretRight,
+  GraduationCap,
+  CurrencyDollar,
+  Heart
 } from '@phosphor-icons/react'
 import type { Conversation, Persona } from '../App'
 import { useT } from '../contexts/TranslationContext'
@@ -44,13 +47,34 @@ export function ConversationHistory({
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editTitle, setEditTitle] = useState('')
   const [selectedFilter, setSelectedFilter] = useState<Persona | 'all'>('all')
+  const [searchQuery, setSearchQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const ITEMS_PER_PAGE = 20
 
-  // Filter conversations based on selected persona
+  // Search function that looks through conversation titles and message content
+  const searchConversations = (conversations: Conversation[], query: string): Conversation[] => {
+    if (!query.trim()) return conversations
+    
+    const lowercaseQuery = query.toLowerCase().trim()
+    
+    return conversations.filter(conversation => {
+      // Search in title
+      if (conversation.title.toLowerCase().includes(lowercaseQuery)) {
+        return true
+      }
+      
+      // Search in message content
+      return conversation.messages.some(message => 
+        message.content.toLowerCase().includes(lowercaseQuery)
+      )
+    })
+  }
+
+  // Apply search and filter
+  const searchedConversations = searchConversations(conversations, searchQuery)
   const filteredConversations = selectedFilter === 'all' 
-    ? conversations 
-    : conversations.filter(conv => conv.persona === selectedFilter)
+    ? searchedConversations 
+    : searchedConversations.filter(conv => conv.persona === selectedFilter)
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredConversations.length / ITEMS_PER_PAGE)
@@ -58,18 +82,26 @@ export function ConversationHistory({
   const endIndex = startIndex + ITEMS_PER_PAGE
   const paginatedConversations = filteredConversations.slice(startIndex, endIndex)
 
-  // Reset to page 1 when filter changes
+  // Reset to page 1 when filter or search changes
   const handleFilterChange = (filter: Persona | 'all') => {
     setSelectedFilter(filter)
     setCurrentPage(1)
   }
 
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query)
+    setCurrentPage(1)
+  }
+
   const getPersonaIcon = (persona: string) => {
     const iconMap = {
-      lawyer: Scales,
-      engineer: Wrench,
+      academic: GraduationCap,
       marketer: TrendUp,
+      engineer: Wrench,
       coach: ChatCircle,
+      sensei: Heart,
+      richman: CurrencyDollar,
+      lawyer: Scales,
       medical: FirstAidKit,
       'god-mode': Lightning,
       general: Robot
@@ -79,10 +111,13 @@ export function ConversationHistory({
 
   const getPersonaDisplayName = (persona: string) => {
     const names = {
-      lawyer: t('history.filters.lawyer'),
-      engineer: t('history.filters.engineer'),
+      academic: t('history.filters.academic'),
       marketer: t('history.filters.marketer'),
+      engineer: t('history.filters.engineer'),
       coach: t('history.filters.coach'),
+      sensei: t('history.filters.sensei'),
+      richman: t('history.filters.richman'),
+      lawyer: t('history.filters.lawyer'),
       medical: t('history.filters.medical'),
       'god-mode': t('history.filters.godMode'),
       general: t('history.filters.general')
@@ -194,6 +229,19 @@ export function ConversationHistory({
         <p className="text-muted-foreground">{t('history.title')}</p>
       </div>
 
+      {/* Search Bar */}
+      <div className="mb-6">
+        <div className="relative">
+          <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+          <Input
+            placeholder={t('history.searchPlaceholder')}
+            value={searchQuery}
+            onChange={(e) => handleSearchChange(e.target.value)}
+            className="pl-10 h-10"
+          />
+        </div>
+      </div>
+
       {/* Persona Filters */}
       <div className="mb-6">
         <div className="flex flex-wrap gap-2">
@@ -259,7 +307,7 @@ export function ConversationHistory({
                         const IconComponent = getPersonaIcon(conversation.persona)
                         return <IconComponent className="w-3 h-3 mr-1" />
                       })()}
-                      {conversation.persona === 'general' ? 'General' : conversation.persona.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      {getPersonaDisplayName(conversation.persona)}
                     </Badge>
                     <span className="text-xs text-muted-foreground">
                       {formatDate(conversation.lastUpdated)}

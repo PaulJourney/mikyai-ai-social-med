@@ -9,7 +9,10 @@ import {
   ChatCircle, 
   FirstAidKit, 
   Lightning,
-  Info
+  Info,
+  GraduationCap,
+  CurrencyDollar,
+  Heart
 } from '@phosphor-icons/react'
 import type { Persona } from '../App'
 import { useT } from '../contexts/TranslationContext'
@@ -36,20 +39,12 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
     detailedDescription: string
   }> = [
     {
-      id: 'lawyer',
-      name: t('personas.lawyer.name'),
-      icon: Scales,
-      description: t('personas.lawyer.description'),
+      id: 'academic',
+      name: t('personas.academic.name'),
+      icon: GraduationCap,
+      description: t('personas.academic.description'),
       requiresPaid: false,
-      detailedDescription: t('personas.lawyer.fullDescription')
-    },
-    {
-      id: 'engineer',
-      name: t('personas.engineer.name'), 
-      icon: Wrench,
-      description: t('personas.engineer.description'),
-      requiresPaid: false,
-      detailedDescription: t('personas.engineer.fullDescription')
+      detailedDescription: t('personas.academic.fullDescription')
     },
     {
       id: 'marketer',
@@ -60,12 +55,44 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
       detailedDescription: t('personas.marketer.fullDescription')
     },
     {
+      id: 'engineer',
+      name: t('personas.engineer.name'), 
+      icon: Wrench,
+      description: t('personas.engineer.description'),
+      requiresPaid: false,
+      detailedDescription: t('personas.engineer.fullDescription')
+    },
+    {
       id: 'coach',
       name: t('personas.coach.name'),
       icon: ChatCircle,
       description: t('personas.coach.description'),
       requiresPaid: false,
       detailedDescription: t('personas.coach.fullDescription')
+    },
+    {
+      id: 'sensei',
+      name: t('personas.sensei.name'),
+      icon: Heart,
+      description: t('personas.sensei.description'),
+      requiresPaid: false,
+      detailedDescription: t('personas.sensei.fullDescription')
+    },
+    {
+      id: 'richman',
+      name: t('personas.richman.name'),
+      icon: CurrencyDollar,
+      description: t('personas.richman.description'),
+      requiresPaid: false,
+      detailedDescription: t('personas.richman.fullDescription')
+    },
+    {
+      id: 'lawyer',
+      name: t('personas.lawyer.name'),
+      icon: Scales,
+      description: t('personas.lawyer.description'),
+      requiresPaid: true,
+      detailedDescription: t('personas.lawyer.fullDescription')
     },
     {
       id: 'medical',
@@ -120,7 +147,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
       </div>
       
       <div className="space-y-4">
-        {/* Desktop: 2 rows of 3 columns, Mobile: stacked */}
+        {/* Desktop: 3 rows with 3 columns each, Mobile: stacked */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
           {personas.map((persona) => {
           const isSelected = selectedPersona === persona.id
