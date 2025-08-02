@@ -396,9 +396,9 @@ function App() {
             </div>
           )}
 
-          {currentView === 'history' && user && (
+          {currentView === 'history' && (
             <ConversationHistory 
-              conversations={conversations}
+              conversations={user ? conversations : []}
               onSelectConversation={(conv) => {
                 setCurrentConversation(conv)
                 setSelectedPersona(conv.persona === 'general' ? null : conv.persona)
@@ -420,14 +420,17 @@ function App() {
                   prev.map(c => c.id === id ? { ...c, title: newTitle } : c)
                 )
               }}
+              isAuthenticated={!!user}
+              onAuthRequest={handleAuthRequest}
             />
           )}
 
-          {currentView === 'pricing' && user && (
+          {currentView === 'pricing' && (
             <Pricing 
               user={user}
               onPlanSelect={handlePlanSelect}
               onCreditPurchase={handleCreditPurchase}
+              onAuthRequest={handleAuthRequest}
             />
           )}
         </main>

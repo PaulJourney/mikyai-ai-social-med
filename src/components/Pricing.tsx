@@ -9,12 +9,13 @@ import { toast } from 'sonner'
 import { useState } from 'react'
 
 interface PricingProps {
-  user: User
+  user: User | null
   onPlanSelect: (plan: 'free' | 'plus' | 'business') => void
   onCreditPurchase: (credits: number) => void
+  onAuthRequest: (mode: 'signin' | 'signup') => void
 }
 
-export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) {
+export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }: PricingProps) {
   const [showDowngradeDialog, setShowDowngradeDialog] = useState(false)
   const [showBuyCreditsDialog, setShowBuyCreditsDialog] = useState(false)
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false)
@@ -82,6 +83,11 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
   }
 
   const handleSelectPlan = (planId: 'free' | 'plus' | 'business') => {
+    if (!user) {
+      onAuthRequest('signup')
+      return
+    }
+    
     if (planId === user.plan) {
       toast.info('You are already on this plan')
       return
@@ -146,10 +152,11 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
         {plans.map((plan) => {
           const Icon = plan.icon
-          const isCurrentPlan = user.plan === plan.id
+          const isCurrentPlan = user?.plan === plan.id
           
           // Determine button text based on current plan and target plan
           const getButtonText = () => {
+            if (!user) return 'Subscribe'
             if (isCurrentPlan) return 'Current Plan'
             
             // Check for upgrades
@@ -174,8 +181,16 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
           
           // Determine if this is a downgrade action
           const isDowngrade = () => {
-            return (plan.id === 'free' && user.plan !== 'free') || 
-                   (plan.id === 'plus' && user.plan === 'business')
+            return user && ((plan.id === 'free' && user.plan !== 'free') || 
+                   (plan.id === 'plus' && user.plan === 'business'))
+          }
+
+          const handlePlanClick = () => {
+            if (!user) {
+              onAuthRequest('signup')
+              return
+            }
+            handleSelectPlan(plan.id)
           }
           
           return (
@@ -238,7 +253,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
                           ? 'default' 
                           : 'outline'
                   }
-                  onClick={() => handleSelectPlan(plan.id)}
+                  onClick={handlePlanClick}
                   disabled={isCurrentPlan}
                 >
                   {getButtonText()}
@@ -261,7 +276,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase }: PricingProps) 
                 Buy additional credits anytime — they never expire.
               </p>
               <Button 
-                onClick={() => setShowBuyCreditsDialog(true)}
+                onClick={() => user ? setShowBuyCreditsDialog(true) : onAuthRequest('signup')}
                 className="bg-primary hover:bg-primary/90"
               >
                 <CreditCard className="w-4 h-4 mr-2" />

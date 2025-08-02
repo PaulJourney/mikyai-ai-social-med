@@ -26,6 +26,8 @@ interface ConversationHistoryProps {
   onDeleteConversation: (id: string) => void
   onRenameConversation: (id: string, newTitle: string) => void
   onContinueConversation?: (conversation: Conversation) => void
+  isAuthenticated: boolean
+  onAuthRequest: (mode: 'signin' | 'signup') => void
 }
 
 export function ConversationHistory({ 
@@ -33,7 +35,9 @@ export function ConversationHistory({
   onSelectConversation, 
   onDeleteConversation, 
   onRenameConversation,
-  onContinueConversation
+  onContinueConversation,
+  isAuthenticated,
+  onAuthRequest
 }: ConversationHistoryProps) {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editTitle, setEditTitle] = useState('')
@@ -140,6 +144,29 @@ export function ConversationHistory({
   const cancelRename = () => {
     setEditingId(null)
     setEditTitle('')
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="text-center py-12">
+        <ChatCircle className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+        <h2 className="text-xl font-medium text-foreground mb-2">Sign in to view your conversations</h2>
+        <p className="text-muted-foreground mb-6">Sign or Log in to see all your conversations with Miky</p>
+        <div className="flex gap-3 justify-center">
+          <Button 
+            onClick={() => onAuthRequest('signin')}
+            variant="outline"
+          >
+            Sign In
+          </Button>
+          <Button 
+            onClick={() => onAuthRequest('signup')}
+          >
+            Sign Up
+          </Button>
+        </div>
+      </div>
+    )
   }
 
   if (conversations.length === 0) {
