@@ -9,6 +9,10 @@ export interface Translations {
     refer: string
     credits: string
     language: string
+    conversations: string
+    pricing: string
+    upgradePlan: string
+    getMoreCredits: string
   }
   
   // Homepage
@@ -174,6 +178,19 @@ export interface Translations {
     shareOptions: string
     linkCopied: string
     messageCopied: string
+    shareMessage: string
+    inviteMessage: string
+    cashOutSuccess: string
+    referralCode: string
+    bonusCredits: string
+    verifyReferral: string
+    referralVerified: string
+    cashOutTitle: string
+    availableToCashOut: string
+    paypalEmail: string
+    paypalEmailPlaceholder: string
+    paypalEmailNote: string
+    cashOutProcessingNote: string
   }
   
   // Contact
@@ -195,6 +212,23 @@ export interface Translations {
     cookies: string
     contact: string
     admin: string
+  }
+  
+  // Legal
+  legal: {
+    terms: {
+      title: string
+      lastUpdate: string
+    }
+    privacy: {
+      title: string
+      lastUpdate: string
+    }
+    cookies: {
+      title: string
+      lastUpdate: string
+    }
+    backButton: string
   }
   
   // Tutorial
@@ -221,7 +255,11 @@ const translations: Record<Language, Translations> = {
     header: {
       refer: 'Refer',
       credits: 'Credits',
-      language: 'Language'
+      language: 'Language',
+      conversations: 'Conversations',
+      pricing: 'Pricing',
+      upgradePlan: 'Upgrade Plan',
+      getMoreCredits: 'Get More Credits'
     },
     homepage: {
       title: 'Ask to Miky',
@@ -272,7 +310,7 @@ const translations: Record<Language, Translations> = {
       askAnything: 'Ask anything - or choose an ultra-skilled version of Miky...'
     },
     history: {
-      title: 'Conversation History',
+      title: 'Conversations',
       signInPrompt: 'Sign in or Log in to see all your conversations with Miky.',
       signIn: 'Sign in',
       continue: 'Continue',
@@ -370,7 +408,20 @@ const translations: Record<Language, Translations> = {
       pending: 'Pending Earnings',
       shareOptions: 'Share',
       linkCopied: 'Link copied!',
-      messageCopied: 'Message copied!'
+      messageCopied: 'Message copied!',
+      shareMessage: '🚀 Join me on Miky.ai - Ultra-skilled AI personas for any challenge! Use my code {{code}} to get 300 free credits when you upgrade to Plus. Start here: {{link}}',
+      inviteMessage: '{{name}} invited you to Miky.ai! Get 300 free credits when you upgrade to Plus.',
+      cashOutSuccess: 'Request Received Successfully!',
+      referralCode: 'Referral Code',
+      bonusCredits: 'Bonus Credits',
+      verifyReferral: 'Verify',
+      referralVerified: 'Congratulations, {{name}} gifted you 300 credits!',
+      cashOutTitle: 'Cash Out Earnings',
+      availableToCashOut: 'Available to cash out',
+      paypalEmail: 'PayPal Email Address',
+      paypalEmailPlaceholder: 'your-email@example.com',
+      paypalEmailNote: 'Make sure this email is associated with your PayPal account',
+      cashOutProcessingNote: 'We have received your cashout request and it will be processed as soon as possible.'
     },
     contact: {
       title: 'Contact Us',
@@ -388,6 +439,21 @@ const translations: Record<Language, Translations> = {
       cookies: 'Cookie Policy',
       contact: 'Contact',
       admin: 'Admin Access'
+    },
+    legal: {
+      terms: {
+        title: 'Terms and Conditions',
+        lastUpdate: 'Last updated: August 2, 2025'
+      },
+      privacy: {
+        title: 'Privacy Policy',
+        lastUpdate: 'Last updated: August 2, 2025'
+      },
+      cookies: {
+        title: 'Cookie Policy',
+        lastUpdate: 'Last updated: August 2, 2025'
+      },
+      backButton: 'Back to Chat'
     },
     tutorial: {
       welcome: 'Welcome to Miky.ai!',
@@ -410,7 +476,11 @@ const translations: Record<Language, Translations> = {
     header: {
       refer: 'Invita',
       credits: 'Crediti',
-      language: 'Lingua'
+      language: 'Lingua',
+      conversations: 'Conversazioni',
+      pricing: 'Prezzi',
+      upgradePlan: 'Aggiorna Piano',
+      getMoreCredits: 'Ottieni Più Crediti'
     },
     homepage: {
       title: 'Chiedi a Miky',
@@ -461,7 +531,7 @@ const translations: Record<Language, Translations> = {
       askAnything: 'Chiedi qualsiasi cosa - o scegli una versione ultra-qualificata di Miky...'
     },
     history: {
-      title: 'Cronologia Conversazioni',
+      title: 'Conversazioni',
       signInPrompt: 'Accedi o Registrati per vedere tutte le tue conversazioni con Miky.',
       signIn: 'Accedi',
       continue: 'Continua',
@@ -559,7 +629,20 @@ const translations: Record<Language, Translations> = {
       pending: 'Guadagni in Sospeso',
       shareOptions: 'Condividi',
       linkCopied: 'Link copiato!',
-      messageCopied: 'Messaggio copiato!'
+      messageCopied: 'Messaggio copiato!',
+      shareMessage: '🚀 Unisciti a me su Miky.ai - Personalità AI ultra-qualificate per ogni sfida! Usa il mio codice {{code}} per ottenere 300 crediti gratuiti quando fai upgrade a Plus. Inizia qui: {{link}}',
+      inviteMessage: '{{name}} ti ha invitato su Miky.ai! Ottieni 300 crediti gratuiti quando fai upgrade a Plus.',
+      cashOutSuccess: 'Richiesta Ricevuta con Successo!',
+      referralCode: 'Codice Referral',
+      bonusCredits: 'Crediti Bonus',
+      verifyReferral: 'Verifica',
+      referralVerified: 'Complimenti, {{name}} ti ha regalato 300 crediti!',
+      cashOutTitle: 'Incassa Guadagni',
+      availableToCashOut: 'Disponibile per incasso',
+      paypalEmail: 'Email PayPal',
+      paypalEmailPlaceholder: 'tua-email@esempio.com',
+      paypalEmailNote: 'Assicurati che questa email sia associata al tuo account PayPal',
+      cashOutProcessingNote: 'Abbiamo ricevuto la tua richiesta di incasso e sarà elaborata al più presto.'
     },
     contact: {
       title: 'Contattaci',
@@ -577,6 +660,21 @@ const translations: Record<Language, Translations> = {
       cookies: 'Cookie Policy',
       contact: 'Contatti',
       admin: 'Accesso Admin'
+    },
+    legal: {
+      terms: {
+        title: 'Termini e Condizioni',
+        lastUpdate: 'Ultimo aggiornamento: 2 agosto 2025'
+      },
+      privacy: {
+        title: 'Privacy Policy',
+        lastUpdate: 'Ultimo aggiornamento: 2 agosto 2025'
+      },
+      cookies: {
+        title: 'Cookie Policy',
+        lastUpdate: 'Ultimo aggiornamento: 2 agosto 2025'
+      },
+      backButton: 'Torna alla Chat'
     },
     tutorial: {
       welcome: 'Benvenuto in Miky.ai!',
@@ -598,7 +696,11 @@ const translations: Record<Language, Translations> = {
     header: {
       refer: 'Referir',
       credits: 'Créditos',
-      language: 'Idioma'
+      language: 'Idioma',
+      conversations: 'Conversaciones',
+      pricing: 'Precios',
+      upgradePlan: 'Actualizar Plan',
+      getMoreCredits: 'Obtener Más Créditos'
     },
     homepage: {
       title: 'Pregunta a Miky',
@@ -649,7 +751,7 @@ const translations: Record<Language, Translations> = {
       askAnything: 'Pregunta cualquier cosa - o elige una versión ultra-capacitada de Miky...'
     },
     history: {
-      title: 'Historial de Conversaciones',
+      title: 'Conversaciones',
       signInPrompt: 'Inicia sesión o Regístrate para ver todas tus conversaciones con Miky.',
       signIn: 'Iniciar sesión',
       continue: 'Continuar',
@@ -747,7 +849,20 @@ const translations: Record<Language, Translations> = {
       pending: 'Ganancias Pendientes',
       shareOptions: 'Compartir',
       linkCopied: '¡Enlace copiado!',
-      messageCopied: '¡Mensaje copiado!'
+      messageCopied: '¡Mensaje copiado!',
+      shareMessage: '🚀 Únete a mí en Miky.ai - ¡Personalidades AI ultra-capacitadas para cualquier desafío! Usa mi código {{code}} para obtener 300 créditos gratis cuando actualices a Plus. Comienza aquí: {{link}}',
+      inviteMessage: '¡{{name}} te invitó a Miky.ai! Obtén 300 créditos gratis cuando actualices a Plus.',
+      cashOutSuccess: '¡Solicitud Recibida Exitosamente!',
+      referralCode: 'Código de Referido',
+      bonusCredits: 'Créditos Bonus',
+      verifyReferral: 'Verificar',
+      referralVerified: '¡Felicidades, {{name}} te regaló 300 créditos!',
+      cashOutTitle: 'Cobrar Ganancias',
+      availableToCashOut: 'Disponible para cobrar',
+      paypalEmail: 'Email de PayPal',
+      paypalEmailPlaceholder: 'tu-email@ejemplo.com',
+      paypalEmailNote: 'Asegúrate de que este email esté asociado con tu cuenta PayPal',
+      cashOutProcessingNote: 'Hemos recibido tu solicitud de cobro y será procesada lo antes posible.'
     },
     contact: {
       title: 'Contáctanos',
@@ -765,6 +880,21 @@ const translations: Record<Language, Translations> = {
       cookies: 'Política de Cookies',
       contact: 'Contacto',
       admin: 'Acceso Admin'
+    },
+    legal: {
+      terms: {
+        title: 'Términos y Condiciones',
+        lastUpdate: 'Última actualización: 2 de agosto de 2025'
+      },
+      privacy: {
+        title: 'Política de Privacidad',
+        lastUpdate: 'Última actualización: 2 de agosto de 2025'
+      },
+      cookies: {
+        title: 'Política de Cookies',
+        lastUpdate: 'Última actualización: 2 de agosto de 2025'
+      },
+      backButton: 'Volver al Chat'
     },
     tutorial: {
       welcome: '¡Bienvenido a Miky.ai!',
@@ -786,7 +916,11 @@ const translations: Record<Language, Translations> = {
     header: {
       refer: 'Empfehlen',
       credits: 'Credits',
-      language: 'Sprache'
+      language: 'Sprache',
+      conversations: 'Gespräche',
+      pricing: 'Preise',
+      upgradePlan: 'Plan Upgraden',
+      getMoreCredits: 'Mehr Credits Erhalten'
     },
     homepage: {
       title: 'Frag Miky',
@@ -837,7 +971,7 @@ const translations: Record<Language, Translations> = {
       askAnything: 'Frag alles - oder wähle eine ultra-qualifizierte Version von Miky...'
     },
     history: {
-      title: 'Gesprächsverlauf',
+      title: 'Gespräche',
       signInPrompt: 'Melde dich an oder Registriere dich, um alle deine Gespräche mit Miky zu sehen.',
       signIn: 'Anmelden',
       continue: 'Fortfahren',
@@ -935,7 +1069,20 @@ const translations: Record<Language, Translations> = {
       pending: 'Ausstehende Einnahmen',
       shareOptions: 'Teilen',
       linkCopied: 'Link kopiert!',
-      messageCopied: 'Nachricht kopiert!'
+      messageCopied: 'Nachricht kopiert!',
+      shareMessage: '🚀 Komm zu mir auf Miky.ai - Ultra-qualifizierte AI-Personas für jede Herausforderung! Nutze meinen Code {{code}} um 300 gratis Credits zu erhalten wenn du zu Plus upgradest. Starte hier: {{link}}',
+      inviteMessage: '{{name}} hat dich zu Miky.ai eingeladen! Erhalte 300 gratis Credits wenn du zu Plus upgradest.',
+      cashOutSuccess: 'Anfrage Erfolgreich Erhalten!',
+      referralCode: 'Empfehlungscode',
+      bonusCredits: 'Bonus Credits',
+      verifyReferral: 'Verifizieren',
+      referralVerified: 'Glückwunsch, {{name}} hat dir 300 Credits geschenkt!',
+      cashOutTitle: 'Einnahmen Auszahlen',
+      availableToCashOut: 'Zur Auszahlung verfügbar',
+      paypalEmail: 'PayPal E-Mail-Adresse',
+      paypalEmailPlaceholder: 'deine-email@beispiel.com',
+      paypalEmailNote: 'Stelle sicher, dass diese E-Mail mit deinem PayPal-Konto verknüpft ist',
+      cashOutProcessingNote: 'Wir haben deine Auszahlungsanfrage erhalten und werden sie so schnell wie möglich bearbeiten.'
     },
     contact: {
       title: 'Kontaktiere Uns',
@@ -953,6 +1100,21 @@ const translations: Record<Language, Translations> = {
       cookies: 'Cookie-Richtlinie',
       contact: 'Kontakt',
       admin: 'Admin-Zugang'
+    },
+    legal: {
+      terms: {
+        title: 'Allgemeine Geschäftsbedingungen',
+        lastUpdate: 'Zuletzt aktualisiert: 2. August 2025'
+      },
+      privacy: {
+        title: 'Datenschutz-Bestimmungen',
+        lastUpdate: 'Zuletzt aktualisiert: 2. August 2025'
+      },
+      cookies: {
+        title: 'Cookie-Richtlinie',
+        lastUpdate: 'Zuletzt aktualisiert: 2. August 2025'
+      },
+      backButton: 'Zurück zum Chat'
     },
     tutorial: {
       welcome: 'Willkommen bei Miky.ai!',

@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { CheckCircle } from '@phosphor-icons/react'
+import { useT } from '../contexts/TranslationContext'
 
 interface CashoutModalProps {
   isOpen: boolean
@@ -13,6 +14,7 @@ interface CashoutModalProps {
 }
 
 export function CashoutModal({ isOpen, onClose, availableCash, onCashoutSuccess }: CashoutModalProps) {
+  const { t } = useT()
   const [paypalEmail, setPaypalEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
@@ -47,13 +49,13 @@ export function CashoutModal({ isOpen, onClose, availableCash, onCashoutSuccess 
           <div className="flex flex-col items-center text-center space-y-4 py-6">
             <CheckCircle className="w-16 h-16 text-primary" />
             <div>
-              <h3 className="text-lg font-semibold mb-2">Request Received Successfully!</h3>
+              <h3 className="text-lg font-semibold mb-2">{t('referral.cashOutSuccess')}</h3>
               <p className="text-sm text-muted-foreground">
-                We have received your cashout request and it will be processed as soon as possible.
+                {t('referral.cashOutProcessingNote')}
               </p>
             </div>
             <Button onClick={handleClose} className="w-full mt-4">
-              Close
+              {t('modals.close')}
             </Button>
           </div>
         </DialogContent>
@@ -65,29 +67,29 @@ export function CashoutModal({ isOpen, onClose, availableCash, onCashoutSuccess 
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Cash Out Earnings</DialogTitle>
+          <DialogTitle>{t('referral.cashOutTitle')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4">
           <div className="p-4 bg-muted rounded-lg">
-            <div className="text-sm text-muted-foreground">Available to cash out</div>
+            <div className="text-sm text-muted-foreground">{t('referral.availableToCashOut')}</div>
             <div className="text-2xl font-bold text-primary">${availableCash.toFixed(2)}</div>
-            <div className="text-xs text-muted-foreground mt-1">Minimum: $10.00</div>
+            <div className="text-xs text-muted-foreground mt-1">{t('referral.minimum')}</div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="paypal-email">PayPal Email Address</Label>
+              <Label htmlFor="paypal-email">{t('referral.paypalEmail')}</Label>
               <Input
                 id="paypal-email"
                 type="email"
-                placeholder="your-email@example.com"
+                placeholder={t('referral.paypalEmailPlaceholder')}
                 value={paypalEmail}
                 onChange={(e) => setPaypalEmail(e.target.value)}
                 required
               />
               <p className="text-xs text-muted-foreground">
-                Make sure this email is associated with your PayPal account
+                {t('referral.paypalEmailNote')}
               </p>
             </div>
 
@@ -98,14 +100,14 @@ export function CashoutModal({ isOpen, onClose, availableCash, onCashoutSuccess 
                 onClick={onClose}
                 className="flex-1"
               >
-                Cancel
+                {t('modals.cancel')}
               </Button>
               <Button
                 type="submit"
                 disabled={isLoading || availableCash < 10}
                 className="flex-1"
               >
-                {isLoading ? 'Processing...' : 'Cash Out'}
+                {isLoading ? t('modals.processing') : t('referral.cashOut')}
               </Button>
             </div>
           </form>

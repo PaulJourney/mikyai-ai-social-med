@@ -52,7 +52,11 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
   }
 
   const createReferralMessage = (userName: string, referralCode: string) => {
-    return `${userName} ti ha invitato a provare Miky.ai! 🤖\n\nScopri le nostre AI Personas ultra-specializzate per lavoro, studio e crescita personale.\n\n✨ Usa il codice ${referralCode} e ottieni 300 crediti gratis!\n\n👉 https://miky.ai`
+    return t('referral.shareMessage', { 
+      name: userName, 
+      code: referralCode, 
+      link: 'https://miky.ai' 
+    })
   }
 
   const handleWhatsAppShare = () => {
@@ -103,7 +107,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
               className="text-xs"
             >
               <ClockCounterClockwise className="w-4 h-4 mr-1" />
-              {t('history.title')}
+              {t('header.conversations')}
             </Button>
             <Button
               variant={currentView === 'pricing' ? 'default' : 'ghost'}
@@ -112,7 +116,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
               className="text-xs"
             >
               <CreditCard className="w-4 h-4 mr-1" />
-              {t('pricing.title')}
+              {t('header.pricing')}
             </Button>
           </div>
 
@@ -202,7 +206,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                           disabled={(user.cashEarned || 0) < 10}
                           onClick={() => setShowCashoutModal(true)}
                         >
-                          Cash Out (Min $10)
+                          {t('referral.cashOut')} ({t('referral.minimum')})
                         </Button>
 
                         <div className="text-xs text-muted-foreground pt-2 border-t">
@@ -263,7 +267,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                             onClick={() => onViewChange('pricing')}
                           >
                             <span className="group-hover:text-primary transition-colors duration-200">
-                              {t('modals.upgradePlan')}
+                              {t('header.upgradePlan')}
                             </span>
                           </Button>
                         ) : (
@@ -274,7 +278,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                             onClick={() => onViewChange('pricing')}
                           >
                             <span className="group-hover:text-primary transition-colors duration-200">
-                              Get More Credits
+                              {t('header.getMoreCredits')}
                             </span>
                           </Button>
                         )}

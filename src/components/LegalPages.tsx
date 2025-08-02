@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { ArrowLeft } from '@phosphor-icons/react'
+import { useT } from '../contexts/TranslationContext'
 
 interface LegalPagesProps {
   currentPage: 'terms' | 'privacy' | 'cookies'
@@ -8,9 +9,11 @@ interface LegalPagesProps {
 }
 
 export function LegalPages({ currentPage, onBack }: LegalPagesProps) {
+  const { t } = useT()
+  
   const renderTermsAndConditions = () => (
     <div className="space-y-4 text-xs leading-relaxed">
-      <h1 className="text-2xl font-bold text-foreground mb-6">Terms and Conditions</h1>
+      <h1 className="text-2xl font-bold text-foreground mb-6">{t('legal.terms.title')}</h1>
       
       <section className="space-y-3">
         <h2 className="text-base font-semibold text-foreground">1. Acceptance of Terms</h2>
@@ -181,14 +184,14 @@ export function LegalPages({ currentPage, onBack }: LegalPagesProps) {
       </section>
 
       <p className="text-xs text-muted-foreground mt-8 pt-4 border-t border-border">
-        Last updated: August 2, 2025
+        {t('legal.terms.lastUpdate')}
       </p>
     </div>
   )
 
   const renderPrivacyPolicy = () => (
     <div className="space-y-4 text-xs leading-relaxed">
-      <h1 className="text-2xl font-bold text-foreground mb-6">Privacy Policy</h1>
+      <h1 className="text-2xl font-bold text-foreground mb-6">{t('legal.privacy.title')}</h1>
       
       <section className="space-y-3">
         <h2 className="text-base font-semibold text-foreground">1. Introduction</h2>
@@ -332,14 +335,14 @@ export function LegalPages({ currentPage, onBack }: LegalPagesProps) {
       </section>
 
       <p className="text-xs text-muted-foreground mt-8 pt-4 border-t border-border">
-        Last updated: August 2, 2025
+        {t('legal.privacy.lastUpdate')}
       </p>
     </div>
   )
 
   const renderCookiePolicy = () => (
     <div className="space-y-4 text-xs leading-relaxed">
-      <h1 className="text-2xl font-bold text-foreground mb-6">Cookie Policy</h1>
+      <h1 className="text-2xl font-bold text-foreground mb-6">{t('legal.cookies.title')}</h1>
       
       <section className="space-y-3">
         <h2 className="text-base font-semibold text-foreground">1. What Are Cookies</h2>
@@ -485,7 +488,7 @@ export function LegalPages({ currentPage, onBack }: LegalPagesProps) {
       </section>
 
       <p className="text-xs text-muted-foreground mt-8 pt-4 border-t border-border">
-        Last updated: August 2, 2025
+        {t('legal.cookies.lastUpdate')}
       </p>
     </div>
   )
@@ -512,7 +515,7 @@ export function LegalPages({ currentPage, onBack }: LegalPagesProps) {
           className="mb-6 p-2"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to App
+          {t('legal.backButton')}
         </Button>
         
         <Card className="p-8">

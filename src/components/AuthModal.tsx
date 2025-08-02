@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Eye, EyeSlash, CheckCircle, Envelope, Lock, Check } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useT } from '../contexts/TranslationContext'
 
 interface AuthModalProps {
   isOpen: boolean
@@ -16,6 +17,7 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, referralCode }: AuthModalProps) {
+  const { t } = useT()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -193,7 +195,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
         setReferralVerified(true)
         const mockReferrerName = 'Marco'  // Mock referrer name
         setReferrerName(mockReferrerName)
-        toast.success(`Complimenti, ${mockReferrerName} ti ha regalato 300 crediti!`)
+        toast.success(t('referral.referralVerified', { name: mockReferrerName }))
       } else {
         toast.error('Invalid referral code')
       }
