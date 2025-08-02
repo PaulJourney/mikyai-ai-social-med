@@ -173,6 +173,11 @@
   .conversations-subtitle-mobile {
     display: none !important;
   }
+  
+  /* Mobile-specific pricing page text adjustments */
+  .pricing-buy-credits-text-mobile {
+    font-size: 0.75rem !important; /* Smaller font for "Buy additional credits anytime..." text */
+  }
 }
 
 @media (min-width: 769px) {

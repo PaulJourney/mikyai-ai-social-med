@@ -288,7 +288,7 @@ export function Pricing({ user, onPlanSelect, onCreditPurchase, onAuthRequest }:
                 <Coins className="w-8 h-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold">{t('pricing.needMoreCredits')}</h3>
-              <p className="text-muted-foreground mb-6">
+              <p className="text-muted-foreground mb-6 pricing-buy-credits-text-mobile">
                 {t('pricing.buyAdditional')}
               </p>
               <Button 
