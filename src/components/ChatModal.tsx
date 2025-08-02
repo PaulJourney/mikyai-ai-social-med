@@ -161,8 +161,8 @@ export function ChatModal({
       sensei: t('chat.chatWith', { persona: t('personas.sensei.name') }),
       richman: t('chat.chatWith', { persona: t('personas.richman.name') }),
       lawyer: t('chat.chatWith', { persona: t('personas.lawyer.name') }),
-      medical: t('chat.chatWith', { persona: t('personas.medical.name') }),
-      'god-mode': t('chat.chatWith', { persona: t('personas.godMode.name') })
+      medical: t('chat.chatWith', { persona: 'Doctor' }),
+      'god-mode': t('chat.chatWith', { persona: 'God' })
     }
     return names[persona] || 'Miky'
   }
@@ -205,8 +205,8 @@ export function ChatModal({
       sensei: t('chat.placeholderPersona', { persona: t('personas.sensei.name') }),
       richman: t('chat.placeholderPersona', { persona: t('personas.richman.name') }),
       lawyer: t('chat.placeholderPersona', { persona: t('personas.lawyer.name') }),
-      medical: t('chat.placeholderPersona', { persona: t('personas.medical.name') }),
-      'god-mode': t('chat.placeholderPersona', { persona: t('personas.godMode.name') })
+      medical: t('chat.placeholderPersona', { persona: 'Doctor' }),
+      'god-mode': t('chat.placeholderPersona', { persona: 'God' })
     }
     return placeholders[selectedPersona] || t('chat.placeholderGeneral')
   }

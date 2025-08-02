@@ -137,6 +137,10 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
   }
 
   const getPersonaTitle = (persona: typeof personas[0]) => {
+    // Special cases for specific persona titles
+    if (persona.id === 'academic') return 'Professor Miky'
+    if (persona.id === 'medical') return 'Doctor Miky'
+    if (persona.id === 'god-mode') return 'God Miky'
     return `${persona.name} Miky`
   }
 
