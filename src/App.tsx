@@ -13,6 +13,7 @@ import { LegalPages } from './components/LegalPages'
 import { AuthModal } from './components/AuthModal'
 import { WelcomeTutorial } from './components/WelcomeTutorial'
 import { ThemeProvider } from './components/ThemeProvider'
+import { TranslationProvider } from './contexts/TranslationContext'
 import { Toaster } from 'sonner'
 
 export type Persona = 'lawyer' | 'engineer' | 'marketer' | 'coach' | 'medical' | 'god-mode' | 'general'
@@ -48,6 +49,17 @@ export interface User {
 }
 
 function App() {
+  return (
+    <ThemeProvider>
+      <TranslationProvider>
+        <AppContent />
+      </TranslationProvider>
+    </ThemeProvider>
+  )
+}
+
+function AppContent() {
+  const { t } = useT()
   const [currentView, setCurrentView] = useState<'chat' | 'history' | 'admin' | 'pricing' | 'legal'>('chat')
   const [currentLegalPage, setCurrentLegalPage] = useState<'terms' | 'privacy' | 'cookies'>('terms')
   const [selectedPersona, setSelectedPersona] = useState<Persona | null>(null)
@@ -323,29 +335,26 @@ function App() {
 
   if (currentView === 'admin') {
     return (
-      <ThemeProvider>
-        <div className="min-h-screen bg-background text-foreground font-['Inter']">
-          <AdminDashboard onClose={() => setCurrentView('chat')} />
-          <Toaster />
-        </div>
-      </ThemeProvider>
+      <div className="min-h-screen bg-background text-foreground font-['Inter']">
+        <AdminDashboard onClose={() => setCurrentView('chat')} />
+        <Toaster />
+      </div>
     )
   }
 
   if (currentView === 'legal') {
     return (
-      <ThemeProvider>
+      <>
         <LegalPages 
           currentPage={currentLegalPage}
           onBack={() => setCurrentView('chat')}
         />
         <Toaster />
-      </ThemeProvider>
+      </>
     )
   }
 
   return (
-    <ThemeProvider>
       <div className="min-h-screen bg-background text-foreground font-['Inter'] flex flex-col">
         <Header 
           user={user} 
@@ -362,10 +371,16 @@ function App() {
               <div className="text-center space-y-6">
                 <div className="space-y-4">
                   <h1 className="text-4xl md:text-5xl font-bold text-foreground">
-                    Ask to <span className="text-primary">Miky</span>
+                    {t('homepage.title').split(' ').map((word, index) => 
+                      word === 'Miky' ? (
+                        <span key={index} className="text-primary">{word}</span>
+                      ) : (
+                        <span key={index}>{word} </span>
+                      )
+                    )}
                   </h1>
                   <p className="text-base text-muted-foreground font-normal">
-                    Ultra-skilled AI personas ready to act as your advisors in life, work, and achievement.
+                    {t('homepage.subtitle')}
                   </p>
                 </div>
                 
@@ -395,8 +410,8 @@ function App() {
                       onClick={() => handleAuthRequest('signup')}
                       className="text-primary hover:text-primary/80 transition-colors duration-200"
                     >
-                      Sign up
-                    </button> to start chatting with AI personas
+                      {t('auth.signUp')}
+                    </button> {t('homepage.signUpPrompt')}
                   </p>
                 )}
               </div>
@@ -481,7 +496,8 @@ function App() {
         
         <Toaster />
       </div>
-    </ThemeProvider>
+  )
+}
   )
 }
 

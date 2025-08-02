@@ -6,6 +6,8 @@ import { User, Globe, ShareNetwork, ClockCounterClockwise, CreditCard, SignOut, 
 import type { User as UserType } from '../App'
 import { toast } from 'sonner'
 import { CashoutModal } from './CashoutModal'
+import { useT } from '../contexts/TranslationContext'
+import { getAvailableLanguages } from '../lib/i18n'
 
 interface HeaderProps {
   user: UserType | null
@@ -18,6 +20,8 @@ interface HeaderProps {
 
 export function Header({ user, onViewChange, currentView, onSignOut, onAuthRequest, onUpdateUser }: HeaderProps) {
   const [showCashoutModal, setShowCashoutModal] = useState(false)
+  const { t, language, setLanguage } = useT()
+  const availableLanguages = getAvailableLanguages()
 
   const handleReferralClick = () => {
     if (!user) {
@@ -26,7 +30,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
     }
     const referralLink = `https://miky.ai/ref/${user.referralCode}`
     navigator.clipboard.writeText(referralLink)
-    toast.success('Referral link copied to clipboard!')
+    toast.success(t('referral.successful'))
   }
 
   const getCreditsBadgeColor = () => {
@@ -44,7 +48,12 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
   const handleReferralCopy = (code: string) => {
     const referralLink = `https://miky.ai/ref/${code}`
     navigator.clipboard.writeText(referralLink)
-    toast.success('Referral link copied!')
+    toast.success(t('referral.successful'))
+  }
+
+  const getCurrentLanguageDisplay = () => {
+    const current = availableLanguages.find(lang => lang.code === language)
+    return current ? `${current.flag} ${current.code.toUpperCase()}` : 'EN'
   }
 
   return (
@@ -74,7 +83,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
               className="text-xs"
             >
               <ClockCounterClockwise className="w-4 h-4 mr-1" />
-              History
+              {t('history.title')}
             </Button>
             <Button
               variant={currentView === 'pricing' ? 'default' : 'ghost'}
@@ -83,7 +92,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
               className="text-xs"
             >
               <CreditCard className="w-4 h-4 mr-1" />
-              Pricing
+              {t('pricing.title')}
             </Button>
           </div>
 
@@ -92,7 +101,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
               <>
                 {/* Credits Badge */}
                 <Badge variant={getCreditsBadgeColor()} className="text-xs font-medium">
-                  {user.credits} credits
+                  {user.credits} {t('header.credits').toLowerCase()}
                 </Badge>
 
                 {/* Referral Button */}
@@ -104,15 +113,15 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                       className="text-xs hover:glow-effect group"
                     >
                       <ShareNetwork className="w-4 h-4 mr-1 group-hover:text-primary transition-colors duration-200" />
-                      <span className="group-hover:text-primary transition-colors duration-200">Refer</span>
+                      <span className="group-hover:text-primary transition-colors duration-200">{t('header.refer')}</span>
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-80 p-4">
                     <div className="space-y-4">
                       <div>
-                        <h3 className="font-medium text-sm mb-2">Referral Program</h3>
+                        <h3 className="font-medium text-sm mb-2">{t('referral.title')}</h3>
                         <p className="text-xs text-muted-foreground">
-                          When someone signs up for a Plus plan using your referral code, they get 300 free credits and you earn $2!
+                          {t('referral.howItWorks')}
                         </p>
                       </div>
                       
@@ -133,11 +142,11 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
 
                         <div className="grid grid-cols-2 gap-3 text-xs">
                           <div className="p-2 bg-muted rounded">
-                            <div className="text-muted-foreground">Total Earned</div>
+                            <div className="text-muted-foreground">{t('referral.earnings')}</div>
                             <div className="font-medium">${((user.cashEarned || 0) + (user.referralsCount * 2)).toFixed(2)}</div>
                           </div>
                           <div className="p-2 bg-muted rounded">
-                            <div className="text-muted-foreground">Available</div>
+                            <div className="text-muted-foreground">{t('referral.pending')}</div>
                             <div className="font-medium text-primary">${(user.cashEarned || 0).toFixed(2)}</div>
                           </div>
                         </div>
@@ -149,11 +158,11 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                           onClick={() => setShowCashoutModal(true)}
                         >
                           <DollarSign className="w-4 h-4 mr-1" />
-                          Cash Out {(user.cashEarned || 0) < 10 ? '(Min $10)' : ''}
+                          {t('referral.cashOut')} {(user.cashEarned || 0) < 10 ? `(${t('referral.minimum')})` : ''}
                         </Button>
 
                         <div className="text-xs text-muted-foreground pt-2 border-t">
-                          <div>Successful referrals: {user.referralsCount}</div>
+                          <div>{t('referral.successful')}: {user.referralsCount}</div>
                         </div>
                       </div>
                     </div>
@@ -165,35 +174,22 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                   <PopoverTrigger asChild>
                     <Button variant="ghost" size="sm" className="text-xs">
                       <Globe className="w-4 h-4 mr-1" />
-                      EN
+                      {getCurrentLanguageDisplay()}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-36 p-2">
+                  <PopoverContent className="w-40 p-2">
                     <div className="space-y-1">
-                      <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
-                        English
-                      </Button>
-                      <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
-                        Italiano
-                      </Button>
-                      <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
-                        Español
-                      </Button>
-                      <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
-                        Français
-                      </Button>
-                      <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
-                        Deutsch
-                      </Button>
-                      <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
-                        日本語
-                      </Button>
-                      <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
-                        한국어
-                      </Button>
-                      <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
-                        Português
-                      </Button>
+                      {availableLanguages.map((lang) => (
+                        <Button 
+                          key={lang.code}
+                          variant={language === lang.code ? "default" : "ghost"} 
+                          size="sm" 
+                          className="w-full justify-start text-xs"
+                          onClick={() => setLanguage(lang.code as any)}
+                        >
+                          {lang.flag} {lang.name}
+                        </Button>
+                      ))}
                     </div>
                   </PopoverContent>
                 </Popover>
@@ -210,7 +206,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                       <div className="text-sm font-medium">Account</div>
                       <div className="space-y-2 text-xs text-muted-foreground">
                         <div>Plan: <span className="text-foreground font-medium capitalize">{user.plan}</span></div>
-                        <div>Credits: <span className="text-foreground font-medium">{user.credits}</span></div>
+                        <div>{t('header.credits')}: <span className="text-foreground font-medium">{user.credits}</span></div>
                         <div>Referrals: <span className="text-foreground font-medium">{user.referralsCount}</span></div>
                         <div>Credits Earned: <span className="text-foreground font-medium">{user.creditsEarned}</span></div>
                       </div>
@@ -223,7 +219,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                             onClick={() => onViewChange('pricing')}
                           >
                             <span className="group-hover:text-primary transition-colors duration-200">
-                              Upgrade Plan
+                              {t('modals.upgradePlan')}
                             </span>
                           </Button>
                         ) : (
@@ -245,7 +241,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                           onClick={onSignOut}
                         >
                           <SignOut className="w-4 h-4 mr-1" />
-                          Sign Out
+                          {t('auth.logout')}
                         </Button>
                       </div>
                     </div>
@@ -260,14 +256,14 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                   onClick={() => onAuthRequest('signin')}
                   className="text-xs text-primary hover:text-primary"
                 >
-                  Sign in
+                  {t('auth.signIn')}
                 </Button>
                 <Button 
                   onClick={() => onAuthRequest('signup')} 
                   size="sm"
                   className="text-xs"
                 >
-                  Sign up
+                  {t('auth.signUp')}
                 </Button>
               </div>
             )}

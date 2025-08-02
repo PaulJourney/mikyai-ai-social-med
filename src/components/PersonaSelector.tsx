@@ -12,6 +12,7 @@ import {
   Info
 } from '@phosphor-icons/react'
 import type { Persona } from '../App'
+import { useT } from '../contexts/TranslationContext'
 
 interface PersonaSelectorProps {
   selectedPersona: Persona | null
@@ -24,6 +25,8 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const [showInfoModal, setShowInfoModal] = useState(false)
   const [selectedPersonaInfo, setSelectedPersonaInfo] = useState<Persona | null>(null)
+  const { t } = useT()
+  
   const personas: Array<{
     id: Persona
     name: string
@@ -34,51 +37,51 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
   }> = [
     {
       id: 'lawyer',
-      name: 'Lawyer',
+      name: t('personas.lawyer.name'),
       icon: Scales,
-      description: 'Legal advice and contract help',
+      description: t('personas.lawyer.description'),
       requiresPaid: false,
-      detailedDescription: 'Ultra-skilled AI Lawyer specialized in national and international law. Provides advanced consulting in civil, criminal, commercial, tax, labor, administrative, and technology law. Drafts legal documents, contracts, opinions, defenses, exposés, complaints, and preventive filings with precision and academic rigor.'
+      detailedDescription: t('personas.lawyer.fullDescription')
     },
     {
       id: 'engineer',
-      name: 'Engineer', 
+      name: t('personas.engineer.name'), 
       icon: Wrench,
-      description: 'Technical help and code review',
+      description: t('personas.engineer.description'),
       requiresPaid: false,
-      detailedDescription: 'Senior AI Engineer capable of writing, correcting and reviewing code in over 20 languages: Python, JavaScript, TypeScript, Rust, Go, C++, C#, Solidity, Swift, Kotlin, Java, Ruby, PHP, HTML/CSS, SQL, Bash, and many others. Provides architectural solutions, complex debugging, performance optimization and AI integration.'
+      detailedDescription: t('personas.engineer.fullDescription')
     },
     {
       id: 'marketer',
-      name: 'Marketer',
+      name: t('personas.marketer.name'),
       icon: TrendUp,
-      description: 'Brand growth and marketing plans',
+      description: t('personas.marketer.description'),
       requiresPaid: false,
-      detailedDescription: 'Strategic AI Marketer with advanced expertise in brand positioning, organic growth, paid campaigns, SEO/SEM, data analysis, conversion funnels, persuasive copywriting and social media management (Instagram, TikTok, X, LinkedIn, Facebook). Supports entrepreneurs, agencies and creators in building and scaling digital projects.'
+      detailedDescription: t('personas.marketer.fullDescription')
     },
     {
       id: 'coach',
-      name: 'Coach',
+      name: t('personas.coach.name'),
       icon: ChatCircle,
-      description: 'Personal goals and life coaching',
+      description: t('personas.coach.description'),
       requiresPaid: false,
-      detailedDescription: 'High-level AI Life & Performance Coach, capable of helping you overcome emotional blocks, organize your life, improve productivity, find motivation, develop winning habits, work on personal relationships, physical wellness and personal growth. No topic is too complex for Coach Miky.'
+      detailedDescription: t('personas.coach.fullDescription')
     },
     {
       id: 'medical',
-      name: 'Medical',
+      name: t('personas.medical.name'),
       icon: FirstAidKit,
-      description: 'Health tips and wellness support',
+      description: t('personas.medical.description'),
       requiresPaid: true,
-      detailedDescription: 'Medical AI Consultant highly specialized in analyzing symptoms, reports, radiographs, CT scans, X-rays, blood tests and medical records. Supports diagnosis, offers lifestyle guidance, dietary plans, integrative approaches and helps you understand any medical report. You can also send images and documents for in-depth analysis.'
+      detailedDescription: t('personas.medical.fullDescription')
     },
     {
       id: 'god-mode',
-      name: 'God Mode',
+      name: t('personas.godMode.name'),
       icon: Lightning,
-      description: 'Uncover the purpose of existence',
+      description: t('personas.godMode.description'),
       requiresPaid: true,
-      detailedDescription: 'Philosophical AI Explorer, capable of answering the deepest and most mysterious questions about the universe, existence, consciousness, free will, destiny. Accompanies you on an intellectual and spiritual journey exploring the deepest mysteries of reality. But first of all asks you: Are you really sure you exist?'
+      detailedDescription: t('personas.godMode.fullDescription')
     }
   ]
 
@@ -113,7 +116,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
   return (
     <div className="w-full max-w-5xl mx-auto px-6">
       <div className="text-center mb-6">
-        <h2 className="text-sm font-medium text-muted-foreground mb-2">Choose your personalized AI specialist:</h2>
+        <h2 className="text-sm font-medium text-muted-foreground mb-2">{t('homepage.choosePersona')}</h2>
       </div>
       
       <div className="space-y-4">
@@ -145,7 +148,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
                   <span className={`font-medium text-sm transition-colors duration-200 ${isSelected ? 'text-black' : 'group-hover:text-primary'}`}>{persona.name}</span>
                   {persona.requiresPaid && (
                     <Badge variant="secondary" className="text-xs px-2 py-0 flex-shrink-0 font-normal">
-                      Plus
+                      {t('plans.plus')}
                     </Badge>
                   )}
                 </div>
@@ -181,7 +184,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
               onClick={() => onPersonaSelect(null)}
               className="text-xs text-muted-foreground hover:text-foreground"
             >
-              Switch to General Chat Mode
+              {t('homepage.generalMode')}
             </Button>
           </div>
         )}
@@ -194,7 +197,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
               onClick={onUpgradeToPlusRequest}
               className="text-primary hover:text-primary/80 transition-colors duration-200"
             >
-              Upgrade
+              {t('modals.upgrade')}
             </button> to unlock Medical and God Mode personas
           </p>
         </div>
@@ -203,7 +206,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
       <Dialog open={showUpgradeModal} onOpenChange={setShowUpgradeModal}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-center">Upgrade your Plan</DialogTitle>
+            <DialogTitle className="text-center">{t('modals.upgradePlan')}</DialogTitle>
           </DialogHeader>
           <div className="text-center space-y-4 p-4">
             <p className="text-sm text-muted-foreground">
@@ -216,14 +219,14 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
                 className="flex-1 group"
               >
                 <span className="group-hover:text-primary transition-colors duration-200">
-                  Cancel
+                  {t('modals.cancel')}
                 </span>
               </Button>
               <Button 
                 onClick={handleUpgradeClick}
                 className="flex-1"
               >
-                Upgrade to Plus
+                {t('pricing.upgradeTo', { plan: t('plans.plus') })}
               </Button>
             </div>
           </div>
@@ -257,7 +260,7 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
                 onClick={() => setShowInfoModal(false)}
                 className="px-8"
               >
-                Close
+                {t('modals.close')}
               </Button>
             </div>
           </div>

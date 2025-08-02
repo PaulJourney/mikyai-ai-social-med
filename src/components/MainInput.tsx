@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card'
 import { Microphone, PaperPlaneRight, Paperclip } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import type { Persona } from '../App'
+import { useT } from '../contexts/TranslationContext'
 
 interface MainInputProps {
   onSendMessage: (message: string) => void
@@ -34,6 +35,7 @@ export function MainInput({
   const [personaPlaceholder, setPersonaPlaceholder] = useState('')
   const [isPersonaAnimating, setIsPersonaAnimating] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const { t } = useT()
 
   const handleFileUpload = () => {
     fileInputRef.current?.click()
@@ -77,7 +79,7 @@ export function MainInput({
       if (isAnimating && !isFocused) {
         return animatedPlaceholder
       }
-      return 'Ask anything - or choose an ultra-skilled version of Miky...'
+      return t('chat.askAnything')
     }
     
     // Return animated placeholder for persona mode
@@ -85,17 +87,13 @@ export function MainInput({
       return personaPlaceholder
     }
     
-    const personaNames = {
-      'lawyer': 'Lawyer Miky',
-      'engineer': 'Engineer Miky', 
-      'marketer': 'Marketer Miky',
-      'coach': 'Coach Miky',
-      'medical': 'Doctor Miky',
-      'god-mode': 'God Miky',
-      'general': 'Miky'
+    const getPersonaName = (persona: Persona) => {
+      if (persona === 'medical') return t('personas.medical.name')
+      if (persona === 'god-mode') return 'God'
+      return t(`personas.${persona}.name`)
     }
     
-    return `Ask to ${personaNames[selectedPersona] || 'Miky'}...`
+    return t('chat.placeholderPersona', { persona: getPersonaName(selectedPersona) })
   }
 
   // Typing animation effect for general mode
@@ -105,7 +103,7 @@ export function MainInput({
       return
     }
 
-    const fullText = 'Ask anything - or choose an ultra-skilled version of Miky...'
+    const fullText = t('chat.askAnything')
     let currentIndex = 0
     let isDeleting = false
     let timeoutId: NodeJS.Timeout
@@ -140,7 +138,7 @@ export function MainInput({
     return () => {
       if (timeoutId) clearTimeout(timeoutId)
     }
-  }, [selectedPersona, isFocused, disabled])
+  }, [selectedPersona, isFocused, disabled, t])
 
   // Typing animation effect for persona mode
   useEffect(() => {
@@ -149,17 +147,13 @@ export function MainInput({
       return
     }
 
-    const personaNames = {
-      'lawyer': 'Lawyer Miky',
-      'engineer': 'Engineer Miky', 
-      'marketer': 'Marketer Miky',
-      'coach': 'Coach Miky',
-      'medical': 'Doctor Miky',
-      'god-mode': 'God Miky',
-      'general': 'Miky'
+    const getPersonaName = (persona: Persona) => {
+      if (persona === 'medical') return t('personas.medical.name')
+      if (persona === 'god-mode') return 'God'
+      return t(`personas.${persona}.name`)
     }
     
-    const fullText = `Ask to ${personaNames[selectedPersona] || 'Miky'}...`
+    const fullText = t('chat.placeholderPersona', { persona: getPersonaName(selectedPersona) })
     let currentIndex = 0
     let isDeleting = false
     let timeoutId: NodeJS.Timeout
@@ -194,7 +188,7 @@ export function MainInput({
     return () => {
       if (timeoutId) clearTimeout(timeoutId)
     }
-  }, [selectedPersona, isFocused, disabled])
+  }, [selectedPersona, isFocused, disabled, t])
 
   return (
     <div className="w-full max-w-2xl mx-auto">
@@ -249,7 +243,9 @@ export function MainInput({
               <div className="text-xs text-muted-foreground">
                 {selectedPersona ? (
                   <span>
-                    Ultra-skilled: <span className="text-primary font-medium capitalize">{selectedPersona.replace('-', ' ')}</span>
+                    Ultra-skilled: <span className="text-primary font-medium capitalize">
+                      {selectedPersona === 'god-mode' ? t('personas.godMode.name') : t(`personas.${selectedPersona}.name`)}
+                    </span>
                   </span>
                 ) : (
                   <span>General chat mode</span>
@@ -262,7 +258,7 @@ export function MainInput({
                 className="hover:glow-effect text-xs"
               >
                 <PaperPlaneRight className="w-4 h-4 mr-1" />
-                Send
+                {t('chat.send')}
               </Button>
             </div>
           </form>

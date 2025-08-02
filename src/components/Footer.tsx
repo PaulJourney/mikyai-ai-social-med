@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 import { ContactModal } from './ContactModal'
+import { useT } from '../contexts/TranslationContext'
 
 interface FooterProps {
   onAdminAccess: () => void
@@ -14,6 +15,7 @@ export function Footer({ onAdminAccess, onLegalPageSelect }: FooterProps) {
   const [adminPassword, setAdminPassword] = useState('')
   const [showAdminDialog, setShowAdminDialog] = useState(false)
   const [showContactModal, setShowContactModal] = useState(false)
+  const { t } = useT()
 
   const handleAdminLogin = () => {
     if (adminPassword === '1234') {
@@ -36,34 +38,34 @@ export function Footer({ onAdminAccess, onLegalPageSelect }: FooterProps) {
               className="p-0 h-auto text-xs text-muted-foreground"
               onClick={() => onLegalPageSelect?.('terms')}
             >
-              Terms and Conditions
+              {t('footer.terms')}
             </Button>
             <Button 
               variant="link" 
               className="p-0 h-auto text-xs text-muted-foreground"
               onClick={() => onLegalPageSelect?.('privacy')}
             >
-              Privacy Policy
+              {t('footer.privacy')}
             </Button>
             <Button 
               variant="link" 
               className="p-0 h-auto text-xs text-muted-foreground"
               onClick={() => onLegalPageSelect?.('cookies')}
             >
-              Cookie Policy
+              {t('footer.cookies')}
             </Button>
             <Button 
               variant="link" 
               className="p-0 h-auto text-xs text-muted-foreground"
               onClick={() => setShowContactModal(true)}
             >
-              Contact
+              {t('footer.contact')}
             </Button>
             
             <Dialog open={showAdminDialog} onOpenChange={setShowAdminDialog}>
               <DialogTrigger asChild>
                 <Button variant="link" className="p-0 h-auto text-xs text-muted-foreground">
-                  Admin Access
+                  {t('footer.admin')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
@@ -98,7 +100,7 @@ export function Footer({ onAdminAccess, onLegalPageSelect }: FooterProps) {
           </div>
 
           <div className="text-xs text-muted-foreground">
-            © 2025 Miky.ai - Ultra‑Skilled AI Personas
+            {t('footer.copyright')}
           </div>
         </div>
       </div>
