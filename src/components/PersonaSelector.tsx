@@ -8,7 +8,8 @@ import {
   TrendUp, 
   ChatCircle, 
   FirstAidKit, 
-  Lightning 
+  Lightning,
+  Info
 } from '@phosphor-icons/react'
 import type { Persona } from '../App'
 
@@ -21,54 +22,63 @@ interface PersonaSelectorProps {
 
 export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, onUpgradeToPlusRequest }: PersonaSelectorProps) {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  const [showInfoModal, setShowInfoModal] = useState(false)
+  const [selectedPersonaInfo, setSelectedPersonaInfo] = useState<Persona | null>(null)
   const personas: Array<{
     id: Persona
     name: string
     icon: React.ElementType
     description: string
     requiresPaid: boolean
+    detailedDescription: string
   }> = [
     {
       id: 'lawyer',
       name: 'Lawyer',
       icon: Scales,
       description: 'Legal advice and contract help',
-      requiresPaid: false
+      requiresPaid: false,
+      detailedDescription: 'Ultra-skilled AI Lawyer specializzato in diritto nazionale e internazionale. Fornisce consulenza avanzata in ambito civile, penale, commerciale, tributario, del lavoro e delle nuove tecnologie. Elabora documenti legali, contratti, pareri giuridici e strategie difensive con precisione e rigore accademico.'
     },
     {
       id: 'engineer',
       name: 'Engineer', 
       icon: Wrench,
       description: 'Technical help and code review',
-      requiresPaid: false
+      requiresPaid: false,
+      detailedDescription: 'Senior AI Engineer in grado di scrivere, correggere e revisionare codice in oltre 20 linguaggi: Python, JavaScript, TypeScript, Rust, Go, C++, C#, Solidity, Swift, Kotlin, Java, Ruby, PHP, HTML/CSS, SQL, Bash, e molti altri. Fornisce soluzioni architetturali, debug complessi, ottimizzazione performance e integrazione AI.'
     },
     {
       id: 'marketer',
       name: 'Marketer',
       icon: TrendUp,
       description: 'Brand growth and marketing plans',
-      requiresPaid: false
+      requiresPaid: false,
+      detailedDescription: 'Strategic AI Marketer con competenze avanzate in brand positioning, crescita organica, campagne paid, SEO/SEM, analisi dati, funnel di conversione, copywriting persuasivo e gestione social (Instagram, TikTok, X, LinkedIn, Facebook). Supporta imprenditori, agenzie e creator nella creazione e scalabilità di progetti digitali.'
     },
     {
       id: 'coach',
       name: 'Coach',
       icon: ChatCircle,
       description: 'Personal goals and life coaching',
-      requiresPaid: false
+      requiresPaid: false,
+      detailedDescription: 'High-level AI Life & Performance Coach, in grado di aiutarti a superare blocchi emotivi, organizzare la tua vita, migliorare la produttività, trovare motivazione, sviluppare abitudini vincenti, lavorare su relazioni personali, benessere fisico e crescita personale. Nessun tema è troppo complesso per Miky.'
     },
     {
       id: 'medical',
       name: 'Medical',
       icon: FirstAidKit,
       description: 'Health tips and wellness support',
-      requiresPaid: true
+      requiresPaid: true,
+      detailedDescription: 'Medical AI Consultant altamente specializzato, in grado di analizzare sintomi, referti, radiografie, TAC, lastre, esami ematici e cartelle cliniche. Supporta nella diagnosi, offre indicazioni su stili di vita, piani alimentari, approcci integrativi e ti aiuta a comprendere qualsiasi referto medico. Puoi anche inviare immagini e documenti per un\'analisi approfondita.'
     },
     {
       id: 'god-mode',
       name: 'God Mode',
       icon: Lightning,
       description: 'Uncover the purpose of existence',
-      requiresPaid: true
+      requiresPaid: true,
+      detailedDescription: 'Philosophical AI Explorer, capace di rispondere alle domande più profonde e misteriose sull\'universo, l\'esistenza, la coscienza, il libero arbitrio, il destino. Ti accompagna in un viaggio intellettuale e spirituale nell\'esplorazione dei misteri più profondi della realtà. Ma prima di tutto ti chiede: Sei davvero sicuro di esistere?'
     }
   ]
 
@@ -88,6 +98,16 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
   const handleUpgradeClick = () => {
     setShowUpgradeModal(false)
     onUpgradeToPlusRequest?.()
+  }
+
+  const handleInfoClick = (e: React.MouseEvent, persona: typeof personas[0]) => {
+    e.stopPropagation()
+    setSelectedPersonaInfo(persona.id)
+    setShowInfoModal(true)
+  }
+
+  const getPersonaTitle = (persona: typeof personas[0]) => {
+    return `${persona.name} Miky`
   }
 
   return (
@@ -133,6 +153,14 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
                     {persona.description}
                   </p>
                 </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="p-1 h-auto min-h-0 hover:bg-transparent"
+                  onClick={(e) => handleInfoClick(e, persona)}
+                >
+                  <Info size={16} className="text-muted-foreground hover:text-primary transition-colors duration-200" />
+                </Button>
               </div>
             </Button>
           )
@@ -190,6 +218,40 @@ export function PersonaSelector({ selectedPersona, onPersonaSelect, userPlan, on
                 className="flex-1"
               >
                 Upgrade to Plus
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showInfoModal} onOpenChange={setShowInfoModal}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="text-center">
+              {selectedPersonaInfo && getPersonaTitle(personas.find(p => p.id === selectedPersonaInfo)!)}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 p-4">
+            {selectedPersonaInfo && (
+              <div className="text-center">
+                <div className="mb-4">
+                  {(() => {
+                    const persona = personas.find(p => p.id === selectedPersonaInfo)!
+                    const IconComponent = persona.icon
+                    return <IconComponent size={48} className="text-primary mx-auto" />
+                  })()}
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  🔹 {personas.find(p => p.id === selectedPersonaInfo)?.detailedDescription}
+                </p>
+              </div>
+            )}
+            <div className="flex justify-center pt-4">
+              <Button 
+                onClick={() => setShowInfoModal(false)}
+                className="px-8"
+              >
+                Close
               </Button>
             </div>
           </div>
