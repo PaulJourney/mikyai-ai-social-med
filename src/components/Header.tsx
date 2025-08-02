@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Badge } from '@/components/ui/badge'
-import { User, Globe, ShareNetwork, ClockCounterClockwise, CreditCard, SignOut, DollarSign, Copy, WhatsappLogo, TelegramLogo, Link } from '@phosphor-icons/react'
+import { User, Globe, ShareNetwork, ClockCounterClockwise, CreditCard, SignOut, DollarSign, Copy, WhatsappLogo, Link } from '@phosphor-icons/react'
 import type { User as UserType } from '../App'
 import { toast } from 'sonner'
 import { CashoutModal } from './CashoutModal'
@@ -57,21 +57,16 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
 
   const handleWhatsAppShare = () => {
     if (!user) return
-    const message = createReferralMessage(user.firstName || 'Un amico', user.referralCode)
+    const userName = user.firstName || user.email?.split('@')[0] || 'Un amico'
+    const message = createReferralMessage(userName, user.referralCode)
     const url = `https://wa.me/?text=${encodeURIComponent(message)}`
-    window.open(url, '_blank')
-  }
-
-  const handleTelegramShare = () => {
-    if (!user) return
-    const message = createReferralMessage(user.firstName || 'Un amico', user.referralCode)
-    const url = `https://t.me/share/url?text=${encodeURIComponent(message)}`
     window.open(url, '_blank')
   }
 
   const handleCopyReferralMessage = () => {
     if (!user) return
-    const message = createReferralMessage(user.firstName || 'Un amico', user.referralCode)
+    const userName = user.firstName || user.email?.split('@')[0] || 'Un amico'
+    const message = createReferralMessage(userName, user.referralCode)
     navigator.clipboard.writeText(message)
     toast.success(t('referral.messageCopied'))
   }
@@ -168,33 +163,24 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                         {/* Share Options */}
                         <div>
                           <div className="text-xs text-muted-foreground mb-2">{t('referral.shareOptions')}</div>
-                          <div className="grid grid-cols-3 gap-2">
+                          <div className="grid grid-cols-2 gap-4 px-2">
                             <Button
                               size="sm"
                               variant="outline"
-                              className="text-xs"
+                              className="text-xs group hover:text-primary transition-colors duration-200"
                               onClick={handleWhatsAppShare}
                             >
                               <WhatsappLogo className="w-4 h-4 mr-1" />
-                              WhatsApp
+                              <span className="group-hover:text-primary transition-colors duration-200">WhatsApp</span>
                             </Button>
                             <Button
                               size="sm"
                               variant="outline"
-                              className="text-xs"
-                              onClick={handleTelegramShare}
-                            >
-                              <TelegramLogo className="w-4 h-4 mr-1" />
-                              Telegram
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="text-xs"
+                              className="text-xs group hover:text-primary transition-colors duration-200"
                               onClick={handleCopyReferralMessage}
                             >
                               <Copy className="w-4 h-4 mr-1" />
-                              Copy
+                              <span className="group-hover:text-primary transition-colors duration-200">Copy</span>
                             </Button>
                           </div>
                         </div>
@@ -216,8 +202,7 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                           disabled={(user.cashEarned || 0) < 10}
                           onClick={() => setShowCashoutModal(true)}
                         >
-                          <DollarSign className="w-4 h-4 mr-1" />
-                          {t('referral.cashOut')} {(user.cashEarned || 0) < 10 ? `(${t('referral.minimum')})` : ''}
+                          Cash Out (Min $10)
                         </Button>
 
                         <div className="text-xs text-muted-foreground pt-2 border-t">
