@@ -1,0 +1,141 @@
+import { useState } from 'react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { toast } from 'sonner'
+import { PaperPlane } from '@phosphor-icons/react'
+
+interface ContactModalProps {
+  isOpen: boolean
+  onClose: () => void
+}
+
+export function ContactModal({ isOpen, onClose }: ContactModalProps) {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+      toast.error('Please fill in all fields')
+      return
+    }
+
+    setIsSubmitting(true)
+
+    // Simulate email sending (in real implementation, this would send to support@miky.ai)
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      })
+      
+      onClose()
+      
+      // Show success message
+      toast.success('Message sent successfully! Our team will get back to you soon.')
+      
+    } catch (error) {
+      toast.error('Failed to send message. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-md mx-auto">
+        <DialogHeader>
+          <DialogTitle className="text-lg font-semibold">Contact Us</DialogTitle>
+        </DialogHeader>
+        
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Name</label>
+            <Input
+              value={formData.name}
+              onChange={(e) => handleInputChange('name', e.target.value)}
+              placeholder="Your full name"
+              disabled={isSubmitting}
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Email</label>
+            <Input
+              type="email"
+              value={formData.email}
+              onChange={(e) => handleInputChange('email', e.target.value)}
+              placeholder="your.email@example.com"
+              disabled={isSubmitting}
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Subject</label>
+            <Input
+              value={formData.subject}
+              onChange={(e) => handleInputChange('subject', e.target.value)}
+              placeholder="What's this about?"
+              disabled={isSubmitting}
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Message</label>
+            <Textarea
+              value={formData.message}
+              onChange={(e) => handleInputChange('message', e.target.value)}
+              placeholder="Tell us how we can help you..."
+              rows={4}
+              disabled={isSubmitting}
+            />
+          </div>
+          
+          <div className="flex justify-end gap-3 pt-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
+              disabled={isSubmitting}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin mr-2" />
+                  Sending...
+                </>
+              ) : (
+                <>
+                  <PaperPlane className="w-4 h-4 mr-2" />
+                  Send Message
+                </>
+              )}
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}

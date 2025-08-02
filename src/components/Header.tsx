@@ -165,16 +165,31 @@ export function Header({ user, onViewChange, currentView, onSignOut, onAuthReque
                       EN
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-32 p-2">
+                  <PopoverContent className="w-36 p-2">
                     <div className="space-y-1">
                       <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
                         English
+                      </Button>
+                      <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
+                        Italiano
                       </Button>
                       <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
                         Español
                       </Button>
                       <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
                         Français
+                      </Button>
+                      <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
+                        Deutsch
+                      </Button>
+                      <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
+                        日本語
+                      </Button>
+                      <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
+                        한국어
+                      </Button>
+                      <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
+                        Português
                       </Button>
                     </div>
                   </PopoverContent>

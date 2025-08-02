@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
+import { ContactModal } from './ContactModal'
 
 interface FooterProps {
   onAdminAccess: () => void
@@ -12,6 +13,7 @@ interface FooterProps {
 export function Footer({ onAdminAccess, onLegalPageSelect }: FooterProps) {
   const [adminPassword, setAdminPassword] = useState('')
   const [showAdminDialog, setShowAdminDialog] = useState(false)
+  const [showContactModal, setShowContactModal] = useState(false)
 
   const handleAdminLogin = () => {
     if (adminPassword === '1234') {
@@ -49,6 +51,13 @@ export function Footer({ onAdminAccess, onLegalPageSelect }: FooterProps) {
               onClick={() => onLegalPageSelect?.('cookies')}
             >
               Cookie Policy
+            </Button>
+            <Button 
+              variant="link" 
+              className="p-0 h-auto text-xs text-muted-foreground"
+              onClick={() => setShowContactModal(true)}
+            >
+              Contact
             </Button>
             
             <Dialog open={showAdminDialog} onOpenChange={setShowAdminDialog}>
@@ -93,6 +102,11 @@ export function Footer({ onAdminAccess, onLegalPageSelect }: FooterProps) {
           </div>
         </div>
       </div>
+      
+      <ContactModal
+        isOpen={showContactModal}
+        onClose={() => setShowContactModal(false)}
+      />
     </footer>
   )
 }
