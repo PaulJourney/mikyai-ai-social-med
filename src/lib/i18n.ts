@@ -1103,7 +1103,7 @@ const translations: Record<Language, Translations> = {
       },
       backButton: 'Torna alla Chat'
     },
-      step1: 'Scegli una personalità AI specializzata per assistenza esperta',
+    tutorial: {
       welcome: 'Benvenuto in Miky.ai!',
       step1: 'Scegli una personalità AI specializzata per assistenza esperta',
       step2: 'Scrivi la tua domanda o usa input vocale',
