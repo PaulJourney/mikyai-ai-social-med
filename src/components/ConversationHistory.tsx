@@ -81,46 +81,18 @@ export function ConversationHistory({
       setIsLoading(false)
     }
   }
-  const [searchQuery, setSearchQuery] = useState('')
-  const [currentPage, setCurrentPage] = useState(1)
-  const ITEMS_PER_PAGE = 20
-
-  // Search function that looks through conversation titles and message content
-  const searchConversations = (conversations: Conversation[], query: string): Conversation[] => {
-    if (!query.trim()) return conversations
-    
-    const lowercaseQuery = query.toLowerCase().trim()
-    
-    return conversations.filter(conversation => {
-      // Search in title
-      if (conversation.title.toLowerCase().includes(lowercaseQuery)) {
-        return true
-      }
-      
-      // Search in message content
-      return conversation.messages.some(message => 
-        message.content.toLowerCase().includes(lowercaseQuery)
-      )
-    })
-  }
-
-  // Apply search and filter
-  const searchedConversations = searchConversations(conversations, searchQuery)
-  const filteredConversations = selectedFilter === 'all' 
-    ? searchedConversations 
-    : searchedConversations.filter(conv => conv.persona === selectedFilter)
-
-  // Calculate pagination
-  const totalPages = Math.ceil(filteredConversations.length / ITEMS_PER_PAGE)
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
-  const endIndex = startIndex + ITEMS_PER_PAGE
-  const paginatedConversations = filteredConversations.slice(startIndex, endIndex)
 
   // Reset to page 1 when filter or search changes
   const handleFilterChange = (filter: Persona | 'all') => {
     setSelectedFilter(filter)
     setCurrentPage(1)
   }
+
+  // Calculate local pagination for fallback when API doesn't support it
+  const ITEMS_PER_PAGE = 20
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+  const endIndex = startIndex + ITEMS_PER_PAGE
+  const filteredConversations = conversations
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query)
@@ -314,7 +286,7 @@ export function ConversationHistory({
         </div>
       </div>
 
-      {filteredConversations.length === 0 ? (
+      {paginatedConversations.length === 0 ? (
         <div className="text-center py-12">
           <ChatCircle className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
           <h2 className="text-xl font-medium text-foreground mb-2">No conversations found</h2>
@@ -576,8 +548,8 @@ export function ConversationHistory({
           <div className="text-center text-xs text-muted-foreground mt-4">
             {t('history.showingConversations', { 
               start: startIndex + 1, 
-              end: Math.min(endIndex, filteredConversations.length), 
-              total: filteredConversations.length 
+              end: Math.min(endIndex, conversations.length), 
+              total: conversations.length 
             })}
           </div>
         </div>
