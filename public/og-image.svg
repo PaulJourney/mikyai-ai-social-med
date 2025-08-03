@@ -1,25 +1,13 @@
-<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Dark background -->
-  <rect width="1200" height="630" fill="#1a1a1a"/>
-  
-  <!-- Subtle glow effect behind text -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-      <feMerge> 
-        <feMergeNode in="coloredBlur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#7FFF00;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#7FFF00;stop-opacity:0"/>
+    </radialGradient>
   </defs>
-  
-  <!-- Main text -->
-  <text x="600" y="350" text-anchor="middle" font-family="Inter, sans-serif" font-size="72" font-weight="700" filter="url(#glow)">
-    <tspan fill="#7FFF00">MIKY</tspan><tspan fill="white">.AI</tspan>
-  </text>
-  
-  <!-- Subtitle -->
-  <text x="600" y="420" text-anchor="middle" font-family="Inter, sans-serif" font-size="24" font-weight="400" fill="#888888">
-    Ultra-Skilled AI Personas for Your Goals
-  </text>
+  <rect width="1200" height="630" fill="#1a1a1a"/>
+  <circle cx="600" cy="315" r="200" fill="url(#glow)"/>
+  <text x="600" y="285" font-family="Inter, sans-serif" font-size="120" font-weight="700" text-anchor="middle" fill="#7FFF00">MIKY</text>
+  <text x="600" y="355" font-family="Inter, sans-serif" font-size="120" font-weight="700" text-anchor="middle" fill="#ffffff">AI</text>
+  <text x="600" y="420" font-family="Inter, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="#888888">Ultra-Skilled AI Personas</text>
 </svg>

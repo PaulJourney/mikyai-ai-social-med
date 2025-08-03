@@ -9,7 +9,19 @@
         "build": "tsc -b --noCheck && vite build",
         "lint": "eslint .",
         "optimize": "vite optimize",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "setup": "node setup-database.js",
+        "health": "node health-check.js",
+        "backend:dev": "cd backend && npm run dev",
+        "backend:build": "cd backend && npm run build",
+        "backend:start": "cd backend && npm start",
+        "db:migrate": "cd backend && npx prisma migrate dev",
+        "db:reset": "cd backend && npx prisma migrate reset",
+        "db:seed": "cd backend && npm run seed",
+        "db:studio": "cd backend && npx prisma studio",
+        "docker:up": "docker-compose up -d",
+        "docker:down": "docker-compose down",
+        "docker:logs": "docker-compose logs -f"
     },
     "dependencies": {
         "@github/spark": "^0.0.1",
