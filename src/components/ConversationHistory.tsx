@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import React from 'react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -22,17 +22,19 @@ import {
   CurrencyDollar,
   Heart
 } from '@phosphor-icons/react'
-import type { Conversation, Persona } from '../App'
+import type { Persona } from '../App'
+import type { Conversation, ConversationsData } from '../hooks/useConversations'
 import { useT } from '../contexts/TranslationContext'
 
 interface ConversationHistoryProps {
   conversations: Conversation[]
   onSelectConversation: (conversation: Conversation) => void
-  onDeleteConversation: (id: string) => void
-  onRenameConversation: (id: string, newTitle: string) => void
+  onDeleteConversation: (id: string) => Promise<boolean>
+  onRenameConversation: (id: string, newTitle: string) => Promise<boolean>
   onContinueConversation?: (conversation: Conversation) => void
   isAuthenticated: boolean
   onAuthRequest: (mode: 'signin' | 'signup') => void
+  loadConversations: (page?: number, limit?: number, persona?: string, search?: string) => Promise<ConversationsData>
 }
 
 export function ConversationHistory({ 
@@ -42,12 +44,43 @@ export function ConversationHistory({
   onRenameConversation,
   onContinueConversation,
   isAuthenticated,
-  onAuthRequest
+  onAuthRequest,
+  loadConversations
 }: ConversationHistoryProps) {
   const { t, language } = useT()
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editTitle, setEditTitle] = useState('')
   const [selectedFilter, setSelectedFilter] = useState<Persona | 'all'>('all')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [isLoading, setIsLoading] = useState(false)
+  const [paginatedConversations, setPaginatedConversations] = useState<Conversation[]>([])
+
+  // Load conversations when component mounts or filters change
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadData()
+    }
+  }, [isAuthenticated, selectedFilter, searchQuery, currentPage])
+
+  const loadData = async () => {
+    setIsLoading(true)
+    try {
+      const result = await loadConversations(
+        currentPage,
+        20,
+        selectedFilter === 'all' ? undefined : selectedFilter,
+        searchQuery || undefined
+      )
+      setPaginatedConversations(result.conversations)
+      setTotalPages(result.totalPages)
+    } catch (error) {
+      console.error('Failed to load conversations:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
   const [searchQuery, setSearchQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const ITEMS_PER_PAGE = 20

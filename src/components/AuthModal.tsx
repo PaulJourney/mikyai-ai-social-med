@@ -6,18 +6,20 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Eye, EyeSlash, CheckCircle, Envelope, Lock, Check } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useT } from '../contexts/TranslationContext'
+import { useAuth } from '../contexts/AuthContext'
 
 interface AuthModalProps {
   isOpen: boolean
   onClose: () => void
   mode: 'signin' | 'signup'
   onModeSwitch: () => void
-  onAuthSuccess: (userData: any, isNewUser?: boolean) => void
+  onAuthSuccess: (isNewUser?: boolean) => void
   referralCode?: string
 }
 
 export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, referralCode }: AuthModalProps) {
   const { t } = useT()
+  const { signIn, signUp, verifyEmail, forgotPassword, resetPassword, isLoading } = useAuth()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -27,10 +29,8 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
     referralCode: referralCode || ''
   })
   const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const [emailSent, setEmailSent] = useState(false)
   const [confirmationCode, setConfirmationCode] = useState('')
-  const [verificationCode] = useState('123456') // Mock verification code
   const [showForgotPassword, setShowForgotPassword] = useState(false)
   const [resetEmailSent, setResetEmailSent] = useState(false)
   const [resetCode, setResetCode] = useState('')
@@ -53,6 +53,10 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
         toast.error(t('auth.pleaseFieldRequired'))
         return
       }
+      if (formData.password !== formData.confirmPassword) {
+        toast.error(t('auth.passwordsDoNotMatch'))
+        return
+      }
     }
     
     if (!formData.email.trim()) {
@@ -64,102 +68,43 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
       toast.error(t('auth.pleaseFieldRequired'))
       return
     }
-    
-    setIsLoading(true)
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
       if (mode === 'signup' && !emailSent) {
-        if (formData.password !== formData.confirmPassword) {
-          toast.error(t('auth.passwordsDoNotMatch'))
-          setIsLoading(false)
-          return
-        }
+        // Sign up user
+        await signUp({
+          email: formData.email,
+          password: formData.password,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          referralCode: formData.referralCode || undefined
+        })
         
-        // Send confirmation email
+        // Check if email verification is needed
         setEmailSent(true)
-        setIsLoading(false)
         toast.success(t('auth.confirmationEmailSent'))
         return
       }
       
       if (mode === 'signup' && emailSent) {
-        // Verify confirmation code
-        if (confirmationCode !== verificationCode) {
-          toast.error(t('auth.invalidConfirmationCode'))
-          setIsLoading(false)
-          return
-        }
-        
-        // Create account after email confirmation
-        const newUser = {
-          id: crypto.randomUUID(),
-          email: formData.email,
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          credits: referralVerified ? 300 : 100,
-          plan: 'free' as const,
-          referralCode: crypto.randomUUID().slice(0, 8),
-          referralsCount: 0,
-          creditsEarned: 0,
-          cashEarned: 0,
-          language: 'en'
-        }
-        
-        onAuthSuccess(newUser, true) // Mark as new user
+        // Verify email with confirmation code
+        await verifyEmail(confirmationCode)
+        onAuthSuccess(true) // Mark as new user
         toast.success(referralVerified ? t('auth.accountCreatedBonus') : t('auth.accountCreatedSuccess'))
-        setIsLoading(false)
         onClose()
         return
       }
       
       if (mode === 'signin') {
-        // Test account
-        if (formData.email === 'support@miky.ai' && formData.password === '1234') {
-          const testUser = {
-            id: 'test-user',
-            email: 'support@miky.ai',
-            firstName: 'Support',
-            lastName: 'Team',
-            credits: 5000,
-            plan: 'business' as const,
-            referralCode: 'SUPPORT123',
-            referralsCount: 20,
-            creditsEarned: 600,
-            cashEarned: 40.00,
-            language: 'en'
-          }
-          
-          onAuthSuccess(testUser, false)
-          toast.success(t('auth.welcomeBackSupport'))
-          setIsLoading(false)
-          onClose()
-          return
-        }
-        
-        // Regular signin simulation
-        const existingUser = {
-          id: crypto.randomUUID(),
-          email: formData.email,
-          firstName: 'John',
-          lastName: 'Doe',
-          credits: 250,
-          plan: 'plus' as const,
-          referralCode: 'ABC12345',
-          referralsCount: 3,
-          creditsEarned: 150,
-          cashEarned: 6.00,
-          language: 'en'
-        }
-        
-        onAuthSuccess(existingUser, false)
-        toast.success(t('auth.welcomeBack'))
-        setIsLoading(false)
+        await signIn(formData.email, formData.password)
+        onAuthSuccess(false)
         onClose()
+        return
       }
-    }, 1500)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Authentication failed')
+    }
   }
-
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault()
     
@@ -168,14 +113,12 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
       return
     }
     
-    setIsLoading(true)
-    
-    // Simulate password reset email sending
-    setTimeout(() => {
+    try {
+      await forgotPassword(formData.email)
       setResetEmailSent(true)
-      setIsLoading(false)
-      toast.success(t('auth.passwordResetCodeSent'))
-    }, 1000)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to send reset email')
+    }
   }
 
   const handleResetPassword = async (e: React.FormEvent) => {
@@ -196,36 +139,26 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
       return
     }
     
-    setIsLoading(true)
-    
-    if (resetCode !== '123456') {
-      toast.error(t('auth.invalidResetCode'))
-      setIsLoading(false)
-      return
-    }
-    
     if (newPassword !== confirmNewPassword) {
       toast.error(t('auth.passwordsDoNotMatch'))
-      setIsLoading(false)
       return
     }
     
     if (newPassword.length < 6) {
       toast.error(t('auth.passwordMinLength'))
-      setIsLoading(false)
       return
     }
     
-    // Simulate password reset
-    setTimeout(() => {
-      toast.success(t('auth.passwordResetSuccess'))
+    try {
+      await resetPassword(resetCode, newPassword)
       setShowForgotPassword(false)
       setResetEmailSent(false)
       setResetCode('')
       setNewPassword('')
       setConfirmNewPassword('')
-      setIsLoading(false)
-    }, 1000)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to reset password')
+    }
   }
 
   const handleVerifyReferral = async () => {
@@ -233,12 +166,11 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
     
     setIsVerifyingReferral(true)
     
-    // Simulate referral verification
+    // Mock verification for now - this would normally be an API call
     setTimeout(() => {
-      // Mock verification - in real app, this would check against database
       if (formData.referralCode === 'SUPPORT123' || formData.referralCode.length >= 6) {
         setReferralVerified(true)
-        const mockReferrerName = 'Marco'  // Mock referrer name
+        const mockReferrerName = 'Marco'
         setReferrerName(mockReferrerName)
         toast.success(t('referral.referralVerified', { name: mockReferrerName }))
       } else {
