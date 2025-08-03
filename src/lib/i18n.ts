@@ -257,6 +257,7 @@ export interface Translations {
     invalidResetCode: string
     passwordMinLength: string
     invalidReferralCode: string
+    authenticationFailed: string
   }
   
   // Modals
@@ -635,7 +636,8 @@ const translations: Record<Language, Translations> = {
       passwordResetCodeSent: 'Password reset code sent! Check your inbox.',
       invalidResetCode: 'Invalid reset code',
       passwordMinLength: 'Password must be at least 6 characters',
-      invalidReferralCode: 'Invalid referral code'
+      invalidReferralCode: 'Invalid referral code',
+      authenticationFailed: 'Invalid email or password'
     },
     modals: {
       close: 'Close',
@@ -1000,7 +1002,8 @@ const translations: Record<Language, Translations> = {
       passwordResetCodeSent: 'Codice di reset password inviato! Controlla la tua casella.',
       invalidResetCode: 'Codice di reset non valido',
       passwordMinLength: 'La password deve essere di almeno 6 caratteri',
-      invalidReferralCode: 'Codice referral non valido'
+      invalidReferralCode: 'Codice referral non valido',
+      authenticationFailed: 'Email o password non valida'
     },
     modals: {
       close: 'Chiudi',
@@ -1365,7 +1368,8 @@ const translations: Record<Language, Translations> = {
       passwordResetCodeSent: '¡Código de reset de contraseña enviado! Revisa tu bandeja.',
       invalidResetCode: 'Código de reset inválido',
       passwordMinLength: 'La contraseña debe tener al menos 6 caracteres',
-      invalidReferralCode: 'Código de referido inválido'
+      invalidReferralCode: 'Código de referido inválido',
+      authenticationFailed: 'Email o contraseña incorrectos'
     },
     modals: {
       close: 'Cerrar',
@@ -1730,7 +1734,8 @@ const translations: Record<Language, Translations> = {
       passwordResetCodeSent: 'Passwort-Reset-Code gesendet! Überprüfe deinen Posteingang.',
       invalidResetCode: 'Ungültiger Reset-Code',
       passwordMinLength: 'Passwort muss mindestens 6 Zeichen haben',
-      invalidReferralCode: 'Ungültiger Empfehlungscode'
+      invalidReferralCode: 'Ungültiger Empfehlungscode',
+      authenticationFailed: 'Ungültige E-Mail oder Passwort'
     },
     modals: {
       close: 'Schließen',

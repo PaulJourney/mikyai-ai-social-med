@@ -130,10 +130,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       toast.success('Successfully signed in!')
     } catch (error) {
+      console.error('Sign in error:', error)
       if (error instanceof ApiError) {
-        throw new Error(error.message)
+        // Provide specific error messages based on API response
+        if (error.status === 401) {
+          throw new Error('Invalid email or password')
+        } else if (error.status === 403) {
+          throw new Error('Account is disabled. Please contact support.')
+        } else if (error.status === 404) {
+          throw new Error('Account not found')
+        } else {
+          throw new Error(error.message || 'Failed to sign in')
+        }
       }
-      throw new Error('Failed to sign in')
+      throw new Error('Network error. Please check your connection and try again.')
     } finally {
       setIsLoading(false)
     }

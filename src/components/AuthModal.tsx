@@ -102,7 +102,10 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
         return
       }
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Authentication failed')
+      console.error('Authentication error:', error)
+      toast.error(error instanceof Error ? error.message : t('auth.authenticationFailed'))
+      // Don't close modal on error - stay open to show error message
+      return
     }
   }
   const handleForgotPassword = async (e: React.FormEvent) => {
