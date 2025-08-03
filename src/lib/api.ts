@@ -695,5 +695,3 @@ export const adminApi = {
     })
   },
 }
-
-export { ApiError }

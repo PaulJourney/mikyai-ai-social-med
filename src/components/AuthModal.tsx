@@ -39,9 +39,13 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
   const [referralVerified, setReferralVerified] = useState(false)
   const [referrerName, setReferrerName] = useState('')
   const [isVerifyingReferral, setIsVerifyingReferral] = useState(false)
+  const [authError, setAuthError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Clear any previous auth error
+    setAuthError('')
     
     // Basic form validation
     if (mode === 'signup') {
@@ -103,7 +107,9 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
       }
     } catch (error) {
       console.error('Authentication error:', error)
-      toast.error(error instanceof Error ? error.message : t('auth.authenticationFailed'))
+      const errorMessage = error instanceof Error ? error.message : t('auth.authenticationFailed')
+      setAuthError(errorMessage)
+      toast.error(errorMessage)
       // Don't close modal on error - stay open to show error message
       return
     }
@@ -206,6 +212,7 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
     setConfirmNewPassword('')
     setReferralVerified(false)
     setReferrerName('')
+    setAuthError('')
   }
 
   const handleModeSwitch = () => {
@@ -429,6 +436,12 @@ export function AuthModal({ isOpen, onClose, mode, onModeSwitch, onAuthSuccess, 
         ) : (
           // Regular signin/signup form
           <form onSubmit={handleSubmit} className="space-y-4">
+            {authError && (
+              <div className="p-3 rounded-md bg-destructive/10 border border-destructive/20">
+                <p className="text-sm text-destructive">{authError}</p>
+              </div>
+            )}
+            
             {mode === 'signup' && (
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
